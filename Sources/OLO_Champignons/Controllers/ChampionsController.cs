@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Model;
 using StubLib;
+using DTO;
+using Api.Mapper;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,14 +14,11 @@ namespace OLO_Champignons.Controllers
     {
         // GET: api/<Champion>
         [HttpGet]
-        public IEnumerable<Champion> Get()
+        public async Task<IActionResult> Get()
         {
-            StubData stubData = new StubData();
-            var champions = stubData.ChampionsMgr.GetItems(0,6);
-
-
-            //return champions;
-            return new List<Champion>();
+            StubData sd = new StubData();
+            var champions = (await sd.ChampionsMgr.GetItems(0, (await sd.ChampionsMgr.GetNbItems()))).Select(champion => champion.ToDto());
+            return Ok(champions);
         }
 
         // GET api/<Champion>/5

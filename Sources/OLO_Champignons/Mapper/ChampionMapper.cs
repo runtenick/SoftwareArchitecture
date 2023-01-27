@@ -14,3 +14,7 @@ namespace Api.Mapper
         }
     }
 }
+/*
+    creer controleur
+    recuperer un DTO et le convertir en champion
+ */
