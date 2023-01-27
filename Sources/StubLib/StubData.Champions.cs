@@ -94,6 +94,7 @@ namespace StubLib
 
             public Task<Champion?> UpdateItem(Champion? oldItem, Champion? newItem)
                 => parent.champions.UpdateItem(oldItem, newItem);
+
         }
 	}
 }
