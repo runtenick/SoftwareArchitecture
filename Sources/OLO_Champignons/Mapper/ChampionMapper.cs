@@ -1,5 +1,6 @@
 ﻿using DTO;
 using Model;
+using System.Runtime.CompilerServices;
 
 namespace Api.Mapper
 {
@@ -12,9 +13,10 @@ namespace Api.Mapper
                 Name = champion.Name,
             };
         }
+        public static Champion ToModel(this ChampionDto championDto)
+        {
+            /* recuperer les autres attributs a apartir du stub */
+            return new Champion(championDto.Name);
+        }
     }
-}
-/*
-    creer controleur
-    recuperer un DTO et le convertir en champion
- */
+ }

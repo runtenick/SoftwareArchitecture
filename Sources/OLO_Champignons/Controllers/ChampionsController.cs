@@ -12,12 +12,19 @@ namespace OLO_Champignons.Controllers
     [ApiController]
     public class ChampionsController : ControllerBase
     {
+        private IDataManager dataManager;
+
+        public ChampionsController(IDataManager d)
+        {
+            dataManager = d;
+        }
+
         // GET: api/<Champion>
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            StubData sd = new StubData();
-            var champions = (await sd.ChampionsMgr.GetItems(0, (await sd.ChampionsMgr.GetNbItems()))).Select(champion => champion.ToDto());
+            var champions = (await dataManager.ChampionsMgr.GetItems(0, 
+               (await dataManager.ChampionsMgr.GetNbItems()))).Select(champion => champion?.ToDto());
             return Ok(champions);
         }
 
@@ -30,8 +37,10 @@ namespace OLO_Champignons.Controllers
 
         // POST api/<Champion>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult> Post([FromBody] ChampionDto champion)
         {
+            return CreatedAtAction(nameof(Get), new { Id = 6 },
+                (await dataManager.ChampionsMgr.AddItem(ChampionMapper.ToModel(champion))).ToDto());
         }
 
         // PUT api/<Champion>/5

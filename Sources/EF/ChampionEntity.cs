@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EF
+﻿namespace EF
 {
-    internal class ChampionEntity
+    public class ChampionEntity
     {
         public long Id { get; set; }
         public string? Nom { get; set; }
