@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EF_Champions
 {
-    public class Champion
+    public class ChampionEntity
     {
         public long id { get; set; }
         public string? name { get; set; }

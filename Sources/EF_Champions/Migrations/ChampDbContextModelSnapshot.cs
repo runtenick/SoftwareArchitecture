@@ -16,7 +16,7 @@ namespace EFChampions.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
 
-            modelBuilder.Entity("EF_Champions.Champion", b =>
+            modelBuilder.Entity("EF_Champions.ChampionEntity", b =>
                 {
                     b.Property<long>("id")
                         .ValueGeneratedOnAdd()

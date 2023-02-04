@@ -9,7 +9,7 @@ namespace EF_Champions
 {
     public class ChampDbContext : DbContext
     {
-        DbSet<Champion> champions { get; set; }
+        public DbSet<ChampionEntity> Champions { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
            => optionsBuilder.UseSqlite($"Data Source = EF.myDatabse.db");
     }
