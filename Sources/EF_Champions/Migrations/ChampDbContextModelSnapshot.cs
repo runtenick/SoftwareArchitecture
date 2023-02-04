@@ -18,16 +18,19 @@ namespace EFChampions.Migrations
 
             modelBuilder.Entity("EF_Champions.ChampionEntity", b =>
                 {
-                    b.Property<long>("id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("name")
+                    b.Property<int>("Class")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.ToTable("champions");
+                    b.ToTable("Champions");
                 });
 #pragma warning restore 612, 618
         }

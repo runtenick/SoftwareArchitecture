@@ -5,22 +5,23 @@
 namespace EFChampions.Migrations
 {
     /// <inheritdoc />
-    public partial class firstMigr : Migration
+    public partial class secondMigr : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "champions",
+                name: "Champions",
                 columns: table => new
                 {
-                    id = table.Column<long>(type: "INTEGER", nullable: false)
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    name = table.Column<string>(type: "TEXT", nullable: true)
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Class = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_champions", x => x.id);
+                    table.PrimaryKey("PK_Champions", x => x.Id);
                 });
         }
 
@@ -28,7 +29,7 @@ namespace EFChampions.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "champions");
+                name: "Champions");
         }
     }
 }

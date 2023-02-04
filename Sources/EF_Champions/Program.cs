@@ -1,33 +1,45 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using EF_Champions;
-using Microsoft.Extensions.DependencyModel;
-using Model;
+using EF_Champions.Mapper;
 using StubLib;
 
 Console.WriteLine("Hello, World!");
 
+StubData stub = new();
+var champions = (await stub.ChampionsMgr.GetItems(0,
+               (await stub.ChampionsMgr.GetNbItems()))).Select(champion => champion?.ChampionToEntity());
+
+using (var context = new ChampDbContext())
+{
+    foreach(ChampionEntity champion in champions)
+    {
+        context.Champions.Add(champion);
+    }
+    context.SaveChanges();
+}
+
 /*using ici permet de explicité le nettoyage de mémoire qui n'est pas implicite car le 
  * garbage collector de dotnet ne peut pas s'occuper de connections a la base de donnée 
- * par lui même*/
+ * par lui même*//*
 using (var context = new ChampDbContext())
 {
     context.Champions.AddRange(
         new ChampionEntity
         {
             Name = "Akali",
-            Class = (ChampClassEntity)1
+            Class = ChampClassEntity.Assassin
         },
         new ChampionEntity
         {
             Name = "Aatrox",
-            Class = (ChampClassEntity)2
+            Class = ChampClassEntity.Tank
         },
         new ChampionEntity
         {
             Name = "Ahri",
-            Class = (ChampClassEntity)3
+            Class = ChampClassEntity.Mage
         }
-    ) ;
+    );
     context.SaveChanges(); // permet de synchroniser les ajouts a la base de do
 }
 
@@ -41,4 +53,4 @@ using (var context2 = new ChampDbContext())
     {
         Console.WriteLine($"{champion.Id} : {champion.Name}");
     }
-}
+}*/
