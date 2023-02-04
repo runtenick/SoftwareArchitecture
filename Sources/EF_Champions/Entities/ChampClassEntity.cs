@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EF_Champions
+namespace EF_Champions.Entities
 {
     public enum ChampClassEntity
     {

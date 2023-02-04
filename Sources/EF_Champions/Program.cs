@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using EF_Champions;
+using EF_Champions.Entities;
 using EF_Champions.Mapper;
 using StubLib;
 
@@ -14,9 +15,11 @@ using (var context = new ChampDbContext())
     foreach(ChampionEntity champion in champions)
     {
         context.Champions.Add(champion);
+        //Console.WriteLine($"{champion.Id} : {champion.Name} : {champion.Class}");
     }
     context.SaveChanges();
 }
+
 
 /*using ici permet de explicité le nettoyage de mémoire qui n'est pas implicite car le 
  * garbage collector de dotnet ne peut pas s'occuper de connections a la base de donnée 
