@@ -14,16 +14,31 @@ using (var context = new ChampDbContext())
     context.Champions.AddRange(
         new ChampionEntity
         {
-            name = "Akali"
+            Name = "Akali",
+            Class = (ChampClassEntity)1
         },
         new ChampionEntity
         {
-            name = "Aatrox"
+            Name = "Aatrox",
+            Class = (ChampClassEntity)2
         },
         new ChampionEntity
         {
-            name = "Ahri"
+            Name = "Ahri",
+            Class = (ChampClassEntity)3
         }
-    );
+    ) ;
     context.SaveChanges(); // permet de synchroniser les ajouts a la base de do
+}
+
+
+// Afficher le contenu de la base en console
+using (var context2 = new ChampDbContext())
+{
+    var champions = context2.Champions;
+
+    foreach (var champion in champions)
+    {
+        Console.WriteLine($"{champion.Id} : {champion.Name}");
+    }
 }
