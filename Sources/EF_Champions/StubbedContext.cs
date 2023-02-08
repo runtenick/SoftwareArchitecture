@@ -1,5 +1,6 @@
 ﻿using EF_Champions.Entities;
 using Microsoft.EntityFrameworkCore;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,19 +15,19 @@ namespace EF_Champions
         {
             base.OnModelCreating(modelBuilder);
 
-            ChampionEntity c1 = new(){ Id = 1, Name = "Champ1"};
-            ChampionEntity c2 = new(){ Id = 2, Name = "Champ2" };
+            Champion c1 = new Champion("Akali", ChampionClass.Assassin);
+            Champion c2 = new Champion("Aatrox", ChampionClass.Fighter);
 
             modelBuilder.Entity<ChampionEntity>().HasData(c1, c2);
 
-            modelBuilder.Entity<SkinEntity>().Property<long>("Id");
+            modelBuilder.Entity<SkinEntity>().Property<long>("ChampionId");
 
             modelBuilder.Entity<SkinEntity>().HasData(
-                new SkinEntity { Name = "Skin1", ChampionId = 1},
-                new SkinEntity { Name = "Skin2", ChampionId = 1},
-                new SkinEntity { Name = "Skin3", ChampionId = 2 },
-                new SkinEntity { Name = "Skin4", ChampionId = 2 }
-                );
+                new { Id = 1, ChampionId = 1, Name = "Skin1" },
+                new { Id = 2, ChampionId = 1, Name = "Skin2" },
+                new { Id = 3, ChampionId = 2, Name = "Skin3" },
+                new { Id = 4, ChampionId = 2, Name = "Skin4" }
+            );
         }
     }
 }

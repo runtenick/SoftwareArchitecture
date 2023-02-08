@@ -19,6 +19,6 @@ namespace EF_Champions.Entities
 
         public string? Bio { get; set; }
 
-        public string? Image { get; set; } 
+        public string? Image { get; set; }
     }
 }
