@@ -19,5 +19,7 @@ namespace EF_Champions.Entities
         public string? Image { get; set; }
 
         public string? Icon { get; set; }
+
+        public ChampionEntity? Champion { get; set; }
     }
 }
