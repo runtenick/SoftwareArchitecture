@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 
 namespace EF_Champions
 {
-    public class ChampDbContext : DbContext
+    public class SkinDbContext : DbContext
     {
-        public DbSet<ChampionEntity> Champions { get; set; }
         public DbSet<SkinEntity> Skins { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-           => optionsBuilder.UseSqlite($"Data Source = EF.myDatabse.db");
+            => optionsBuilder.UseSqlite($"Data Source = EF.myDatabse.db");
     }
 }

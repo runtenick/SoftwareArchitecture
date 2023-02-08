@@ -10,7 +10,7 @@ StubData stub = new();
 var champions = (await stub.ChampionsMgr.GetItems(0,
                (await stub.ChampionsMgr.GetNbItems()))).Select(champion => champion?.ChampionToEntity());
 
-using (var context = new ChampDbContext())
+/*using (var context = new ChampDbContext())
 {
     foreach(ChampionEntity champion in champions)
     {
@@ -18,7 +18,7 @@ using (var context = new ChampDbContext())
         //Console.WriteLine($"{champion.Id} : {champion.Name} : {champion.Class}");
     }
     context.SaveChanges();
-}
+}*/
 
 
 /*using ici permet de explicité le nettoyage de mémoire qui n'est pas implicite car le 
