@@ -5,7 +5,7 @@
 namespace EFChampions.Migrations
 {
     /// <inheritdoc />
-    public partial class skinMigr : Migration
+    public partial class oneToMany : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,7 +20,8 @@ namespace EFChampions.Migrations
                     Price = table.Column<float>(type: "REAL", nullable: true),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     Image = table.Column<string>(type: "TEXT", nullable: true),
-                    Icon = table.Column<string>(type: "TEXT", nullable: true)
+                    Icon = table.Column<string>(type: "TEXT", nullable: true),
+                    ChampionId = table.Column<long>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFChampions.Migrations
 {
     [DbContext(typeof(SkinDbContext))]
-    [Migration("20230204175857_skinMigr")]
-    partial class skinMigr
+    [Migration("20230208152110_oneToMany")]
+    partial class oneToMany
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,9 @@ namespace EFChampions.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("ChampionId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
