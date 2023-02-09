@@ -30,7 +30,7 @@ namespace OLO_Champignons.Controllers
 
         // GET api/<Champion>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public string GetById(int id)
         {
             return "value";
         }
