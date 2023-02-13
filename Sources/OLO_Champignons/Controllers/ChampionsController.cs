@@ -12,7 +12,8 @@ namespace OLO_Champignons.Controllers
     [ApiController]
     public class ChampionsController : ControllerBase
     {
-        private IDataManager dataManager;
+        // public or private ? 
+        public IDataManager dataManager;
 
         public ChampionsController(IDataManager d)
         {

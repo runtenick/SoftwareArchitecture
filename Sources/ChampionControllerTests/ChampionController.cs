@@ -42,5 +42,34 @@ namespace ApiControllers
             champs.Should().NotBeNull();
             champs.Should().BeEquivalentTo(champions);
         }
+
+        [TestMethod]
+        public async Task TestPostAsync()
+        {
+            // arrange
+            ChampionDto champion = new ChampionDto() { Name = "TheChamp" };
+            var nbChamps = await controller.dataManager.ChampionsMgr.GetNbItems();
+
+            // act
+            var championResult = await controller.Post(champion);
+            championResult.Should().NotBeNull();
+           
+            // assert
+            var objectResult = championResult as ObjectResult;
+            objectResult.Should().NotBeNull();
+            
+            // je récupère le champion retourner par la requete
+            var returnedChampion = objectResult.Value as ChampionDto;
+            returnedChampion.Should().NotBeNull();
+
+            /* ici je verifie que le nom du champion ajouté correspond a celui qu'on voulais 
+             ajouté. De plus je verifie le que le count des champions a bien augmenter de 1.
+            
+            Le problème c'est que en faisant ça cela n'est plus un test UNITAIRE vu qu'on 
+            dépend de la methode GetNbItems.*/
+
+            returnedChampion.Name.Should().Be(champion.Name);
+            nbChamps.Should().Be(await controller.dataManager.ChampionsMgr.GetNbItems() - 1);
+        }
     }
 }
