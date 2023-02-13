@@ -1,0 +1,27 @@
+kind: pipeline
+type: docker
+name: default
+ 
+trigger:
+  event:
+    - push
+
+steps:
+  - name: build
+    image: mcr.microsoft.com/dotnet/sdk:6.0
+    volumes:
+      - name: docs
+        path: /docs
+    commands:
+      - cd Sources/
+      - dotnet restore LeagueOfLegends.sln
+      - dotnet build LeagueOfLegends.sln -c Release --no-restore
+      - dotnet publish LeagueOfLegends.sln -c Release --no-restore -o CI_PROJECT_DIR/build/release
+
+  - name: tests
+    image: mcr.microsoft.com/dotnet/sdk:6.0
+    commands:
+      - cd Sources/
+      - dotnet restore LeagueOfLegends.sln
+      - dotnet test LeagueOfLegends.sln --no-restore
+    depends_on: [build]
