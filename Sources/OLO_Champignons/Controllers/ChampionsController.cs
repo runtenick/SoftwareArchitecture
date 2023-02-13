@@ -28,18 +28,21 @@ namespace OLO_Champignons.Controllers
             return Ok(champions);
         }
 
-        // GET api/<Champion>/5
-        [HttpGet("{id}")]
-        public string GetById(int id)
+        // GET api/<Champion>/Akali
+        [HttpGet("{name}")]
+        public async Task<IActionResult> GetByName(string name)
         {
-            return "value";
+            var champions = (await dataManager.ChampionsMgr.GetItems(0,
+               (await dataManager.ChampionsMgr.GetNbItems()))).Select(champion => champion?.ToDto());
+
+            return Ok(champions.Where(c => c.Name.Equals(name)));
         }
 
         // POST api/<Champion>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ChampionDto champion)
         {
-            return CreatedAtAction(nameof(Get), new { Id = 6 },
+            return CreatedAtAction(nameof(GetByName), new { champion.Name },
                 (await dataManager.ChampionsMgr.AddItem(ChampionMapper.ToModel(champion))).ToDto());
         }
 
