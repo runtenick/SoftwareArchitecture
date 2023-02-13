@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTO", "DTO\DTO.csproj", "{7
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EF_Champions", "EF_Champions\EF_Champions.csproj", "{3CFC1D60-E46A-4027-816D-84653D29503A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiControllers", "ChampionControllerTests\ApiControllers.csproj", "{EB213E6E-A525-4028-98FC-620E94B0715A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiControllers", "ChampionControllerTests\ApiControllers.csproj", "{EB213E6E-A525-4028-98FC-620E94B0715A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiConsoleClient", "ApiConsoleClient\ApiConsoleClient.csproj", "{DB9ADE11-4EB8-4ACF-9940-61826D891C37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +67,10 @@ Global
 		{EB213E6E-A525-4028-98FC-620E94B0715A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB213E6E-A525-4028-98FC-620E94B0715A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB213E6E-A525-4028-98FC-620E94B0715A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB9ADE11-4EB8-4ACF-9940-61826D891C37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB9ADE11-4EB8-4ACF-9940-61826D891C37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB9ADE11-4EB8-4ACF-9940-61826D891C37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB9ADE11-4EB8-4ACF-9940-61826D891C37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +79,7 @@ Global
 		{1889FA6E-B7C6-416E-8628-9449FB9070B9} = {C76D0C23-1FFA-4963-93CD-E12BD643F030}
 		{B01D7EF2-2D64-409A-A29A-61FB7BB7A9DB} = {2C607793-B163-4731-A4D1-AFE8A7C4C170}
 		{EB213E6E-A525-4028-98FC-620E94B0715A} = {C76D0C23-1FFA-4963-93CD-E12BD643F030}
+		{DB9ADE11-4EB8-4ACF-9940-61826D891C37} = {C76D0C23-1FFA-4963-93CD-E12BD643F030}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {92F3083D-793F-4552-8A9A-0AD6534159C9}
