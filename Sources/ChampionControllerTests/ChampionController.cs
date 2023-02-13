@@ -23,7 +23,7 @@ namespace ApiControllers
                 new ChampionDto() {Name = "Ahri"},
                 new ChampionDto() {Name = "Akshan"},
                 new ChampionDto() {Name = "Bard"},
-                new ChampionDto() {Name = ""},
+                new ChampionDto() {Name = "Alistar"},
 
             };
             // act
