@@ -64,7 +64,7 @@ steps:
     image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
     environment:
       IMAGENAME: hub.codefirst.iut.uca.fr/nicolas.francon/projet_entityframework:latest
-      CONTAINERNAME: lolapi
+      CONTAINERNAME: projet_entityframework 
       COMMAND: create
       OVERWRITE: true
     depends_on : [docker-image-build-and-store] # test
