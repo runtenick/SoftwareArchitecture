@@ -52,7 +52,7 @@ steps:
         dockerfile: Sources/OLO_Champignons/Dockerfile
         context: Sources/
         registry: hub.codefirst.iut.uca.fr
-        repo: hub.codefirst.iut.uca.fr/nicolas.franco/Projet_EntityFramework
+        repo: hub.codefirst.iut.uca.fr/nicolas.franco/projet_entityframework
         username:
             from_secret: SECRET_REGISTRY_USERNAME
         password:
