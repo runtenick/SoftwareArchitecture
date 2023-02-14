@@ -49,7 +49,7 @@ steps:
   - name: docker-image-build-and-store
     image: plugins/docker
     settings:
-        dockerfile: Sources/Api/OLO_Champignons
+        dockerfile: Sources/OLO_Champignons
         context: Sources/
         registry: hub.codefirst.iut.uca.fr
         repo: hub.codefirst.iut.uca.fr/nicolas.franco/Projet_EntityFramework
