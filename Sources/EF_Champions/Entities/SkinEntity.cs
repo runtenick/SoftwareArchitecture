@@ -8,7 +8,7 @@ namespace EF_Champions.Entities
 {
     public class SkinEntity
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         public string? Name { get; set; }
 
@@ -20,6 +20,6 @@ namespace EF_Champions.Entities
 
         public string? Icon { get; set; }
 
-//        public ChampionEntity? Champion { get; set; }
+        public ChampionEntity? Champion { get; set; }
     }
 }

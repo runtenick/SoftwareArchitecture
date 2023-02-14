@@ -15,18 +15,19 @@ namespace EF_Champions
         {
             base.OnModelCreating(modelBuilder);
 
-            Champion c1 = new Champion("Akali", ChampionClass.Assassin);
-            Champion c2 = new Champion("Aatrox", ChampionClass.Fighter);
+            ChampionEntity c1 = new ChampionEntity() { Id = 1, Name = "Akali", Class = ChampClassEntity.Assassin};
+            ChampionEntity c2 = new ChampionEntity() { Id = 2, Name = "Aatrox", Class = ChampClassEntity.Fighter};
+
 
             modelBuilder.Entity<ChampionEntity>().HasData(c1, c2);
 
-            modelBuilder.Entity<SkinEntity>().Property<long>("ChampionId");
+           //modelBuilder.Entity<SkinEntity>().Property<long>("ChampionId");
 
             modelBuilder.Entity<SkinEntity>().HasData(
-                new { Id = 1, ChampionId = 1, Name = "Skin1" },
-                new { Id = 2, ChampionId = 1, Name = "Skin2" },
-                new { Id = 3, ChampionId = 2, Name = "Skin3" },
-                new { Id = 4, ChampionId = 2, Name = "Skin4" }
+                new { Id = 1, ChampionForeignKey = 1, Name = "Skin1" },
+                new { Id = 2, ChampionForeignKey = 1, Name = "Skin2" },
+                new { Id = 3, ChampionForeignKey = 2, Name = "Skin3" },
+                new { Id = 4, ChampionForeignKey = 2, Name = "Skin4" }
             );
         }
     }

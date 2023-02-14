@@ -9,7 +9,7 @@ namespace EF_Champions.Entities
 {
     public class ChampionEntity
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         public string? Name { get; set; }
 
@@ -21,6 +21,6 @@ namespace EF_Champions.Entities
 
         public string? Image { get; set; }
 
-        public ICollection<SkinEntity>? Skins { get; set; }
+        public ICollection<SkinEntity>? Skins { get; set; } = new List<SkinEntity>();
     }
 }
