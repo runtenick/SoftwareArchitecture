@@ -5,26 +5,26 @@
 namespace EFChampions.Migrations
 {
     /// <inheritdoc />
-    public partial class one2many : Migration
+    public partial class skins : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Champions",
+                name: "Skins",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
-                    Class = table.Column<int>(type: "INTEGER", nullable: false),
-                    Icon = table.Column<string>(type: "TEXT", nullable: true),
-                    Bio = table.Column<string>(type: "TEXT", nullable: true),
-                    Image = table.Column<string>(type: "TEXT", nullable: true)
+                    Price = table.Column<float>(type: "REAL", nullable: true),
+                    Description = table.Column<string>(type: "TEXT", nullable: true),
+                    Image = table.Column<string>(type: "TEXT", nullable: true),
+                    Icon = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Champions", x => x.Id);
+                    table.PrimaryKey("PK_Skins", x => x.Id);
                 });
         }
 
@@ -32,7 +32,7 @@ namespace EFChampions.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Champions");
+                name: "Skins");
         }
     }
 }

@@ -16,7 +16,7 @@ namespace EF_Champions
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
            => optionsBuilder.UseSqlite($"Data Source = EF.myDatabse.db");
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ChampionEntity>().HasKey(e => e.Id);
             modelBuilder.Entity<ChampionEntity>().Property(e => e.Id)
@@ -28,6 +28,6 @@ namespace EF_Champions
                 .HasOne(s => s.Champion)
                 .WithMany(e => e.Skins)
                 .HasForeignKey("ChampionForeignKey");
-        }
+        }*/
     }
 }

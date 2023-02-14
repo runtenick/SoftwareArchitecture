@@ -20,6 +20,6 @@ namespace EF_Champions.Entities
 
         public string? Icon { get; set; }
 
-        public ChampionEntity? Champion { get; set; }
+//        public ChampionEntity? Champion { get; set; }
     }
 }

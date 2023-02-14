@@ -5,18 +5,17 @@ using EF_Champions.Mapper;
 using Microsoft.EntityFrameworkCore;
 using StubLib;
 
-Console.WriteLine("Hello, World!");
+Console.WriteLine("Starting...");
 
 StubData stub = new();
-var champions = (await stub.ChampionsMgr.GetItems(0,
-               (await stub.ChampionsMgr.GetNbItems()))).Select(champion => champion?.ChampionToEntity());
+var skins = (await stub.SkinsMgr.GetItems(0,
+               (await stub.SkinsMgr.GetNbItems()))).Select(s => s?.SkinToEntity());
 
-using (var context = new ChampDbContext())
+using (var context = new SkinDbContext())
 {
-    foreach (ChampionEntity champion in champions)
+    foreach (SkinEntity skin in skins)
     {
-        context.Champions.Add(champion);
-        //Console.WriteLine($"{champion.Id} : {champion.Name} : {champion.Class}");
+        context.Skins.Add(skin);
     }
     context.SaveChanges();
 }
