@@ -39,9 +39,32 @@ steps:
       - dotnet sonarscanner end /d:sonar.login=$${PLUGIN_SONAR_TOKEN}
     secrets: [ SECRET_SONAR_LOGIN ]
     settings:
-      # accessible en ligne de commande par ${PLUGIN_SONAR_HOST}
+      # accessible en ligne de commande par ${PLUGIN_SONAR_HOST} #
       sonar_host: https://codefirst.iut.uca.fr/sonar/
-      # accessible en ligne de commande par ${PLUGIN_SONAR_TOKEN}
+      # accessible en ligne de commande par ${PLUGIN_SONAR_TOKEN} #
       sonar_token:
         from_secret: ef_secret
     depends_on: [tests]
+
+  - name: docker-image-build-and-store
+    image: plugins/docker
+    settings:
+        dockerfile: Sources/OLO_Champignons/Dockerfile
+        context: Sources/
+        registry: hub.codefirst.iut.uca.fr
+        repo: hub.codefirst.iut.uca.fr/nicolas.franco/projet_entityframework
+        username:
+            from_secret: SECRET_REGISTRY_USERNAME
+        password:
+            from_secret: SECRET_REGISTRY_PASSWORD
+    depends_on: [code-analysis]
+
+
+  - name: deploy-container
+    image: hub.codefirst.iut.uca.fr/thomas.bellembois/codefirst-dockerproxy-clientdrone:latest
+    environment:
+      IMAGENAME: hub.codefirst.iut.uca.fr/nicolas.franco/projet_entityframework:latest
+      CONTAINERNAME: lolapi 
+      COMMAND: create
+      OVERWRITE: true
+    depends_on : [docker-image-build-and-store] # test
