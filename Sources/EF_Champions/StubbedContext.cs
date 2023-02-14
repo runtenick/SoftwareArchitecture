@@ -18,10 +18,7 @@ namespace EF_Champions
             ChampionEntity c1 = new ChampionEntity() { Id = 1, Name = "Akali", Class = ChampClassEntity.Assassin};
             ChampionEntity c2 = new ChampionEntity() { Id = 2, Name = "Aatrox", Class = ChampClassEntity.Fighter};
 
-
             modelBuilder.Entity<ChampionEntity>().HasData(c1, c2);
-
-           //modelBuilder.Entity<SkinEntity>().Property<long>("ChampionId");
 
             modelBuilder.Entity<SkinEntity>().HasData(
                 new { Id = 1, ChampionForeignKey = 1, Name = "Skin1" },

@@ -8,7 +8,9 @@ using StubLib;
 
 Console.WriteLine("Starting...");
 
-using (ChampDbContext db = new StubbedContext()){
+
+// insertion de test one to many avec skin
+using (ChampDbContext db = new ChampDbContext()){
     //...
 
     ChampionEntity akali = new ChampionEntity { Name = "Akali", Class = ChampClassEntity.Assassin};
@@ -28,7 +30,7 @@ using (ChampDbContext db = new StubbedContext()){
     db.SaveChanges();
 }
 
-using (ChampDbContext db = new StubbedContext())
+using (ChampDbContext db = new ChampDbContext())
 {
     Console.WriteLine("Champions : ");
     foreach (var c in db.Champions.Include(c => c.Skins))

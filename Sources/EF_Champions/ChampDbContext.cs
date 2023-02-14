@@ -18,10 +18,6 @@ namespace EF_Champions
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           /* modelBuilder.Entity<ChampionEntity>().HasKey(c => c.Id);
-            modelBuilder.Entity<ChampionEntity>().Property(c => c.Id)
-                .ValueGeneratedOnAdd(); // génération a l'insertion */
-
             modelBuilder.Entity<SkinEntity>().Property<int>("ChampionForeignKey");
 
             modelBuilder.Entity<SkinEntity>()

@@ -3,19 +3,16 @@ using System;
 using EF_Champions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
 namespace EFChampions.Migrations
 {
-    [DbContext(typeof(ChampDbContext))]
-    [Migration("20230214164819_skinsMgr")]
-    partial class skinsMgr
+    [DbContext(typeof(StubbedContext))]
+    partial class StubbedContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
@@ -44,6 +41,20 @@ namespace EFChampions.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Champions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Class = 1,
+                            Name = "Akali"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Class = 2,
+                            Name = "Aatrox"
+                        });
                 });
 
             modelBuilder.Entity("EF_Champions.Entities.SkinEntity", b =>
@@ -75,6 +86,32 @@ namespace EFChampions.Migrations
                     b.HasIndex("ChampionForeignKey");
 
                     b.ToTable("Skins");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ChampionForeignKey = 1,
+                            Name = "Skin1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ChampionForeignKey = 1,
+                            Name = "Skin2"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ChampionForeignKey = 2,
+                            Name = "Skin3"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ChampionForeignKey = 2,
+                            Name = "Skin4"
+                        });
                 });
 
             modelBuilder.Entity("EF_Champions.Entities.SkinEntity", b =>

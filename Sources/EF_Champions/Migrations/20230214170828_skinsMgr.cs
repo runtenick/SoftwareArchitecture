@@ -2,6 +2,8 @@
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace EFChampions.Migrations
 {
     /// <inheritdoc />
@@ -49,6 +51,26 @@ namespace EFChampions.Migrations
                         principalTable: "Champions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Champions",
+                columns: new[] { "Id", "Bio", "Class", "Icon", "Image", "Name" },
+                values: new object[,]
+                {
+                    { 1, null, 1, null, null, "Akali" },
+                    { 2, null, 2, null, null, "Aatrox" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Skins",
+                columns: new[] { "Id", "ChampionForeignKey", "Description", "Icon", "Image", "Name", "Price" },
+                values: new object[,]
+                {
+                    { 1, 1, null, null, null, "Skin1", null },
+                    { 2, 1, null, null, null, "Skin2", null },
+                    { 3, 2, null, null, null, "Skin3", null },
+                    { 4, 2, null, null, null, "Skin4", null }
                 });
 
             migrationBuilder.CreateIndex(
