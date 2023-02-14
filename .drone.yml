@@ -45,3 +45,15 @@ steps:
       sonar_token:
         from_secret: ef_secret
     depends_on: [tests]
+
+  - name: docker-image-build-and-store
+    image: plugins/docker
+    settings:
+        dockerfile: Sources/Api/OLO_Champignons
+        context: Sources/
+        registry: hub.codefirst.iut.uca.fr
+        repo: hub.codefirst.iut.uca.fr/nicolas.franco/Projet_EntityFramework
+        username:
+            from_secret: SECRET_REGISTRY_USERNAME
+        password:
+            from_secret: SECRET_REGISTRY_PASSWORD
