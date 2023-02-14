@@ -39,9 +39,9 @@ steps:
       - dotnet sonarscanner end /d:sonar.login=$${PLUGIN_SONAR_TOKEN}
     secrets: [ SECRET_SONAR_LOGIN ]
     settings:
-      # accessible en ligne de commande par ${PLUGIN_SONAR_HOST}
+      # accessible en ligne de commande par ${PLUGIN_SONAR_HOST} #
       sonar_host: https://codefirst.iut.uca.fr/sonar/
-      # accessible en ligne de commande par ${PLUGIN_SONAR_TOKEN}
+      # accessible en ligne de commande par ${PLUGIN_SONAR_TOKEN} #
       sonar_token:
         from_secret: ef_secret
     depends_on: [tests]
