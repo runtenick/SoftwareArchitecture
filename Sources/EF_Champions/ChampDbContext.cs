@@ -10,6 +10,14 @@ namespace EF_Champions
 {
     public class ChampDbContext : DbContext
     {
+        // Constructeurs
+        public ChampDbContext()
+        { }
+
+        public ChampDbContext(DbContextOptions<ChampDbContext> options)
+            : base(options)
+        { }
+
         public DbSet<ChampionEntity> Champions { get; set; }
         public DbSet<SkinEntity> Skins { get; set; }
 

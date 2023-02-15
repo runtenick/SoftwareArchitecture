@@ -6,53 +6,61 @@ using Microsoft.EntityFrameworkCore;
 using Model;
 using StubLib;
 
-Console.WriteLine("Starting...");
-
-
-// insertion de test one to many avec skin
-using (ChampDbContext db = new ChampDbContext()){
-    //...
-
-    ChampionEntity akali = new ChampionEntity { Name = "Akali", Class = ChampClassEntity.Assassin};
-    SkinEntity[] skins = 
-    { 
-        new SkinEntity() { Name = "Skin1", Champion = akali }, 
-        new SkinEntity() { Name = "Skin2", Champion = akali }, 
-        new SkinEntity() { Name = "Skin3", Champion = akali }, 
-    };
-    
-    foreach (var m in skins)
-    {
-        akali.Skins.Add(m);
-    }
-
-    db.Add(akali);
-    db.SaveChanges();
-}
-
-using (ChampDbContext db = new ChampDbContext())
+class Program
 {
-    Console.WriteLine("Champions : ");
-    foreach (var c in db.Champions.Include(c => c.Skins))
+    static void Main()
     {
-        Console.WriteLine($"\t{c.Id}: {c.Name}");
-        foreach (var s in c.Skins)
+        Console.WriteLine("Starting...");
+
+
+        // insertion de test one to many avec skin
+        using (ChampDbContext db = new ChampDbContext())
         {
-            Console.WriteLine($"\t\t{s.Name}");
+            //...
+
+            ChampionEntity akali = new ChampionEntity { Name = "Akali", Class = ChampClassEntity.Assassin };
+            SkinEntity[] skins =
+            {
+                new SkinEntity() { Name = "Skin1", Champion = akali },
+                new SkinEntity() { Name = "Skin2", Champion = akali },
+                new SkinEntity() { Name = "Skin3", Champion = akali },
+             };
+
+            foreach (var m in skins)
+            {
+                akali.Skins.Add(m);
+            }
+
+            db.Add(akali);
+            db.SaveChanges();
         }
-    }
 
-    Console.WriteLine();
+        using (ChampDbContext db = new ChampDbContext())
+        {
+            Console.WriteLine("Champions : ");
+            foreach (var c in db.Champions.Include(c => c.Skins))
+            {
+                Console.WriteLine($"\t{c.Id}: {c.Name}");
+                foreach (var s in c.Skins)
+                {
+                    Console.WriteLine($"\t\t{s.Name}");
+                }
+            }
 
-    Console.WriteLine("Skins :");
-    foreach (var s in db.Skins)
-    {
-        Console.WriteLine($"\t{s.Id}: {s.Name} (Champion : {s.Champion.Name})");
+            Console.WriteLine();
+
+            Console.WriteLine("Skins :");
+            foreach (var s in db.Skins)
+            {
+                Console.WriteLine($"\t{s.Id}: {s.Name} (Champion : {s.Champion.Name})");
+            }
+        }
+
     }
 }
 
 
-
+// --------------------------------------------------------------------------------------------------------------
 /* TEST SKINS
  * 
  * StubData stub = new();

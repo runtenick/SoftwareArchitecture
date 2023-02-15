@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFChampions.Migrations
 {
     [DbContext(typeof(StubbedContext))]
-    [Migration("20230214170828_skinsMgr")]
+    [Migration("20230215122509_skinsMgr")]
     partial class skinsMgr
     {
         /// <inheritdoc />
