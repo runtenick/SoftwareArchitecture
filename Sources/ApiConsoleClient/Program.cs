@@ -7,13 +7,13 @@ using System.Text.Json;
 
 namespace ConsoleClient
 {
-    class Porgram
+    static class Porgram
     {
         static async Task Main()
         {
             Console.WriteLine("Start...");
 
-            using(var client = new HttpClient())
+            /*using(var client = new HttpClient())
             {
                 var result = await client.GetAsync("http://localhost:7175/api/Champions");
                 var champions = await result.Content.ReadFromJsonAsync<List<ChampionDto>>();
@@ -22,7 +22,7 @@ namespace ConsoleClient
                 {
                     Console.WriteLine(champ.Name);
                 }
-            }
+            }*/
         }
     }
 }
