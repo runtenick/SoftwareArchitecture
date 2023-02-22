@@ -78,8 +78,8 @@ namespace EntityFramework_UT
                 nameTargeted = "i";
                 Assert.Equal(2, context.Champions.Where(c => c.Name.ToLower().Contains(nameTargeted)).Count());
 
-                var ahri = context.Champions.Where(c => c.Name.ToLower().Contains(nameTargeted)).First();
-                ahri.Name = "Bard";
+                var akali = context.Champions.Where(c => c.Name.ToLower().Contains(nameTargeted)).First();
+                akali.Name = "Bard";
                 context.SaveChanges();
             }
    
