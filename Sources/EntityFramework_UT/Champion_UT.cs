@@ -2,7 +2,8 @@ using EF_Champions;
 using EF_Champions.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
-using Model;
+using Xunit;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace EntityFramework_UT
 {
@@ -14,13 +15,12 @@ namespace EntityFramework_UT
             var connection = new SqliteConnection("DataSource=:memory:");
 
             var options = new DbContextOptionsBuilder<ChampDbContext>()
-                .UseSqlite(connection)
+                .UseInMemoryDatabase(databaseName: "Add_Test_Database")
                 .Options;
 
             using (var context = new ChampDbContext(options))
             {
                 context.Database.EnsureCreated();
-                context.Champions.RemoveRange(context.Champions);
 
                 ChampionEntity akali = new() { Name = "Akali", Class = ChampClassEntity.Assassin };
                 ChampionEntity aatrox = new() { Name = "Aatrox", Class = ChampClassEntity.Fighter };
@@ -49,7 +49,7 @@ namespace EntityFramework_UT
             var connection = new SqliteConnection("DataSource=:memory:");
 
             var options = new DbContextOptionsBuilder<ChampDbContext>()
-                .UseSqlite(connection)
+                .UseInMemoryDatabase(databaseName: "Modify_Test")
                 .Options;
 
             using (var context = new ChampDbContext(options))
