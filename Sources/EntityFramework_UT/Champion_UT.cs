@@ -90,6 +90,17 @@ namespace EntityFramework_UT
 
             }
         }
+
+        [Fact]
+        public void Remove_Test()
+        {
+            var connection = new SqliteConnection("DataSource=:memory");
+
+            var options = new DbContextOptionsBuilder<ChampDbContext>()
+               .UseInMemoryDatabase(databaseName: "Remove_Test")
+               .Options;
+
+        }
     }
 }
 
