@@ -1,5 +1,6 @@
 ﻿using EF_Champions.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +22,17 @@ namespace EF_Champions
         public DbSet<ChampionEntity> Champions { get; set; }
         public DbSet<SkinEntity> Skins { get; set; }
 
+        /*
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
            => optionsBuilder.UseSqlite($"Data Source = EF.myDatabse.db");
+        */
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlite($"Data Source=EF.myDatabse.db");
+            }
+        }        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

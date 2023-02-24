@@ -2,7 +2,8 @@ using EF_Champions;
 using EF_Champions.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
-using Model;
+using Xunit;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace EntityFramework_UT
 {
@@ -14,13 +15,12 @@ namespace EntityFramework_UT
             var connection = new SqliteConnection("DataSource=:memory:");
 
             var options = new DbContextOptionsBuilder<ChampDbContext>()
-                .UseSqlite(connection)
+                .UseInMemoryDatabase(databaseName: "Add_Test_Database")
                 .Options;
 
             using (var context = new ChampDbContext(options))
             {
                 context.Database.EnsureCreated();
-                context.Champions.RemoveRange(context.Champions);
 
                 ChampionEntity akali = new() { Name = "Akali", Class = ChampClassEntity.Assassin };
                 ChampionEntity aatrox = new() { Name = "Aatrox", Class = ChampClassEntity.Fighter };
@@ -49,7 +49,7 @@ namespace EntityFramework_UT
             var connection = new SqliteConnection("DataSource=:memory:");
 
             var options = new DbContextOptionsBuilder<ChampDbContext>()
-                .UseSqlite(connection)
+                .UseInMemoryDatabase(databaseName: "Modify_Test")
                 .Options;
 
             using (var context = new ChampDbContext(options))
@@ -78,8 +78,8 @@ namespace EntityFramework_UT
                 nameTargeted = "i";
                 Assert.Equal(2, context.Champions.Where(c => c.Name.ToLower().Contains(nameTargeted)).Count());
 
-                var ahri = context.Champions.Where(c => c.Name.ToLower().Contains(nameTargeted)).First();
-                ahri.Name = "Bard";
+                var akali = context.Champions.Where(c => c.Name.ToLower().Contains(nameTargeted)).First();
+                akali.Name = "Bard";
                 context.SaveChanges();
             }
    
@@ -89,6 +89,17 @@ namespace EntityFramework_UT
                 Assert.Equal(1, context.Champions.Where(c => c.Name.ToLower().Contains("bar")).Count());
 
             }
+        }
+
+        [Fact]
+        public void Remove_Test()
+        {
+            var connection = new SqliteConnection("DataSource=:memory");
+
+            var options = new DbContextOptionsBuilder<ChampDbContext>()
+               .UseInMemoryDatabase(databaseName: "Remove_Test")
+               .Options;
+
         }
     }
 }
