@@ -39,7 +39,7 @@ namespace EF_Champions
             modelBuilder.Entity<SkinEntity>().Property<int>("ChampionForeignKey");
 
             modelBuilder.Entity<SkinEntity>()
-                .HasOne(s => s.Champion) // a skin has a champion
+                .HasOne(s => s.Champion)// a skin has a champion
                 .WithMany(e => e.Skins) // a champion has multiple skins
                 .HasForeignKey("ChampionForeignKey"); // thtrough the foreign key 
         }

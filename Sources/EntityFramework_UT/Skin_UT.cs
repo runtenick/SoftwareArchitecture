@@ -93,5 +93,45 @@ namespace EntityFramework_UT
 
             }
         }
+        
+        [Fact]
+        public void Remove_Test()
+        {
+            var connection = new SqliteConnection("DataSource=:memory");
+
+            var options = new DbContextOptionsBuilder<ChampDbContext>()
+               .UseInMemoryDatabase(databaseName: "Remove_Test")
+               .Options;
+
+            using (var context = new ChampDbContext(options))
+            {
+                context.Database.EnsureCreated();
+                context.Skins.RemoveRange(context.Skins);
+
+                SkinEntity stinger = new SkinEntity() { Name = "Stinger", Price = 5.0F };
+                SkinEntity infernal = new SkinEntity() { Name = "Infernal", Price = 100.0F };
+                SkinEntity allstar = new SkinEntity() { Name = "All-Star", Price = 25.55F };
+                
+                context.Skins.Add(stinger);
+                context.Skins.Add(infernal);
+                context.Skins.Add(allstar);
+                
+                context.SaveChanges();
+            }
+
+            using (var context = new ChampDbContext(options))
+            {
+                context.Database.EnsureCreated();
+                int totalSkins = context.Skins.Count();
+                SkinEntity first = context.Skins.First(); // get first to check if removed later
+
+                context.Skins.Remove(context.Skins.First());
+                context.SaveChanges();
+               
+                Assert.Equal(totalSkins - 1, context.Skins.Count());
+                Assert.DoesNotContain(first, context.Skins);
+            }
+        }
+
     }
 }
