@@ -4,72 +4,65 @@ using Microsoft.AspNetCore.Mvc;
 using OLO_Champignons.Controllers;
 using StubLib;
 
-namespace ApiControllers
+using Microsoft.AspNetCore.Mvc;
+using Model;
+using StubLib;
+using DTO;
+using Api.Mapper;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
+namespace OLO_Champignons.Controllers
 {
-    [TestClass]
-    public class ChampionControllerTest
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ChampionsController : ControllerBase
     {
-        // attribut controlleur
-        public ChampionsController controller = new(new StubData());
+        // public or private ? 
+        public IDataManager dataManager;
 
-        [TestMethod]
-        public async Task TestGetAsync()
+        public ChampionsController(IDataManager d)
         {
-            // arrange
-            List<ChampionDto> champions = new()
-            {
-                new ChampionDto() {Name = "Akali"},
-                new ChampionDto() {Name = "Aatrox"},
-                new ChampionDto() {Name = "Ahri"},
-                new ChampionDto() {Name = "Akshan"},
-                new ChampionDto() {Name = "Bard"},
-                new ChampionDto() {Name = "Alistar"},
-
-            };
-            // act
-            // ici on verifie que la requete vers l'api a bien marché
-            var championResult = await controller.Get();
-            championResult.Should().NotBeNull();
-
-            // assert
-            // ici on verifie que la requete a bien retourner quelque chose (et pas vide)
-            var objectResult = championResult as ObjectResult;
-            objectResult.Should().NotBeNull();
-
-            // finalement on verifie que la liste retourner par la requete et la même
-            // que celle créer avant (qui est sensé a être pareil que celle du stub.
-            var champs = objectResult?.Value as IEnumerable<ChampionDto>;
-            champs.Should().NotBeNull();
-            champs.Should().BeEquivalentTo(champions);
+            dataManager = d;
         }
 
-        [TestMethod]
-        public async Task TestPostAsync()
+        // GET: api/<Champion>
+        [HttpGet]
+        public async Task<IActionResult> Get()
         {
-            // arrange
-            ChampionDto champion = new ChampionDto() { Name = "TheChamp" };
-            var nbChamps = await controller.dataManager.ChampionsMgr.GetNbItems();
+            var champions = (await dataManager.ChampionsMgr.GetItems(0,
+               (await dataManager.ChampionsMgr.GetNbItems()))).Select(champion => champion?.ToDto());
+            return Ok(champions);
+        }
 
-            // act
-            var championResult = await controller.Post(champion);
-            championResult.Should().NotBeNull();
-           
-            // assert
-            var objectResult = championResult as ObjectResult;
-            objectResult.Should().NotBeNull();
-            
-            // je récupère le champion retourner par la requete
-            var returnedChampion = objectResult.Value as ChampionDto;
-            returnedChampion.Should().NotBeNull();
+        // GET api/<Champion>/Akali
+        [HttpGet("{name}")]
+        public async Task<IActionResult> GetByName(string name)
+        {
+            var champions = (await dataManager.ChampionsMgr.GetItems(0,
+               (await dataManager.ChampionsMgr.GetNbItems()))).Select(champion => champion?.ToDto());
 
-            /* ici je verifie que le nom du champion ajouté correspond a celui qu'on voulais 
-             ajouté. De plus je verifie le que le count des champions a bien augmenter de 1.
-            
-            Le problème c'est que en faisant ça cela n'est plus un test UNITAIRE vu qu'on 
-            dépend de la methode GetNbItems.*/
+            return Ok(champions.Where(c => c.Name.Equals(name)));
+        }
 
-            returnedChampion.Name.Should().Be(champion.Name);
-            nbChamps.Should().Be(await controller.dataManager.ChampionsMgr.GetNbItems() - 1);
+        // POST api/<Champion>
+        [HttpPost]
+        public async Task<ActionResult> Post([FromBody] ChampionDto champion)
+        {
+            return CreatedAtAction(nameof(GetByName), new { champion.Name },
+                (await dataManager.ChampionsMgr.AddItem(ChampionMapper.ToModel(champion))).ToDto());
+        }
+
+        // PUT api/<Champion>/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
+        {
+        }
+
+        // DELETE api/<Champion>/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
         }
     }
 }
