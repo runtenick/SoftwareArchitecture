@@ -87,7 +87,6 @@ namespace EntityFramework_UT
             {
                 context.Database.EnsureCreated();
                 Assert.Equal(1, context.Champions.Where(c => c.Name.ToLower().Contains("bar")).Count());
-
             }
         }
 
@@ -100,6 +99,34 @@ namespace EntityFramework_UT
                .UseInMemoryDatabase(databaseName: "Remove_Test")
                .Options;
 
+            using (var context = new ChampDbContext(options))
+            {
+                context.Database.EnsureCreated();
+                context.Champions.RemoveRange(context.Champions);
+
+                ChampionEntity akali = new() { Name = "Akali", Class = ChampClassEntity.Assassin };
+                ChampionEntity aatrox = new() { Name = "Aatrox", Class = ChampClassEntity.Fighter };
+                ChampionEntity ahri = new() { Name = "Ahri", Class = ChampClassEntity.Mage };
+
+                context.Champions.Add(akali);
+                context.Champions.Add(aatrox);
+                context.Champions.Add(ahri);
+                context.SaveChanges();
+                
+            }
+
+            using (var context = new ChampDbContext(options))
+            {
+                context.Database.EnsureCreated();
+                int totalChamps = context.Champions.Count();
+                ChampionEntity first = context.Champions.First(); // get first to check if removed later
+
+                context.Champions.Remove(context.Champions.First());
+                context.SaveChanges();
+               
+                Assert.Equal(totalChamps - 1, context.Champions.Count());
+                Assert.DoesNotContain(first, context.Champions);
+            }
         }
     }
 }
