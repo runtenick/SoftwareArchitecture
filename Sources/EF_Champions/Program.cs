@@ -12,7 +12,6 @@ class Program
     {
         Console.WriteLine("Starting...");
 
-
         // insertion de test one to many avec skin
         using (ChampDbContext db = new ChampDbContext())
         {

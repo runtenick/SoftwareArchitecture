@@ -6,6 +6,8 @@ using System.Text;
 namespace Model;
 public class Champion : IEquatable<Champion>
 {
+    public int Id { get; set; }
+
     public string Name
     {
         get => name;
@@ -44,6 +46,7 @@ public class Champion : IEquatable<Champion>
 
     public Champion(string name, ChampionClass champClass = ChampionClass.Unknown, string icon = "", string image = "", string bio = "")
     {
+        Id = IdManager.GiveId();   
         Name = name;
         Class = champClass;
         Icon = icon;
