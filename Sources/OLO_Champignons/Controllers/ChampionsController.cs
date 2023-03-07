@@ -59,14 +59,25 @@ namespace OLO_Champignons.Controllers
 
         // PUT api/<Champion>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(int id, [FromBody] ChampionDto newChampion) // faire plutot avec nom que id 
         {
+            var champions = (await dataManager.ChampionsMgr.GetItems(0,
+               await dataManager.ChampionsMgr.GetNbItems())).Select(champion => champion?.ToDto());
+
+            
+            Champion modified = await dataManager.ChampionsMgr.UpdateItem(champions.First(champion => champion.Id.Equals(id)).ToModel(),newChampion.ToModel());
+            return Ok(modified.ToDto());
         }
 
         // DELETE api/<Champion>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult> Delete(int id) // faire plutot avec nom
         {
+            var champions = (await dataManager.ChampionsMgr.GetItems(0,
+                await dataManager.ChampionsMgr.GetNbItems())).Select(champion => champion?.ToDto());
+
+            bool deleted = await dataManager.ChampionsMgr.DeleteItem(champions.First(champion => champion.Id.Equals(id)).ToModel());
+            return Ok(champions.First(champion => champion.Id.Equals(id)));
         }
     }
 }
