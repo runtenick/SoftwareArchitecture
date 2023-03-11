@@ -17,6 +17,21 @@ namespace EFChampions.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
 
+            modelBuilder.Entity("ChampionEntitySkillEntity", b =>
+                {
+                    b.Property<int>("ChampionsId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SkillsId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ChampionsId", "SkillsId");
+
+                    b.HasIndex("SkillsId");
+
+                    b.ToTable("ChampionEntitySkillEntity");
+                });
+
             modelBuilder.Entity("EF_Champions.Entities.ChampionEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -92,6 +107,21 @@ namespace EFChampions.Migrations
                     b.HasIndex("ChampionForeignKey");
 
                     b.ToTable("Skins");
+                });
+
+            modelBuilder.Entity("ChampionEntitySkillEntity", b =>
+                {
+                    b.HasOne("EF_Champions.Entities.ChampionEntity", null)
+                        .WithMany()
+                        .HasForeignKey("ChampionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EF_Champions.Entities.SkillEntity", null)
+                        .WithMany()
+                        .HasForeignKey("SkillsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EF_Champions.Entities.SkinEntity", b =>

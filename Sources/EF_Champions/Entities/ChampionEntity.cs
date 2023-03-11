@@ -22,5 +22,7 @@ namespace EF_Champions.Entities
         public string? Image { get; set; }
 
         public ICollection<SkinEntity>? Skins { get; set; } = new List<SkinEntity>();
+
+        public ICollection<SkillEntity>? Skills { get; set; } = new List<SkillEntity>();
     }
 }

@@ -66,6 +66,35 @@ namespace EFChampions.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ChampionEntitySkillEntity",
+                columns: table => new
+                {
+                    ChampionsId = table.Column<int>(type: "INTEGER", nullable: false),
+                    SkillsId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChampionEntitySkillEntity", x => new { x.ChampionsId, x.SkillsId });
+                    table.ForeignKey(
+                        name: "FK_ChampionEntitySkillEntity_Champions_ChampionsId",
+                        column: x => x.ChampionsId,
+                        principalTable: "Champions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ChampionEntitySkillEntity_Skill_SkillsId",
+                        column: x => x.SkillsId,
+                        principalTable: "Skill",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChampionEntitySkillEntity_SkillsId",
+                table: "ChampionEntitySkillEntity",
+                column: "SkillsId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Skins_ChampionForeignKey",
                 table: "Skins",
@@ -76,10 +105,13 @@ namespace EFChampions.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Skill");
+                name: "ChampionEntitySkillEntity");
 
             migrationBuilder.DropTable(
                 name: "Skins");
+
+            migrationBuilder.DropTable(
+                name: "Skill");
 
             migrationBuilder.DropTable(
                 name: "Champions");

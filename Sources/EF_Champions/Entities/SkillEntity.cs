@@ -16,5 +16,7 @@ namespace EF_Champions.Entities
         public string? Description { get; set; }
 
         public SkillType SkillType { get; set; }
+
+        public ICollection<ChampionEntity>? Champions { get; set; } = new List<ChampionEntity>();
     }
 }

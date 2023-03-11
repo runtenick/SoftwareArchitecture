@@ -18,14 +18,14 @@ class Program
             //...
 
             ChampionEntity akali = new ChampionEntity { Name = "Akali", Class = ChampClassEntity.Assassin };
-            SkinEntity[] skins =
+            SkinEntity[] skins_akali =
             {
                 new SkinEntity() { Name = "Skin1", Champion = akali },
                 new SkinEntity() { Name = "Skin2", Champion = akali },
                 new SkinEntity() { Name = "Skin3", Champion = akali },
              };
 
-            foreach (var m in skins)
+            foreach (var m in skins_akali)
             {
                 akali.Skins.Add(m);
             }
@@ -59,6 +59,7 @@ class Program
         // add fake Skill data
         using (ChampDbContext db = new ChampDbContext())
         {
+            ChampionEntity aatrox = new ChampionEntity { Name = "Aatrox", Class = ChampClassEntity.Mage };
             SkillEntity[] skills =
             {
                 new SkillEntity() { Name = "Skill1", Description = "desc..1", SkillType = SkillType.Basic },
@@ -66,11 +67,26 @@ class Program
                 new SkillEntity() { Name = "Skill2", Description = "desc..3", SkillType = SkillType.Passive }
             };
 
-            foreach(var sk in skills)
+            SkinEntity[] skins_aatrox =
             {
-                db.Add(sk);
-                db.SaveChanges();
+                new SkinEntity() { Name = "Skin4", Champion = aatrox },
+                new SkinEntity() { Name = "Skin5", Champion = aatrox },
+                new SkinEntity() { Name = "Skin6", Champion = aatrox },
+             };
+
+            foreach (var m in skins_aatrox)
+            {
+                aatrox.Skins.Add(m);
             }
+
+            foreach (var sk in skills)
+            {
+                sk.Champions.Add(aatrox);
+                aatrox.Skills.Add(sk);
+            }
+
+            db.Add(aatrox);
+            db.SaveChanges();
         }
 
     }

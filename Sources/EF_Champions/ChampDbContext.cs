@@ -44,6 +44,10 @@ namespace EF_Champions
                 .HasOne(s => s.Champion)// a skin has a champion
                 .WithMany(e => e.Skins) // a champion has multiple skins
                 .HasForeignKey("ChampionForeignKey"); // thtrough the foreign key 
+
+            modelBuilder.Entity<SkillEntity>()
+                .HasMany(s => s.Champions)
+                .WithMany(c => c.Skills);
         }
     }
 }
