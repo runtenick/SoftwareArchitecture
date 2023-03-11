@@ -89,6 +89,26 @@ class Program
             db.SaveChanges();
         }
 
+        // add fake Rune data
+        using (ChampDbContext db = new ChampDbContext())
+        {
+            Rune[] runes =
+            {
+                new Rune("Conqueror", RuneFamily.Precision),
+                new Rune("Triumph", RuneFamily.Precision),
+                new Rune("Legend: Alacrity", RuneFamily.Precision),
+                new Rune("Legend: Tenacity", RuneFamily.Precision),
+                new Rune("last stand", RuneFamily.Domination),
+                new Rune("last stand 2", RuneFamily.Domination),
+            };
+
+            foreach (var rune in runes)
+            {
+                db.Add(rune.RuneToEntity());
+            }
+            db.SaveChanges();
+        }
+
     }
 }
 

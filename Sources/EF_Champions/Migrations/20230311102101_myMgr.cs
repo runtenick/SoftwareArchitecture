@@ -28,6 +28,23 @@ namespace EFChampions.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Runes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Description = table.Column<string>(type: "TEXT", nullable: true),
+                    RuneFamily = table.Column<int>(type: "INTEGER", nullable: false),
+                    Icon = table.Column<string>(type: "TEXT", nullable: true),
+                    Image = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Runes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Skill",
                 columns: table => new
                 {
@@ -106,6 +123,9 @@ namespace EFChampions.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ChampionEntitySkillEntity");
+
+            migrationBuilder.DropTable(
+                name: "Runes");
 
             migrationBuilder.DropTable(
                 name: "Skins");

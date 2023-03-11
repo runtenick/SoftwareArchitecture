@@ -16,5 +16,9 @@ namespace EF_Champions.Entities
         public string? Description { get; set; }
 
         public RuneFamily RuneFamily { get; set; }
+
+        public string? Icon { get; set; }  
+        
+        public string? Image { get; set; }
     }
 }

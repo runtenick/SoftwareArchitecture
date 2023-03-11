@@ -23,7 +23,6 @@ namespace EF_Champions
         public DbSet<ChampionEntity> Champions { get; set; }
         public DbSet<SkinEntity> Skins { get; set; }
         public DbSet<SkillEntity> Skill { get; set; }
-
         public DbSet<RuneEntity> Runes { get; set; }
 
         /* Old version used before InMemory tests

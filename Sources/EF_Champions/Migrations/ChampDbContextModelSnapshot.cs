@@ -58,6 +58,32 @@ namespace EFChampions.Migrations
                     b.ToTable("Champions");
                 });
 
+            modelBuilder.Entity("EF_Champions.Entities.RuneEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("RuneFamily")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Runes");
+                });
+
             modelBuilder.Entity("EF_Champions.Entities.SkillEntity", b =>
                 {
                     b.Property<int>("Id")
