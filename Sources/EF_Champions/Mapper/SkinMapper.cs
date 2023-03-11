@@ -19,6 +19,7 @@ namespace EF_Champions.Mapper
                 Description = skin.Description,
                 Image = skin.Image.Base64,
                 Icon = skin.Icon,
+                Champion = skin.Champion.ChampionToEntity()
             };
         } 
 

@@ -24,6 +24,8 @@ namespace EF_Champions
         public DbSet<SkinEntity> Skins { get; set; }
         public DbSet<SkillEntity> Skill { get; set; }
 
+        public DbSet<RuneEntity> Runes { get; set; }
+
         /* Old version used before InMemory tests
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
            => optionsBuilder.UseSqlite($"Data Source = EF.myDatabse.db");
