@@ -12,7 +12,7 @@ class Program
     {
         Console.WriteLine("Starting...");
 
-        // insertion de test one to many avec skin
+        // insertion de one to many avec skin
         using (ChampDbContext db = new ChampDbContext())
         {
             //...
@@ -34,6 +34,7 @@ class Program
             db.SaveChanges();
         }
 
+        // display on console to check
         using (ChampDbContext db = new ChampDbContext())
         {
             Console.WriteLine("Champions : ");
@@ -52,6 +53,23 @@ class Program
             foreach (var s in db.Skins)
             {
                 Console.WriteLine($"\t{s.Id}: {s.Name} (Champion : {s.Champion.Name})");
+            }
+        }
+
+        // add fake Skill data
+        using (ChampDbContext db = new ChampDbContext())
+        {
+            SkillEntity[] skills =
+            {
+                new SkillEntity() { Name = "Skill1", Description = "desc..1", SkillType = SkillType.Basic },
+                new SkillEntity() { Name = "Skill2", Description = "desc..2", SkillType = SkillType.Passive },
+                new SkillEntity() { Name = "Skill2", Description = "desc..3", SkillType = SkillType.Passive }
+            };
+
+            foreach(var sk in skills)
+            {
+                db.Add(sk);
+                db.SaveChanges();
             }
         }
 

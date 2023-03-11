@@ -19,10 +19,12 @@ namespace EF_Champions
             : base(options)
         { }
 
+        // Entity sets
         public DbSet<ChampionEntity> Champions { get; set; }
         public DbSet<SkinEntity> Skins { get; set; }
+        public DbSet<SkillEntity> Skill { get; set; }
 
-        /*
+        /* Old version used before InMemory tests
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
            => optionsBuilder.UseSqlite($"Data Source = EF.myDatabse.db");
         */

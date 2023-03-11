@@ -10,9 +10,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EFChampions.Migrations
 {
-    [DbContext(typeof(StubbedContext))]
-    [Migration("20230311063015_newMgr")]
-    partial class newMgr
+    [DbContext(typeof(ChampDbContext))]
+    [Migration("20230311072608_myMgr")]
+    partial class myMgr
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,20 +44,26 @@ namespace EFChampions.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Champions");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Class = 1,
-                            Name = "Akali"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Class = 2,
-                            Name = "Aatrox"
-                        });
+            modelBuilder.Entity("EF_Champions.Entities.SkillEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("SkillType")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Skill");
                 });
 
             modelBuilder.Entity("EF_Champions.Entities.SkinEntity", b =>
@@ -89,32 +95,6 @@ namespace EFChampions.Migrations
                     b.HasIndex("ChampionForeignKey");
 
                     b.ToTable("Skins");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ChampionForeignKey = 1,
-                            Name = "Skin1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ChampionForeignKey = 1,
-                            Name = "Skin2"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ChampionForeignKey = 2,
-                            Name = "Skin3"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ChampionForeignKey = 2,
-                            Name = "Skin4"
-                        });
                 });
 
             modelBuilder.Entity("EF_Champions.Entities.SkinEntity", b =>
