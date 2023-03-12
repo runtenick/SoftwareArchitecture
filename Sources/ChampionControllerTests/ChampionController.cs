@@ -1,12 +1,14 @@
 using Api.Pagination;
 using DTO;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Logging;
 using OLO_Champignons.Controllers;
 using StubLib;
+using System.Net;
 
 namespace ApiControllers
 {
@@ -73,6 +75,57 @@ namespace ApiControllers
 
             returnedChampion.Name.Should().Be(champion.Name);
             nbChamps.Should().Be(await controller.dataManager.ChampionsMgr.GetNbItems() - 1);
+        }
+
+        [TestMethod]
+        public async Task TestPutAsync()
+        {
+            // arrange
+            ChampionDto newChampion = new ChampionDto() { Name = "Pluto" };
+
+            // act
+            var championResult = await controller.Put("Akali", newChampion);
+
+            // assert
+            var objectResult = championResult as ObjectResult;
+            objectResult.Should().NotBeNull();
+            var returnedChampion = objectResult.Value as ChampionDto;
+            returnedChampion.Should().NotBeNull();
+            returnedChampion.Name.Should().Be(newChampion.Name);
+        }
+
+        [TestMethod]
+        public async Task TestDeleteAsync()
+        {
+            // arrange
+            string championName = "Akali";
+
+            // act
+            var championResult = await controller.Delete(championName);
+
+            // assert
+            var objectResult = championResult as ObjectResult;
+            objectResult.Should().NotBeNull();
+            objectResult.StatusCode.Should().Be((int)HttpStatusCode.OK);
+        }
+
+        [TestMethod]
+        public async Task TestGetByNameAsync()
+        {
+            // arrange
+            ChampionDto expectedChampion = new ChampionDto { Name = "Akali" };
+
+            // act
+            var actionResult = await controller.GetByName("Akali");
+            var objectResult = actionResult as ObjectResult;
+            var returnedChampions = objectResult?.Value as IEnumerable<ChampionDto>;
+
+            // assert
+            objectResult.Should().NotBeNull();
+            objectResult.StatusCode.Should().Be(StatusCodes.Status200OK);
+            returnedChampions.Should().NotBeNull();
+            returnedChampions.Count().Should().Be(1);
+            returnedChampions.First().Should().BeEquivalentTo(expectedChampion);
         }
     }
 }

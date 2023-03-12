@@ -70,7 +70,7 @@ namespace OLO_Champignons.Controllers
         public async Task<IActionResult> Put(string name, [FromBody] ChampionDto newChampion) 
         {
             try
-            {
+            {   
                 var champion = await dataManager.ChampionsMgr.GetItemsByName(name, 0, await dataManager.ChampionsMgr.GetNbItems());
                 Champion modified = await dataManager.ChampionsMgr.UpdateItem(champion.First(), newChampion.ToModel());
                 return Ok(modified.ToDto());
