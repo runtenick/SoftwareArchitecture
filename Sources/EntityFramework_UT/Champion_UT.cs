@@ -10,6 +10,7 @@ namespace EntityFramework_UT
 {
     public class ChampionDB_Tests
     {
+        // CRUD TESTS
         [Fact]
         public void Add_Test()
         {
@@ -127,6 +128,40 @@ namespace EntityFramework_UT
                
                 Assert.Equal(totalChamps - 1, context.Champions.Count());
                 Assert.DoesNotContain(first, context.Champions);
+            }
+        }
+        // ----
+
+        // ERROR TESTS
+
+        // assert that the Id is the unique key
+        [Fact]
+        public void Add_Duplicate_Test()
+        {
+            var connection = new SqliteConnection("DataSource=:memory:");
+
+            var options = new DbContextOptionsBuilder<ChampDbContext>()
+                .UseInMemoryDatabase(databaseName: "Add_Duplicate_Test")
+                .Options;
+
+            using (var context = new ChampDbContext(options))
+            {
+                context.Database.EnsureCreated();
+
+                ChampionEntity akali = new() { Name = "Akali", Class = ChampionClass.Assassin };
+                context.Champions.Add(akali);
+
+                context.SaveChanges();
+            }
+
+            using (var context = new ChampDbContext(options))
+            {
+                context.Database.EnsureCreated();
+
+                ChampionEntity duplicate = new() { Id = 1, Name = "Akali", Class = ChampionClass.Assassin };
+                context.Champions.Add(duplicate);
+
+                Assert.Throws<ArgumentException>(() => context.SaveChanges());
             }
         }
     }

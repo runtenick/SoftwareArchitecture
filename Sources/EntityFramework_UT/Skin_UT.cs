@@ -2,6 +2,7 @@
 using EF_Champions.Entities;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -133,5 +134,37 @@ namespace EntityFramework_UT
             }
         }
 
+        // ERROR TESTS
+
+        // assert that the Id is the unique key
+        [Fact]
+        public void Add_Duplicate_Test()
+        {
+            var connection = new SqliteConnection("DataSource=:memory:");
+
+            var options = new DbContextOptionsBuilder<ChampDbContext>()
+                .UseInMemoryDatabase(databaseName: "Add_Duplicate_Test")
+                .Options;
+
+            using (var context = new ChampDbContext(options))
+            {
+                context.Database.EnsureCreated();
+
+                SkinEntity stinger = new SkinEntity() { Name = "Stinger", Price = 5.0F };
+                context.Skins.Add(stinger);
+
+                context.SaveChanges();
+            }
+
+            using (var context = new ChampDbContext(options))
+            {
+                context.Database.EnsureCreated();
+
+                SkinEntity duplicate = new SkinEntity() { Id = 1, Name = "Stinger", Price = 5.0F };
+                context.Skins.Add(duplicate);
+
+                Assert.Throws<ArgumentException>(() => context.SaveChanges());
+            }
+        }
     }
 }
