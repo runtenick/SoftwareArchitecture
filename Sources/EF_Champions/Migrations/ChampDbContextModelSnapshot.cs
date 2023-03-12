@@ -58,6 +58,22 @@ namespace EFChampions.Migrations
                     b.ToTable("Champions");
                 });
 
+            modelBuilder.Entity("EF_Champions.Entities.JoinRunePageRuneEntity", b =>
+                {
+                    b.Property<int>("RuneId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RunePageId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("RuneId", "RunePageId", "Category");
+
+                    b.ToTable("JoinRunePageRuneEntity");
+                });
+
             modelBuilder.Entity("EF_Champions.Entities.RuneEntity", b =>
                 {
                     b.Property<int>("Id")

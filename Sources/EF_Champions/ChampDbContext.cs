@@ -1,6 +1,7 @@
 ﻿using EF_Champions.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,9 +54,14 @@ namespace EF_Champions
                 .HasMany(s => s.Champions) // a skill has many champions
                 .WithMany(c => c.Skills);  // each champion has many skills
 
+            modelBuilder.Entity<JoinRunePageRuneEntity>()
+                .HasKey(join => new { join.RuneId, join.RunePageId, join.Category });
+
+
             modelBuilder.Entity<RuneEntity>()
                 .HasMany(r => r.Pages)
                 .WithMany(p => p.Runes);
+
         }
     }
 }

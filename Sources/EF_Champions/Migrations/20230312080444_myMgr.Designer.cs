@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFChampions.Migrations
 {
     [DbContext(typeof(ChampDbContext))]
-    [Migration("20230312042550_newMgr")]
-    partial class newMgr
+    [Migration("20230312080444_myMgr")]
+    partial class myMgr
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,6 +59,22 @@ namespace EFChampions.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Champions");
+                });
+
+            modelBuilder.Entity("EF_Champions.Entities.JoinRunePageRuneEntity", b =>
+                {
+                    b.Property<int>("RuneId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RunePageId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("RuneId", "RunePageId", "Category");
+
+                    b.ToTable("JoinRunePageRuneEntity");
                 });
 
             modelBuilder.Entity("EF_Champions.Entities.RuneEntity", b =>

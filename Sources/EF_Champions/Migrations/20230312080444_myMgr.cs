@@ -5,7 +5,7 @@
 namespace EFChampions.Migrations
 {
     /// <inheritdoc />
-    public partial class newMgr : Migration
+    public partial class myMgr : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,6 +25,19 @@ namespace EFChampions.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Champions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "JoinRunePageRuneEntity",
+                columns: table => new
+                {
+                    RuneId = table.Column<int>(type: "INTEGER", nullable: false),
+                    RunePageId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Category = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JoinRunePageRuneEntity", x => new { x.RuneId, x.RunePageId, x.Category });
                 });
 
             migrationBuilder.CreateTable(
@@ -165,6 +178,9 @@ namespace EFChampions.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ChampionEntitySkillEntity");
+
+            migrationBuilder.DropTable(
+                name: "JoinRunePageRuneEntity");
 
             migrationBuilder.DropTable(
                 name: "RuneEntityRunePageEntity");

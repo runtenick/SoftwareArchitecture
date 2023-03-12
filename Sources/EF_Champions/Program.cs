@@ -115,6 +115,32 @@ class Program
             db.AddRange(r1,r2,r3,r4);
             db.AddRange(p1,p2);
             db.SaveChanges();
+
+            /*Rune[] runes =
+            {
+                new Rune("Conqueror", RuneFamily.Precision),
+                new Rune("Triumph", RuneFamily.Precision),
+                new Rune("Legend: Alacrity", RuneFamily.Precision),
+                new Rune("Legend: Tenacity", RuneFamily.Precision),
+                new Rune("last stand", RuneFamily.Domination),
+                new Rune("last stand 2", RuneFamily.Domination),
+            };
+
+            foreach (var run in runes)
+            {
+                db.Add(run.RuneToEntity());
+            }
+
+            RunePage runePage1 = new RunePage("rune page 1 from stub");
+            runePage1[RunePage.Category.Major] = runes[0];
+            runePage1[RunePage.Category.Minor1] = runes[1];
+            runePage1[RunePage.Category.Minor2] = runes[2];
+            runePage1[RunePage.Category.Minor3] = runes[3];
+            runePage1[RunePage.Category.OtherMinor1] = runes[4];
+            runePage1[RunePage.Category.OtherMinor2] = runes[5];
+
+            db.Add(runePage1.RunePageToEntity());
+            db.SaveChanges();*/
         }
     }
 }

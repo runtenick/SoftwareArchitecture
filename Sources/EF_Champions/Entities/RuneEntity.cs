@@ -24,3 +24,4 @@ namespace EF_Champions.Entities
         public ICollection<RunePageEntity>? Pages { get; set; } = new List<RunePageEntity>();
     }
 }
+    
