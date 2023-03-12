@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 using Xunit;
 using Microsoft.EntityFrameworkCore.Storage;
+using Model;
 
 namespace EntityFramework_UT
 {
@@ -22,9 +23,9 @@ namespace EntityFramework_UT
             {
                 context.Database.EnsureCreated();
 
-                ChampionEntity akali = new() { Name = "Akali", Class = ChampClassEntity.Assassin };
-                ChampionEntity aatrox = new() { Name = "Aatrox", Class = ChampClassEntity.Fighter };
-                ChampionEntity ahri = new() { Name = "Ahri", Class = ChampClassEntity.Mage };
+                ChampionEntity akali = new() { Name = "Akali", Class = ChampionClass.Assassin };
+                ChampionEntity aatrox = new() { Name = "Aatrox", Class = ChampionClass.Fighter };
+                ChampionEntity ahri = new() { Name = "Ahri", Class = ChampionClass.Mage };
 
                 context.Champions.Add(akali);
                 context.Champions.Add(aatrox);
@@ -57,9 +58,9 @@ namespace EntityFramework_UT
                 context.Database.EnsureCreated();
                 context.Champions.RemoveRange(context.Champions);
 
-                ChampionEntity akali = new() { Name = "Akali", Class = ChampClassEntity.Assassin };
-                ChampionEntity aatrox = new() { Name = "Aatrox", Class = ChampClassEntity.Fighter };
-                ChampionEntity ahri = new() { Name = "Ahri", Class = ChampClassEntity.Mage };
+                ChampionEntity akali = new() { Name = "Akali", Class = ChampionClass.Assassin };
+                ChampionEntity aatrox = new() { Name = "Aatrox", Class = ChampionClass.Fighter };
+                ChampionEntity ahri = new() { Name = "Ahri", Class = ChampionClass.Mage };
 
                 context.Champions.Add(akali);
                 context.Champions.Add(aatrox);
@@ -104,9 +105,9 @@ namespace EntityFramework_UT
                 context.Database.EnsureCreated();
                 context.Champions.RemoveRange(context.Champions);
 
-                ChampionEntity akali = new() { Name = "Akali", Class = ChampClassEntity.Assassin };
-                ChampionEntity aatrox = new() { Name = "Aatrox", Class = ChampClassEntity.Fighter };
-                ChampionEntity ahri = new() { Name = "Ahri", Class = ChampClassEntity.Mage };
+                ChampionEntity akali = new() { Name = "Akali", Class = ChampionClass.Assassin };
+                ChampionEntity aatrox = new() { Name = "Aatrox", Class = ChampionClass.Fighter };
+                ChampionEntity ahri = new() { Name = "Ahri", Class = ChampionClass.Mage };
 
                 context.Champions.Add(akali);
                 context.Champions.Add(aatrox);

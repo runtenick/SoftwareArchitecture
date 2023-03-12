@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFChampions.Migrations
 {
     [DbContext(typeof(ChampDbContext))]
-    [Migration("20230312083456_myMgr")]
+    [Migration("20230312084725_myMgr")]
     partial class myMgr
     {
         /// <inheritdoc />

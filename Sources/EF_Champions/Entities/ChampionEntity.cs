@@ -13,7 +13,7 @@ namespace EF_Champions.Entities
 
         public string? Name { get; set; }
 
-        public ChampClassEntity Class { get; set; }
+        public ChampionClass Class { get; set; }
 
         public string? Icon { get; set; }
 

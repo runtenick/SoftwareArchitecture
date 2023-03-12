@@ -10,7 +10,7 @@ namespace EF_Champions.Mapper
             return new ChampionEntity 
             { 
                 Name = champion.Name, 
-                Class = (ChampClassEntity)champion.Class,
+                Class = champion.Class,
                 Bio = champion.Bio,
                 Icon = champion.Icon,
                 Image = champion.Image.Base64

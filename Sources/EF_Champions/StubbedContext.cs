@@ -15,8 +15,8 @@ namespace EF_Champions
         {
             base.OnModelCreating(modelBuilder);
 
-            ChampionEntity c1 = new ChampionEntity() { Id = 1, Name = "Akali", Class = ChampClassEntity.Assassin};
-            ChampionEntity c2 = new ChampionEntity() { Id = 2, Name = "Aatrox", Class = ChampClassEntity.Fighter};
+            ChampionEntity c1 = new ChampionEntity() { Id = 1, Name = "Akali", Class = ChampionClass.Assassin};
+            ChampionEntity c2 = new ChampionEntity() { Id = 2, Name = "Aatrox", Class = ChampionClass.Fighter};
 
             modelBuilder.Entity<ChampionEntity>().HasData(c1, c2);
 

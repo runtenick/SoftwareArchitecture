@@ -17,7 +17,7 @@ class Program
         {
             //...
 
-            ChampionEntity akali = new ChampionEntity { Name = "Akali", Class = ChampClassEntity.Assassin };
+            ChampionEntity akali = new ChampionEntity { Name = "Akali", Class = ChampionClass.Assassin };
             SkinEntity[] skins_akali =
             {
                 new SkinEntity() { Name = "Skin1", Champion = akali },
@@ -59,7 +59,7 @@ class Program
         // add fake Skill data
         using (ChampDbContext db = new ChampDbContext())
         {
-            ChampionEntity aatrox = new ChampionEntity { Name = "Aatrox", Class = ChampClassEntity.Mage };
+            ChampionEntity aatrox = new ChampionEntity { Name = "Aatrox", Class = ChampionClass.Mage };
             SkillEntity[] skills =
             {
                 new SkillEntity() { Name = "Skill1", Description = "desc..1", SkillType = SkillType.Basic },
@@ -111,7 +111,7 @@ class Program
             p2.Runes.Add(r3);
             p2.Runes.Add(r4);
 
-            ChampionEntity champ = new ChampionEntity { Name = "Third Champion", Class = ChampClassEntity.Mage };
+            ChampionEntity champ = new ChampionEntity { Name = "Third Champion", Class = ChampionClass.Mage };
             champ.PagesRune.Add(p1);
             champ.PagesRune.Add(p2);
 
