@@ -27,12 +27,11 @@ namespace ApiControllers
                 new ChampionDto() {Name = "Ahri"},
                 new ChampionDto() {Name = "Akshan"},
                 new ChampionDto() {Name = "Bard"},
-                new ChampionDto() {Name = "Alistar"},
 
             };
             // act
             // ici on verifie que la requete vers l'api a bien marché
-            /*var championResult = await controller.Get();
+            var championResult = await controller.Get(new PageRequest(0,5));
             championResult.Should().NotBeNull();
 
             // assert
@@ -44,7 +43,7 @@ namespace ApiControllers
             // que celle créer avant (qui est sensé a être pareil que celle du stub.
             var champs = objectResult?.Value as IEnumerable<ChampionDto>;
             champs.Should().NotBeNull();
-            champs.Should().BeEquivalentTo(champions);*/
+            champs.Should().BeEquivalentTo(champions);
         }
 
         [TestMethod]
