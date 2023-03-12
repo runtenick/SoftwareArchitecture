@@ -4,7 +4,8 @@ namespace Api.Pagination
 {
     public class PageRequest
     {
-        PageRequest(int i, int c) 
+        public PageRequest() { }
+        public PageRequest(int i, int c) 
         {
             Count = c;
             Index = i;
