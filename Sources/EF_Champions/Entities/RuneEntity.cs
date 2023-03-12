@@ -20,5 +20,7 @@ namespace EF_Champions.Entities
         public string? Icon { get; set; }  
         
         public string? Image { get; set; }
+
+        public ICollection<RunePageEntity>? Pages { get; set; } = new List<RunePageEntity>();
     }
 }

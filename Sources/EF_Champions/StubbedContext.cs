@@ -26,6 +26,7 @@ namespace EF_Champions
                 new { Id = 3, ChampionForeignKey = 2, Name = "Skin3" },
                 new { Id = 4, ChampionForeignKey = 2, Name = "Skin4" }
             );
+
         }
     }
 }

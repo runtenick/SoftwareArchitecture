@@ -24,6 +24,7 @@ namespace EF_Champions
         public DbSet<SkinEntity> Skins { get; set; }
         public DbSet<SkillEntity> Skill { get; set; }
         public DbSet<RuneEntity> Runes { get; set; }
+        public DbSet<RunePageEntity> RunePages { get; set; } 
 
         /* Old version used before InMemory tests
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -39,16 +40,22 @@ namespace EF_Champions
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // one-to-many
             modelBuilder.Entity<SkinEntity>().Property<int>("ChampionForeignKey");
 
             modelBuilder.Entity<SkinEntity>()
                 .HasOne(s => s.Champion)// a skin has a champion
                 .WithMany(e => e.Skins) // a champion has multiple skins
-                .HasForeignKey("ChampionForeignKey"); // thtrough the foreign key 
+                .HasForeignKey("ChampionForeignKey"); // through the foreign key 
 
+            // many-to-many
             modelBuilder.Entity<SkillEntity>()
-                .HasMany(s => s.Champions)
-                .WithMany(c => c.Skills);
+                .HasMany(s => s.Champions) // a skill has many champions
+                .WithMany(c => c.Skills);  // each champion has many skills
+
+            modelBuilder.Entity<RuneEntity>()
+                .HasMany(r => r.Pages)
+                .WithMany(p => p.Runes);
         }
     }
 }

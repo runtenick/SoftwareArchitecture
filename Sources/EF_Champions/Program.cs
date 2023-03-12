@@ -12,7 +12,7 @@ class Program
     {
         Console.WriteLine("Starting...");
 
-        // insertion de one to many avec skin
+        // insertion de one-to-many avec skin
         using (ChampDbContext db = new ChampDbContext())
         {
             //...
@@ -89,26 +89,33 @@ class Program
             db.SaveChanges();
         }
 
-        // add fake Rune data
+        // add fake Rune / RunePage data
         using (ChampDbContext db = new ChampDbContext())
         {
-            Rune[] runes =
-            {
-                new Rune("Conqueror", RuneFamily.Precision),
-                new Rune("Triumph", RuneFamily.Precision),
-                new Rune("Legend: Alacrity", RuneFamily.Precision),
-                new Rune("Legend: Tenacity", RuneFamily.Precision),
-                new Rune("last stand", RuneFamily.Domination),
-                new Rune("last stand 2", RuneFamily.Domination),
-            };
+            RuneEntity r1 = new RuneEntity() { Name = "Conqueror", RuneFamily = RuneFamily.Precision };
+            RuneEntity r2 = new RuneEntity() { Name = "Triumph", RuneFamily = RuneFamily.Domination };
+            RuneEntity r3 = new RuneEntity() { Name = "Legend: Alacrity", RuneFamily = RuneFamily.Unknown };
+            RuneEntity r4 = new RuneEntity() { Name = "Legend: Tenacity", RuneFamily = RuneFamily.Precision };
 
-            foreach (var rune in runes)
-            {
-                db.Add(rune.RuneToEntity());
-            }
+
+            RunePageEntity p1 = new RunePageEntity() { Name = "Page1" };
+            RunePageEntity p2 = new RunePageEntity() { Name = "Page2" };
+
+            // p1 has r1, r2, r3
+            p1.Runes.Add(r1);
+            p1.Runes.Add(r2);
+            p1.Runes.Add(r3);
+
+            // p2 has r4, r2, r3
+            p2.Runes.Add(r2);
+            p2.Runes.Add(r3);
+            p2.Runes.Add(r4);
+
+
+            db.AddRange(r1,r2,r3,r4);
+            db.AddRange(p1,p2);
             db.SaveChanges();
         }
-
     }
 }
 

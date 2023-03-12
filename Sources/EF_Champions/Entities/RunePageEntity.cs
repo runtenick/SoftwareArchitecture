@@ -11,5 +11,7 @@ namespace EF_Champions.Entities
         public int Id { get; set; }
 
         public string? Name { get; set; }
+
+        public ICollection<RuneEntity>? Runes { get; set; } = new List<RuneEntity>();   
     }
 }

@@ -84,6 +84,20 @@ namespace EFChampions.Migrations
                     b.ToTable("Runes");
                 });
 
+            modelBuilder.Entity("EF_Champions.Entities.RunePageEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RunePages");
+                });
+
             modelBuilder.Entity("EF_Champions.Entities.SkillEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -135,6 +149,21 @@ namespace EFChampions.Migrations
                     b.ToTable("Skins");
                 });
 
+            modelBuilder.Entity("RuneEntityRunePageEntity", b =>
+                {
+                    b.Property<int>("PagesId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RunesId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("PagesId", "RunesId");
+
+                    b.HasIndex("RunesId");
+
+                    b.ToTable("RuneEntityRunePageEntity");
+                });
+
             modelBuilder.Entity("ChampionEntitySkillEntity", b =>
                 {
                     b.HasOne("EF_Champions.Entities.ChampionEntity", null)
@@ -159,6 +188,21 @@ namespace EFChampions.Migrations
                         .IsRequired();
 
                     b.Navigation("Champion");
+                });
+
+            modelBuilder.Entity("RuneEntityRunePageEntity", b =>
+                {
+                    b.HasOne("EF_Champions.Entities.RunePageEntity", null)
+                        .WithMany()
+                        .HasForeignKey("PagesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EF_Champions.Entities.RuneEntity", null)
+                        .WithMany()
+                        .HasForeignKey("RunesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EF_Champions.Entities.ChampionEntity", b =>
