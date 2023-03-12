@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFChampions.Migrations
 {
     [DbContext(typeof(ChampDbContext))]
-    [Migration("20230312080444_myMgr")]
+    [Migration("20230312083456_myMgr")]
     partial class myMgr
     {
         /// <inheritdoc />
@@ -19,6 +19,21 @@ namespace EFChampions.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
+
+            modelBuilder.Entity("ChampionEntityRunePageEntity", b =>
+                {
+                    b.Property<int>("ChampionsId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PagesRuneId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ChampionsId", "PagesRuneId");
+
+                    b.HasIndex("PagesRuneId");
+
+                    b.ToTable("ChampionEntityRunePageEntity");
+                });
 
             modelBuilder.Entity("ChampionEntitySkillEntity", b =>
                 {
@@ -59,22 +74,6 @@ namespace EFChampions.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Champions");
-                });
-
-            modelBuilder.Entity("EF_Champions.Entities.JoinRunePageRuneEntity", b =>
-                {
-                    b.Property<int>("RuneId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("RunePageId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Category")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("RuneId", "RunePageId", "Category");
-
-                    b.ToTable("JoinRunePageRuneEntity");
                 });
 
             modelBuilder.Entity("EF_Champions.Entities.RuneEntity", b =>
@@ -181,6 +180,21 @@ namespace EFChampions.Migrations
                     b.HasIndex("RunesId");
 
                     b.ToTable("RuneEntityRunePageEntity");
+                });
+
+            modelBuilder.Entity("ChampionEntityRunePageEntity", b =>
+                {
+                    b.HasOne("EF_Champions.Entities.ChampionEntity", null)
+                        .WithMany()
+                        .HasForeignKey("ChampionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EF_Champions.Entities.RunePageEntity", null)
+                        .WithMany()
+                        .HasForeignKey("PagesRuneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ChampionEntitySkillEntity", b =>

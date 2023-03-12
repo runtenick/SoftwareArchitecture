@@ -111,10 +111,16 @@ class Program
             p2.Runes.Add(r3);
             p2.Runes.Add(r4);
 
+            ChampionEntity champ = new ChampionEntity { Name = "Third Champion", Class = ChampClassEntity.Mage };
+            champ.PagesRune.Add(p1);
+            champ.PagesRune.Add(p2);
 
+            db.Add(champ);
             db.AddRange(r1,r2,r3,r4);
             db.AddRange(p1,p2);
             db.SaveChanges();
+
+            
 
             /*Rune[] runes =
             {

@@ -28,19 +28,6 @@ namespace EFChampions.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "JoinRunePageRuneEntity",
-                columns: table => new
-                {
-                    RuneId = table.Column<int>(type: "INTEGER", nullable: false),
-                    RunePageId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Category = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_JoinRunePageRuneEntity", x => new { x.RuneId, x.RunePageId, x.Category });
-                });
-
-            migrationBuilder.CreateTable(
                 name: "RunePages",
                 columns: table => new
                 {
@@ -110,6 +97,30 @@ namespace EFChampions.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ChampionEntityRunePageEntity",
+                columns: table => new
+                {
+                    ChampionsId = table.Column<int>(type: "INTEGER", nullable: false),
+                    PagesRuneId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChampionEntityRunePageEntity", x => new { x.ChampionsId, x.PagesRuneId });
+                    table.ForeignKey(
+                        name: "FK_ChampionEntityRunePageEntity_Champions_ChampionsId",
+                        column: x => x.ChampionsId,
+                        principalTable: "Champions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ChampionEntityRunePageEntity_RunePages_PagesRuneId",
+                        column: x => x.PagesRuneId,
+                        principalTable: "RunePages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RuneEntityRunePageEntity",
                 columns: table => new
                 {
@@ -158,6 +169,11 @@ namespace EFChampions.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_ChampionEntityRunePageEntity_PagesRuneId",
+                table: "ChampionEntityRunePageEntity",
+                column: "PagesRuneId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ChampionEntitySkillEntity_SkillsId",
                 table: "ChampionEntitySkillEntity",
                 column: "SkillsId");
@@ -177,10 +193,10 @@ namespace EFChampions.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ChampionEntitySkillEntity");
+                name: "ChampionEntityRunePageEntity");
 
             migrationBuilder.DropTable(
-                name: "JoinRunePageRuneEntity");
+                name: "ChampionEntitySkillEntity");
 
             migrationBuilder.DropTable(
                 name: "RuneEntityRunePageEntity");

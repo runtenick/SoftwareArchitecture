@@ -54,14 +54,13 @@ namespace EF_Champions
                 .HasMany(s => s.Champions) // a skill has many champions
                 .WithMany(c => c.Skills);  // each champion has many skills
 
-            modelBuilder.Entity<JoinRunePageRuneEntity>()
-                .HasKey(join => new { join.RuneId, join.RunePageId, join.Category });
-
-
             modelBuilder.Entity<RuneEntity>()
                 .HasMany(r => r.Pages)
                 .WithMany(p => p.Runes);
 
+            modelBuilder.Entity<ChampionEntity>()
+                .HasMany(c => c.PagesRune)
+                .WithMany(p => p.Champions);
         }
     }
 }

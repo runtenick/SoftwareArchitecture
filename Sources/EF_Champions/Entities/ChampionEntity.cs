@@ -24,5 +24,7 @@ namespace EF_Champions.Entities
         public ICollection<SkinEntity>? Skins { get; set; } = new List<SkinEntity>();
 
         public ICollection<SkillEntity>? Skills { get; set; } = new List<SkillEntity>();
+
+        public ICollection<RunePageEntity>? PagesRune { get; set; } = new List<RunePageEntity>();
     }
 }
