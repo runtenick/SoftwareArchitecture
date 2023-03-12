@@ -53,31 +53,56 @@ namespace OLO_Champignons.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ChampionDto champion)
         {
-            return CreatedAtAction(nameof(GetByName), new { champion.Name },
+            try
+            {
+                return CreatedAtAction(nameof(GetByName), new { champion.Name },
                 (await dataManager.ChampionsMgr.AddItem(ChampionMapper.ToModel(champion))).ToDto());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
 
         // PUT api/<Champion>/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] ChampionDto newChampion) // faire plutot avec nom que id 
+        [HttpPut("{name}")]
+        public async Task<IActionResult> Put(string name, [FromBody] ChampionDto newChampion) 
         {
-            var champions = (await dataManager.ChampionsMgr.GetItems(0,
-               await dataManager.ChampionsMgr.GetNbItems())).Select(champion => champion?.ToDto());
-
+            try
+            {
+                var champion = await dataManager.ChampionsMgr.GetItemsByName(name, 0, await dataManager.ChampionsMgr.GetNbItems());
+                Champion modified = await dataManager.ChampionsMgr.UpdateItem(champion.First(), newChampion.ToModel());
+                return Ok(modified.ToDto());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
             
-            Champion modified = await dataManager.ChampionsMgr.UpdateItem(champions.First(champion => champion.Id.Equals(id)).ToModel(),newChampion.ToModel());
-            return Ok(modified.ToDto());
         }
 
         // DELETE api/<Champion>/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id) // faire plutot avec nom
+        [HttpDelete("{name}")]
+        public async Task<ActionResult> Delete(String name) // faire plutot avec nom
         {
-            var champions = (await dataManager.ChampionsMgr.GetItems(0,
-                await dataManager.ChampionsMgr.GetNbItems())).Select(champion => champion?.ToDto());
+            try
+            {
+                var champion = await dataManager.ChampionsMgr.GetItemsByName(name, 0, await dataManager.ChampionsMgr.GetNbItems());
 
-            bool deleted = await dataManager.ChampionsMgr.DeleteItem(champions.First(champion => champion.Id.Equals(id)).ToModel());
-            return Ok(champions.First(champion => champion.Id.Equals(id)));
+                if (champion != null)
+                {
+                   return Ok(await dataManager.ChampionsMgr.DeleteItem(champion.First()));
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

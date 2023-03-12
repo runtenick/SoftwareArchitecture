@@ -11,7 +11,7 @@ namespace Api.Mapper
             return new ChampionDto()
             {
                 Name = champion.Name,
-                Id = champion.Id,
+                //Id = champion.Id,
             };
         }
         public static Champion ToModel(this ChampionDto championDto)
