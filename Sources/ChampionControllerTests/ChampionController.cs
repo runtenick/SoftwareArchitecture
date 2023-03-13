@@ -118,14 +118,13 @@ namespace ApiControllers
             // act
             var actionResult = await controller.GetByName("Akali");
             var objectResult = actionResult as ObjectResult;
-            var returnedChampions = objectResult?.Value as IEnumerable<ChampionDto>;
+            var returnedChampion = objectResult?.Value as ChampionDto;
 
             // assert
             objectResult.Should().NotBeNull();
             objectResult.StatusCode.Should().Be(StatusCodes.Status200OK);
-            returnedChampions.Should().NotBeNull();
-            returnedChampions.Count().Should().Be(1);
-            returnedChampions.First().Should().BeEquivalentTo(expectedChampion);
+            returnedChampion.Should().NotBeNull();
+            returnedChampion.Should().BeEquivalentTo(expectedChampion);
         }
     }
 }
