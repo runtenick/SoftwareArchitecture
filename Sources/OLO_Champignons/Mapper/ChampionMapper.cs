@@ -11,13 +11,19 @@ namespace Api.Mapper
             return new ChampionDto()
             {
                 Name = champion.Name,
-                //Id = champion.Id,
+                Icon = champion.Icon,
+                Bio = champion.Bio,
+                Image = champion.Image.Base64
             };
         }
         public static Champion ToModel(this ChampionDto championDto)
         {
-            /* recuperer les autres attributs a apartir du stub */
-            return new Champion(championDto.Name);
+            return new Champion(championDto.Name)
+            {
+               Icon = championDto.Icon,
+               Bio = championDto.Bio,
+               Image = new LargeImage(championDto.Image)
+            };
         }
     }
  }

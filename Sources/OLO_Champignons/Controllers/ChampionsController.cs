@@ -39,7 +39,15 @@ namespace OLO_Champignons.Controllers
             {
                 var champions = (await dataManager.ChampionsMgr.GetItems(pageRequest.Index,
                     pageRequest.Count)).Select(champion => champion?.ToDto());
-                return Ok(champions);
+
+                var page = new Page()
+                {
+                    MyChampions = champions,
+                    Index = pageRequest.Index,
+                    Count = pageRequest.Count,
+                    TotalCount = await dataManager.ChampionsMgr.GetNbItems()
+                 };
+                return Ok(page);
             }
             catch(Exception ex)
             {
@@ -47,6 +55,8 @@ namespace OLO_Champignons.Controllers
 
                 return BadRequest(ex.Message);
             }
+
+            // return objet page 3 int + i champion: return Ok(paege)
         }
 
         
