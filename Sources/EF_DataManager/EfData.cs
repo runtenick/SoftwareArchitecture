@@ -1,17 +1,17 @@
-﻿using EfDataManagerLib;
+﻿/*using EfDataManagerLib;
 using Model;
 
 namespace EF_DataManagerLib
 {
-    public partial class EfDataManager : IDataManager
+    public partial class EfData : IDataManager
     {
 
-        public EfDataManager() 
+        public EfData() 
         {
             ChampionsMgr = new EfChampionsManager(this);
         }
 
-        public EfChampionsManager ChampionsMgr 
+         public EfChampionsManager ChampionsMgr 
             => throw new NotImplementedException();
 
         public ISkinsManager SkinsMgr 
@@ -24,4 +24,4 @@ namespace EF_DataManagerLib
             => throw new NotImplementedException();
 
     }
-}
+}*/
