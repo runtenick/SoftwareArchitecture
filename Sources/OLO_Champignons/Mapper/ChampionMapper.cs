@@ -11,6 +11,7 @@ namespace Api.Mapper
             return new ChampionDto()
             {
                 Name = champion.Name,
+                Class = champion.Class.ToString(),
                 Icon = champion.Icon,
                 Bio = champion.Bio,
                 Image = champion.Image.Base64

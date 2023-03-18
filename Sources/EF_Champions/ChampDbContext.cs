@@ -61,6 +61,7 @@ namespace EF_Champions
             modelBuilder.Entity<ChampionEntity>()
                 .HasMany(c => c.PagesRune)
                 .WithMany(p => p.Champions);
+               
         }
     }
 }

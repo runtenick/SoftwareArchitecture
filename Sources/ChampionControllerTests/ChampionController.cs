@@ -22,13 +22,14 @@ namespace ApiControllers
         public async Task TestGetAsync()
         {
             // arrange
-            List<ChampionDto> champions = new()
+            List<ChampionDto> championsExpected = new()
             {
-                new ChampionDto() {Name = "Akali"},
-                new ChampionDto() {Name = "Aatrox"},
-                new ChampionDto() {Name = "Ahri"},
-                new ChampionDto() {Name = "Akshan"},
-                new ChampionDto() {Name = "Bard"},
+                new ChampionDto() {Name = "Akali", Class = "Assassin", Icon = "", Bio = "", Image = ""},
+                new ChampionDto() {Name = "Aatrox", Class = "Fighter", Icon = "", Bio = "", Image = ""},
+                new ChampionDto() {Name = "Ahri", Class = "Mage", Icon = "", Bio = "", Image = ""},
+                new ChampionDto() {Name = "Akshan", Class = "Marksman", Icon = "", Bio = "", Image = ""},
+                new ChampionDto() {Name = "Bard", Class = "Support", Icon = "", Bio = "", Image = ""},
+                new ChampionDto() {Name = "Alistar", Class = "Tank", Icon = "", Bio = "", Image = ""},
 
             };
             // act
@@ -40,19 +41,36 @@ namespace ApiControllers
             // ici on verifie que la requete a bien retourner quelque chose (et pas vide)
             var objectResult = championResult as ObjectResult;
             objectResult.Should().NotBeNull();
+            objectResult.StatusCode.Should().Be(200);
 
-            // finalement on verifie que la liste retourner par la requete et la même
-            // que celle créer avant (qui est sensé a être pareil que celle du stub.
-            var champs = objectResult?.Value as IEnumerable<ChampionDto>;
-            champs.Should().NotBeNull();
-            champs.Should().BeEquivalentTo(champions);
+            /* finalement on verifie que la liste retourner par la requete et la même
+            * que celle créer avant (qui est sensé a être pareil que celle du stub. 
+            * Maintenant qu'on a la pagination, il faut également vérifer que cela est 
+            * bien retourner.
+            */
+            var page = objectResult.Value as Page;
+            page.Should().NotBeNull();
+            page.MyChampions.Should().NotBeNull();
+            // seulement les 5 premiers champions
+            page.MyChampions.Should().BeEquivalentTo(championsExpected.Take(5));
+
+            page.Index.Should().Be(0);
+            page.Count.Should().Be(5);
+            page.TotalCount.Should().Be(championsExpected.Count);
         }
 
         [TestMethod]
         public async Task TestPostAsync()
         {
             // arrange
-            ChampionDto champion = new ChampionDto() { Name = "TheChamp" };
+            ChampionDto champion = new ChampionDto() 
+            { 
+                Name = "TheChamp", 
+                Class = "Marksman", 
+                Icon = "myIcon", 
+                Bio = "myBio", 
+                Image = "myImage" 
+            };
             var nbChamps = await controller.dataManager.ChampionsMgr.GetNbItems();
 
             // act
@@ -113,7 +131,14 @@ namespace ApiControllers
         public async Task TestGetByNameAsync()
         {
             // arrange
-            ChampionDto expectedChampion = new ChampionDto { Name = "Akali" };
+            ChampionDto expectedChampion = new ChampionDto 
+            { 
+                Name = "Akali",
+                Class = "Assassin",
+                Icon = "",
+                Bio = "",
+                Image = ""
+            };
 
             // act
             var actionResult = await controller.GetByName("Akali");

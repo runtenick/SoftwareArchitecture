@@ -13,6 +13,6 @@ namespace EF_Champions.Entities
 
         public int RunePageId { get; set; }
 
-        public RunePage.Category Category { get; set; }
+        public RuneCategoryEntity? Category { get; set; }
     }
 }

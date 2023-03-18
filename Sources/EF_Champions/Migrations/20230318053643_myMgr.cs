@@ -121,6 +121,25 @@ namespace EFChampions.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    RuneId = table.Column<int>(type: "INTEGER", nullable: true),
+                    Category = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Categories_Runes_RuneId",
+                        column: x => x.RuneId,
+                        principalTable: "Runes",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RuneEntityRunePageEntity",
                 columns: table => new
                 {
@@ -169,6 +188,11 @@ namespace EFChampions.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Categories_RuneId",
+                table: "Categories",
+                column: "RuneId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ChampionEntityRunePageEntity_PagesRuneId",
                 table: "ChampionEntityRunePageEntity",
                 column: "PagesRuneId");
@@ -192,6 +216,9 @@ namespace EFChampions.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Categories");
+
             migrationBuilder.DropTable(
                 name: "ChampionEntityRunePageEntity");
 
