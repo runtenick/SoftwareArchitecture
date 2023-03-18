@@ -35,7 +35,7 @@ namespace EfDataManager
                 }
                 catch (Exception exception)
                 {
-                    throw new Exception("Error while adding the champion", exception);
+                    throw new Exception("Error while trying tot add a Champion to the database", exception);
                 }
 
                 return item;
@@ -138,9 +138,28 @@ namespace EfDataManager
                 throw new NotImplementedException();
             }
 
-            public Task<Champion?> UpdateItem(Champion? oldItem, Champion? newItem)
+            public async Task<Champion?> UpdateItem(Champion? oldItem, Champion? newItem)
             {
-                throw new NotImplementedException();
+                try
+                {
+                    if (oldItem == null || newItem == null) 
+                    {
+                        throw new ArgumentNullException("We need a valid old and new item to update");
+                    }
+
+                    ChampionEntity champ = await parent.ChampDbContext.Champions.FindAsync(oldItem);
+                    if (champ == null)
+                    {
+                        return null;
+                    }
+                    champ = newItem.ChampionToEntity();
+                    parent.ChampDbContext.SaveChanges();
+                }
+                catch (Exception exception) 
+                {
+                    throw new Exception("Error while trying to update a Champion in the database", exception);
+                }
+                return newItem;
             }
         }
     }
