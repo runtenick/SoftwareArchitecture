@@ -1,4 +1,6 @@
-﻿using Model;
+﻿using EF_Champions.Entities;
+using EF_Champions.Mapper;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,14 +19,53 @@ namespace EfDataManager
                 => this.parent = parent;
 
 
-            public Task<Champion?> AddItem(Champion? item)
+            public async Task<Champion?> AddItem(Champion? item)
             {
-                throw new NotImplementedException();
+                // on verifie si le champion passé en paramètre est null/valide
+                if (item == null)
+                {
+                    throw new ArgumentNullException(nameof(item));
+                }
+                // on essaye de ajouter dans la base de données
+                try
+                {
+                    await parent.ChampDbContext.Champions.AddAsync(item.ChampionToEntity());
+                    parent.ChampDbContext.SaveChanges();
+
+                }
+                catch (Exception exception)
+                {
+                    throw new Exception("Error while adding the champion", exception);
+                }
+
+                return item;
             }
 
-            public Task<bool> DeleteItem(Champion? item)
+            public async Task<bool> DeleteItem(Champion? item)
             {
-                throw new NotImplementedException();
+                try
+                {
+                    if (item == null)
+                    {
+                        throw new ArgumentNullException(nameof(item));
+                    }
+
+                    ChampionEntity champ = await parent.ChampDbContext.Champions.FindAsync(item.ChampionToEntity());
+                    if(champ == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        parent.ChampDbContext.Champions.Remove(champ);
+                        parent.ChampDbContext.SaveChanges();
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error deleting Champion from the database", ex);
+                }
             }
 
             public Task<IEnumerable<Champion?>> GetItems(int index, int count, string? orderingPropertyName = null, bool descending = false)

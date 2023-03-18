@@ -5,9 +5,9 @@ namespace EfDataManager
 {
     public partial class EfData : IDataManager
     {
-        public EfData(ChampDbContext dbContext) 
-        { 
-            DbContext = dbContext;
+        public EfData(ChampDbContext champDbContext) 
+        {
+            ChampDbContext = champDbContext;
             ChampionsMgr = new EfChampionsManager(this);
             SkinsMgr = new EfSkinsManager(this);
             RunesMgr = new EfRunesManager(this);
@@ -22,6 +22,6 @@ namespace EfDataManager
 
         public IRunePagesManager RunePagesMgr { get; }
 
-        protected ChampDbContext DbContext { get; set; }
+        protected ChampDbContext ChampDbContext { get; set; }
     }
 }
