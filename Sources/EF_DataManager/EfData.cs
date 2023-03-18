@@ -1,4 +1,5 @@
-﻿/*using EfDataManagerLib;
+﻿using EF_Champions;
+using EfDataManagerLib;
 using Model;
 
 namespace EF_DataManagerLib
@@ -6,22 +7,21 @@ namespace EF_DataManagerLib
     public partial class EfData : IDataManager
     {
 
-        public EfData() 
+        public EfData(ChampDbContext champDbContext) 
         {
+            ChampDbContext = champDbContext;
             ChampionsMgr = new EfChampionsManager(this);
         }
 
-         public EfChampionsManager ChampionsMgr 
-            => throw new NotImplementedException();
+        public IChampionsManager ChampionsMgr { get; }
 
-        public ISkinsManager SkinsMgr 
-            => throw new NotImplementedException();
+        public ISkinsManager SkinsMgr { get; }
 
-        public IRunesManager RunesMgr 
-            => throw new NotImplementedException();
+        public IRunesManager RunesMgr { get; }
 
-        public IRunePagesManager RunePagesMgr 
-            => throw new NotImplementedException();
+        public IRunePagesManager RunePagesMgr { get; }
 
+        protected ChampDbContext ChampDbContext { get; }
+         
     }
-}*/
+}
