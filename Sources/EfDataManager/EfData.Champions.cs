@@ -70,7 +70,10 @@ namespace EfDataManager
 
             public Task<IEnumerable<Champion?>> GetItems(int index, int count, string? orderingPropertyName = null, bool descending = false)
             {
-                throw new NotImplementedException();
+                return parent.ChampDbContext.Champions.GetItemsWithFilterAndOrdering(
+                        c => true,
+                        index, count,
+                        orderingPropertyName, descending).Select(champion => champion.toModel());
             }
 
             public Task<IEnumerable<Champion?>> GetItemsByCharacteristic(string charName, int index, int count, string? orderingPropertyName = null, bool descending = false)

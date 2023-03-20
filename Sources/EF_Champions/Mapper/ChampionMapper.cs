@@ -16,5 +16,16 @@ namespace EF_Champions.Mapper
                 Image = champion.Image.Base64
             };
         }
+
+        public static Champion EntityToModel(this ChampionEntity championEntity)
+        {
+            Champion modelChampion = new Champion(championEntity.Name, championEntity.Class, championEntity.Icon, championEntity.Image, championEntity.Bio);
+            foreach(var skill in championEntity.Skills)
+            {
+                modelChampion.AddSkill(skill.EntityToModel());
+            }
+            return modelChampion;
+           
+        }
     }
 }

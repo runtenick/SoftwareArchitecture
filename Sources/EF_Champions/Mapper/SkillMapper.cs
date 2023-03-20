@@ -14,5 +14,10 @@ namespace EF_Champions.Mapper
                 SkillType = skill.Type
             };
         }
+
+        public static Skill EntityToModel(this SkillEntity skillEntity)
+           => new Skill(skillEntity.Name, skillEntity.SkillType, skillEntity.Description);
+
+
     }
 }
