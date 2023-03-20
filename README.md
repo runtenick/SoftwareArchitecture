@@ -26,3 +26,6 @@ Table of contents :page_with_curl:
 
 
 <!--te-->
+
+## Structure
+ ![Project's architecture diagram](./Documentation/architecture.png "Project's architecture diagram")
