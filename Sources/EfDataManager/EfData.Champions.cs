@@ -68,13 +68,11 @@ namespace EfDataManager
                 }
             }
 
-            public Task<IEnumerable<Champion?>> GetItems(int index, int count, string? orderingPropertyName = null, bool descending = false)
-            {
-                return parent.ChampDbContext.Champions.GetItemsWithFilterAndOrdering(
+            public async Task<IEnumerable<Champion?>> GetItems(int index, int count, string? orderingPropertyName = null, bool descending = false)
+                => parent.ChampDbContext.Champions.GetItemsWithFilterAndOrdering(
                         c => true,
                         index, count,
-                        orderingPropertyName, descending).Select(champion => champion.toModel());
-            }
+                        orderingPropertyName, descending).Select(c => c.EntityToModel());
 
             public Task<IEnumerable<Champion?>> GetItemsByCharacteristic(string charName, int index, int count, string? orderingPropertyName = null, bool descending = false)
             {
