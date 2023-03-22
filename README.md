@@ -160,9 +160,17 @@ StubData --> RunePagesManager
 SkinsManager ..|> ISkinsManager
 StubData --> SkinsManager
 
+<<<<<<< Updated upstream
 StubData --> RunesManager
 StubData --> "*" Champion
 StubData --> "*" Rune
 StubData --> "*" RunePages
 StubData --> "*" Skins
 ```
+=======
+This client connects to a __Web API__, which serves as a bridge between the model and the data storage layer. The Web API interacts with an Entity Framework __(EF) database__, which is responsible for storing and managing data. In its early developement, the API would also use fake data, hence the connection with the Stub. Both the model and the API interact with this database to retrieve and store data as needed. Additionnaly, the Web API is hosted on a __server__ [1], which allows clients to easily access it and interact with the model and data.
+
+By using a central model and a Web API, we have designed a flexible architecture that can accommodate different types of clients and data storage systems.
+
+[1]  _To be more precise, the Web API is deployed on a Docker container, the purpose of this representation is simply to convey the idea that the API is hosted on a separate system._
+>>>>>>> Stashed changes
