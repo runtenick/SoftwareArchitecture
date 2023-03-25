@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFChampions.Migrations
 {
     [DbContext(typeof(ChampDbContext))]
-    [Migration("20230325142813_stubbedCtx")]
-    partial class stubbedCtx
+    [Migration("20230325154146_fixedDataSeed")]
+    partial class fixedDataSeed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,20 +73,6 @@ namespace EFChampions.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Champions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Class = 1,
-                            Name = "Akali"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Class = 2,
-                            Name = "Aatrox"
-                        });
                 });
 
             modelBuilder.Entity("EF_Champions.Entities.RuneEntity", b =>
@@ -178,36 +164,6 @@ namespace EFChampions.Migrations
                     b.HasIndex("ChampionForeignKey");
 
                     b.ToTable("Skins");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ChampionForeignKey = 1,
-                            Name = "Aiguillon",
-                            Price = 650f
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ChampionForeignKey = 1,
-                            Name = "All-Star",
-                            Price = 1050f
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ChampionForeignKey = 2,
-                            Name = "Justicer",
-                            Price = 975f
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ChampionForeignKey = 2,
-                            Name = "Mecha Aatrox",
-                            Price = 1350f
-                        });
                 });
 
             modelBuilder.Entity("RuneEntityRunePageEntity", b =>

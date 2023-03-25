@@ -61,35 +61,31 @@ namespace EF_Champions
             modelBuilder.Entity<ChampionEntity>()
                 .HasMany(c => c.PagesRune)
                 .WithMany(p => p.Champions);
-
-            // Stubbed data seeding
-            ChampionEntity c1 = new ChampionEntity() { Id = 1, Name = "Akali", Class = ChampionClass.Assassin };
-            ChampionEntity c2 = new ChampionEntity() { Id = 2, Name = "Aatrox", Class = ChampionClass.Fighter };
-
-            modelBuilder.Entity<ChampionEntity>().HasData(c1, c2);
-
-            modelBuilder.Entity<SkinEntity>().HasData(
-                new { Id = 1, ChampionForeignKey = 1, Name = "Aiguillon", Price  = 650.0f},
-                new { Id = 2, ChampionForeignKey = 1, Name = "All-Star" , Price = 1050.0f},
-                new { Id = 3, ChampionForeignKey = 2, Name = "Justicer" , Price = 975.0f},
-                new { Id = 4, ChampionForeignKey = 2, Name = "Mecha Aatrox", Price = 1350.0f }
-            );
-
         }
 
-        public void Seed() 
+        public void Seed()
         {
-
-            if (!Champions.Any()) 
+            var champions = new[]
             {
-                Champions.AddRange(new[] 
-                {
-                    new ChampionEntity() { Name = "Satoru", Class = ChampionClass.Assassin},
-                    new ChampionEntity() { Name = "Nana", Class = ChampionClass.Fighter},
-                });
+                new ChampionEntity() { Name = "Akali", Class = ChampionClass.Assassin },
+                new ChampionEntity() { Name = "Aatrox", Class = ChampionClass.Fighter },
+            };
 
-                SaveChanges();
-            }
+            var skins = new[]
+            {
+                new SkinEntity() { Champion = champions[0], Name = "Aiguillon", Price = 650.0f },
+                new SkinEntity() { Champion = champions[0], Name = "All-Star", Price = 1050.0f },
+                new SkinEntity() { Champion = champions[1], Name = "Justicer", Price = 975.0f },
+                new SkinEntity() { Champion = champions[1], Name = "Mecha Aatrox", Price = 1350.0f }
+            };
+
+            champions[0].Skins.Add(skins[0]);
+            champions[0].Skins.Add(skins[1]);
+            champions[1].Skins.Add(skins[2]);
+            champions[1].Skins.Add(skins[3]);
+
+            SaveChanges();
+
         }
     }
 }

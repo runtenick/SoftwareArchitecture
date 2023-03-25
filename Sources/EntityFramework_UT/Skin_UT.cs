@@ -59,7 +59,7 @@ namespace EntityFramework_UT
             using (var context = new ChampDbContext(options))
             {
                 context.Database.EnsureCreated();
-                context.Champions.RemoveRange(context.Champions);
+                context.Skins.RemoveRange(context.Skins);
                 
                 SkinEntity stinger = new SkinEntity() { Name = "Stinger", Price = 5.0F };
                 SkinEntity infernal = new SkinEntity() { Name = "Infernal", Price = 100.0F };

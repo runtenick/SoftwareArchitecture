@@ -2,12 +2,10 @@
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace EFChampions.Migrations
 {
     /// <inheritdoc />
-    public partial class stubbedCtx : Migration
+    public partial class fixedDataSeed : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -168,26 +166,6 @@ namespace EFChampions.Migrations
                         principalTable: "Skill",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.InsertData(
-                table: "Champions",
-                columns: new[] { "Id", "Bio", "Class", "Icon", "Image", "Name" },
-                values: new object[,]
-                {
-                    { 1, null, 1, null, null, "Akali" },
-                    { 2, null, 2, null, null, "Aatrox" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Skins",
-                columns: new[] { "Id", "ChampionForeignKey", "Description", "Icon", "Image", "Name", "Price" },
-                values: new object[,]
-                {
-                    { 1, 1, null, null, null, "Aiguillon", 650f },
-                    { 2, 1, null, null, null, "All-Star", 1050f },
-                    { 3, 2, null, null, null, "Justicer", 975f },
-                    { 4, 2, null, null, null, "Mecha Aatrox", 1350f }
                 });
 
             migrationBuilder.CreateIndex(
