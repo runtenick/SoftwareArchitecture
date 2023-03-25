@@ -149,13 +149,20 @@ namespace EfDataManager
                         throw new ArgumentNullException("We need a valid old and new item to update");
                     }
 
-                    ChampionEntity champ = await parent.ChampDbContext.Champions.FindAsync(oldItem);
+                    // it would be better to do with Id, in order to assure uniqueness
+                    ChampionEntity champ = await parent.ChampDbContext.Champions.FirstOrDefaultAsync(champ => champ.Name == oldItem.Name);
                     if (champ == null)
                     {
                         return null;
                     }
-                    champ = newItem.ChampionToEntity();
-                    parent.ChampDbContext.SaveChanges();
+                    champ.Name = newItem.Name;
+                    champ.Class = newItem.Class;
+                    champ.Bio = newItem.Bio;
+                    champ.Image = newItem.Image.Base64;
+                    champ.Icon = newItem.Icon;
+                    
+                    
+                    await parent.ChampDbContext.SaveChangesAsync();
                 }
                 catch (Exception exception) 
                 {
