@@ -34,6 +34,5 @@ namespace EfDataManager
 
             return filteredSet.Skip(index * count).Take(count).ToList();
         }
-
     }
 }

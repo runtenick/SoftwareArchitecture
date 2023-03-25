@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EfDataManager", "EfDataMana
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LolApp", "..\Sources_MobileApp\LolApp\LolApp.csproj", "{0C898A04-092A-49AA-BE65-8AE818A2AF50}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpManager", "HttpManager\HttpManager.csproj", "{AEA5E649-8C8E-4A2F-8AA7-76FC2FF3CFB0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,10 @@ Global
 		{0C898A04-092A-49AA-BE65-8AE818A2AF50}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C898A04-092A-49AA-BE65-8AE818A2AF50}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0C898A04-092A-49AA-BE65-8AE818A2AF50}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{AEA5E649-8C8E-4A2F-8AA7-76FC2FF3CFB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEA5E649-8C8E-4A2F-8AA7-76FC2FF3CFB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEA5E649-8C8E-4A2F-8AA7-76FC2FF3CFB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEA5E649-8C8E-4A2F-8AA7-76FC2FF3CFB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

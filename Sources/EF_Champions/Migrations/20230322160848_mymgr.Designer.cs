@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFChampions.Migrations
 {
     [DbContext(typeof(ChampDbContext))]
-    [Migration("20230318053643_myMgr")]
-    partial class myMgr
+    [Migration("20230322160848_mymgr")]
+    partial class mymgr
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,25 +74,6 @@ namespace EFChampions.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Champions");
-                });
-
-            modelBuilder.Entity("EF_Champions.Entities.RuneCategoryEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Category")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("RuneId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RuneId");
-
-                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("EF_Champions.Entities.RuneEntity", b =>
@@ -229,15 +210,6 @@ namespace EFChampions.Migrations
                         .HasForeignKey("SkillsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("EF_Champions.Entities.RuneCategoryEntity", b =>
-                {
-                    b.HasOne("EF_Champions.Entities.RuneEntity", "Rune")
-                        .WithMany()
-                        .HasForeignKey("RuneId");
-
-                    b.Navigation("Rune");
                 });
 
             modelBuilder.Entity("EF_Champions.Entities.SkinEntity", b =>

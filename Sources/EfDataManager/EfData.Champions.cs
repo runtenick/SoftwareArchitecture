@@ -1,5 +1,6 @@
 ﻿using EF_Champions.Entities;
 using EF_Champions.Mapper;
+using Microsoft.EntityFrameworkCore;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -59,7 +60,7 @@ namespace EfDataManager
                     {
                         parent.ChampDbContext.Champions.Remove(champ);
                         parent.ChampDbContext.SaveChanges();
-                        return true;
+                        return true;    
                     }
                 }
                 catch (Exception ex)
@@ -104,10 +105,8 @@ namespace EfDataManager
                 throw new NotImplementedException();
             }
 
-            public Task<int> GetNbItems()
-            {
-                throw new NotImplementedException();
-            }
+            public async Task<int> GetNbItems()
+                => await parent.ChampDbContext.Champions.CountAsync();
 
             public Task<int> GetNbItemsByCharacteristic(string charName)
             {

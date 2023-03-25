@@ -131,7 +131,7 @@ namespace OLO_Champignons.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "error when trying to put champion");
-                return BadRequest(ex.Message);
+                return BadRequest(ex.Message);  
             }
             
         }
