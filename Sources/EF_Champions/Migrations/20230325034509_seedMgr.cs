@@ -5,7 +5,7 @@
 namespace EFChampions.Migrations
 {
     /// <inheritdoc />
-    public partial class mymgr : Migration
+    public partial class seedMgr : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

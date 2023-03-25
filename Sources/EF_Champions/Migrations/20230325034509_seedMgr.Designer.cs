@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFChampions.Migrations
 {
     [DbContext(typeof(ChampDbContext))]
-    [Migration("20230322160848_mymgr")]
-    partial class mymgr
+    [Migration("20230325034509_seedMgr")]
+    partial class seedMgr
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

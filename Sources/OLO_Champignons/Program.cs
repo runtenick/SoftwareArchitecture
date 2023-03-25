@@ -21,6 +21,7 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetService<ChampDbContext>();
     context.Database.EnsureCreated();
+    context.Seed();
 }
 
 // Configure the HTTP request pipeline.

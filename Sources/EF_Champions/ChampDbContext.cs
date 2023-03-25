@@ -63,5 +63,19 @@ namespace EF_Champions
                 .WithMany(p => p.Champions);
                
         }
+
+        public void Seed() 
+        {
+            if (!Champions.Any()) 
+            {
+                Champions.AddRange(new[] 
+                {
+                    new ChampionEntity() { Name = "Satoru", Class = ChampionClass.Assassin},
+                    new ChampionEntity() { Name = "Nana", Class = ChampionClass.Fighter},
+                });
+
+                SaveChanges();
+            }
+        }
     }
 }
