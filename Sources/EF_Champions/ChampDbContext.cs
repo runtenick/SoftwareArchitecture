@@ -61,11 +61,25 @@ namespace EF_Champions
             modelBuilder.Entity<ChampionEntity>()
                 .HasMany(c => c.PagesRune)
                 .WithMany(p => p.Champions);
-               
+
+            // Stubbed data seeding
+            ChampionEntity c1 = new ChampionEntity() { Id = 1, Name = "Akali", Class = ChampionClass.Assassin };
+            ChampionEntity c2 = new ChampionEntity() { Id = 2, Name = "Aatrox", Class = ChampionClass.Fighter };
+
+            modelBuilder.Entity<ChampionEntity>().HasData(c1, c2);
+
+            modelBuilder.Entity<SkinEntity>().HasData(
+                new { Id = 1, ChampionForeignKey = 1, Name = "Aiguillon", Price  = 650.0f},
+                new { Id = 2, ChampionForeignKey = 1, Name = "All-Star" , Price = 1050.0f},
+                new { Id = 3, ChampionForeignKey = 2, Name = "Justicer" , Price = 975.0f},
+                new { Id = 4, ChampionForeignKey = 2, Name = "Mecha Aatrox", Price = 1350.0f }
+            );
+
         }
 
         public void Seed() 
         {
+
             if (!Champions.Any()) 
             {
                 Champions.AddRange(new[] 

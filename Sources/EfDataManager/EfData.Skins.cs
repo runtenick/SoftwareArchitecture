@@ -1,6 +1,9 @@
-﻿using Model;
+﻿using EF_Champions.Mapper;
+using Microsoft.EntityFrameworkCore;
+using Model;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,9 +34,14 @@ namespace EfDataManager
                 throw new NotImplementedException();
             }
 
-            public Task<IEnumerable<Skin?>> GetItemsByChampion(Champion? champion, int index, int count, string? orderingPropertyName = null, bool descending = false)
+            private static Func<Skin, Champion?, bool> filterByChampion = (skin, champion) => champion != null && skin.Champion.Equals(champion!);
+
+            public async Task<IEnumerable<Skin?>> GetItemsByChampion(Champion? champion, int index, int count, string? orderingPropertyName = null, bool descending = false)
             {
-                throw new NotImplementedException();
+                return parent.ChampDbContext.Skins.Include("Champion").GetItemsWithFilterAndOrdering(
+                    s => s.Champion.Name.Equals(champion?.Name),
+                    index, count,
+                    orderingPropertyName, descending).Select(skin => skin?.EntityToModel());
             }
 
             public Task<IEnumerable<Skin?>> GetItemsByName(string substring, int index, int count, string? orderingPropertyName = null, bool descending = false)
@@ -41,10 +49,8 @@ namespace EfDataManager
                 throw new NotImplementedException();
             }
 
-            public Task<int> GetNbItems()
-            {
-                throw new NotImplementedException();
-            }
+            public async Task<int> GetNbItems()
+                => await parent.ChampDbContext.Skins.CountAsync();
 
             public Task<int> GetNbItemsByChampion(Champion? champion)
             {

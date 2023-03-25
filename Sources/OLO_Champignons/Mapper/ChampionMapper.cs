@@ -8,6 +8,12 @@ namespace Api.Mapper
     {
         public static ChampionDto ToDto(this Champion champion)
         {
+            var skins = new List<string>();
+            foreach(var skin in champion.Skins)
+            {
+                skins.Add(skin.Name);
+            }
+
             return new ChampionDto()
             {
                 Name = champion.Name,
@@ -15,6 +21,7 @@ namespace Api.Mapper
                 Icon = champion.Icon,
                 Bio = champion.Bio,
                 Image = champion.Image.Base64
+
             };
         }
         public static Champion ToModel(this ChampionDto championDto)

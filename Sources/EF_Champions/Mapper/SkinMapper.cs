@@ -21,7 +21,13 @@ namespace EF_Champions.Mapper
                 Icon = skin.Icon,
                 Champion = skin.Champion.ChampionToEntity()
             };
-        } 
+        }
+
+        public static Skin EntityToModel(this SkinEntity skinEntity)
+        {
+            return new Skin(skinEntity.Name, skinEntity.Champion.EntityToModel(), skinEntity.Price, null, skinEntity.Description);
+        }
+
 
     }
 }
