@@ -51,7 +51,7 @@ namespace EfDataManager
                         throw new ArgumentNullException(nameof(item));
                     }
 
-                    ChampionEntity champ = await parent.ChampDbContext.Champions.FindAsync(item.ChampionToEntity());
+                    ChampionEntity champ = await parent.ChampDbContext.Champions.FirstOrDefaultAsync(champ => champ.Name == item.Name);
                     if(champ == null)
                     {
                         return false;
