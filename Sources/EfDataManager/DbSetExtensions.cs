@@ -10,29 +10,21 @@ namespace EfDataManager
 {
     public static class DbSetExtensions
     {
-         // Expression<Func<TEntity, bool>>: this syntax is used to represent a lambda expression that takes a TEntity and returns a bool
-        public static IEnumerable<TEntity> GetItemsWithFilterAndOrdering<TEntity>(this DbSet<TEntity> dbSet, Func<TEntity, bool> filter, int index, int count, string? orderingPropertyName = null, bool descending = false)
-        where TEntity : class // to ensure that TEntity ia a class and not a value type (int, long etc.)
+        internal static IEnumerable<T?> GetItemsWithFilterAndOrdering<T>(this IEnumerable<T> collection,
+            Func<T, bool> filter, int index, int count, string? orderingPropertyName = null, bool descending = false)
         {
-            var filteredSet = dbSet.Where(filter);
-
+            IEnumerable<T> temp = collection;
+            temp = temp.Where(item => filter(item));
             if (orderingPropertyName != null)
             {
-                if (descending)
+                var prop = typeof(T).GetProperty(orderingPropertyName!);
+                if (prop != null)
                 {
-                    filteredSet = filteredSet.OrderByDescending(e => e.GetType()
-                        .GetProperty(orderingPropertyName)
-                        .GetValue(e, null));
-                }
-                else
-                {
-                    filteredSet = filteredSet.OrderBy(e => e.GetType()
-                        .GetProperty(orderingPropertyName)
-                        .GetValue(e, null));
+                    temp = descending ? temp.OrderByDescending(item => prop.GetValue(item))
+                                        : temp.OrderBy(item => prop.GetValue(item));
                 }
             }
-
-            return filteredSet.Skip(index * count).Take(count).ToList();
+            return temp.Skip(index * count).Take(count);
         }
     }
 }

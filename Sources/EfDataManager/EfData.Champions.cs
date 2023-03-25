@@ -85,10 +85,12 @@ namespace EfDataManager
                 throw new NotImplementedException();
             }
 
-            public Task<IEnumerable<Champion?>> GetItemsByName(string substring, int index, int count, string? orderingPropertyName = null, bool descending = false)
-            {
-                throw new NotImplementedException();
-            }
+            private Func<Champion, string, bool> filterByName = (champ, substring) => champ.Name.Contains(substring, StringComparison.InvariantCultureIgnoreCase);
+
+            public async Task<IEnumerable<Champion?>> GetItemsByName(string substring, int index, int count, string? orderingPropertyName = null, bool descending = false)
+                => parent.ChampDbContext.Champions.GetItemsWithFilterAndOrdering(
+                    champ => filterByName(champ.EntityToModel(), substring), index, count, orderingPropertyName, descending).Select(champ => champ.EntityToModel());
+                
 
             public Task<IEnumerable<Champion?>> GetItemsByRunePage(RunePage? runePage, int index, int count, string? orderingPropertyName = null, bool descending = false)
             {
