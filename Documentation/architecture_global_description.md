@@ -1,0 +1,1 @@
+ # Description of the software's global architecture

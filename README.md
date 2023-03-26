@@ -37,217 +37,66 @@ By using a central model and a Web API, we have designed a flexible architecture
 [1]  _To be more precise, the Web API is deployed on a Docker container, the purpose of this representation is simply to convey the idea that the API is hosted on a separate system._
 
 ## Diagram Details
-_In this next section, I will try to detail the different connections you see in the diagram while giving some code snippets from the project's source to demonstrate how every bit was implemented._  
-
-### Client-Model Communication 
-
-Let's take a more technical look at how the client and the model communicate. I invite you to first read about the [model](#model) and how it is structured to better understand this part.  
-The client communicates with the model through an instance of the `IDataManager` class. Thanks to our abstraction layer with the `IDataManager`, everything is easily accessible and all layers are _interchangeable_. 
+_[In this next section, I will try to detail the different connections you see in the diagram while giving some code snippets from the project's source to demonstrate how every bit was implemented.](#./Documentation/architecture_global_description.md)_  
 
 
-As I previously explained, in the early stages of development, the Model used fake data provided by the Stub. The green Stub box in the diagram represents this data source. The Model has a reference to the Stub, which is indicated by a green arrow connecting the two elements. In terms of code, this happens at the `MauiProgram.cs` class:
-
-> MauiPorgram.cs
-```c#
-public static class MauiProgram
-{
-	public static MauiApp CreateMauiApp()
-	{
-		var builder = MauiApp.CreateBuilder();
-		builder
-			.UseMauiApp<App>()
-			.UseMauiCommunityToolkit()
-			.ConfigureFonts(fonts =>
-			{
-				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-				fonts.AddFont("Font Awesome 6 Free-Solid-900.otf", "FASolid");
-			});
-		builder.Services.AddSingleton<IDataManager, StubData>()
-						.AddSingleton<ChampionsMgrVM>()
-						.AddSingleton<SkinsMgrVM>()
-						.AddSingleton<ApplicationVM>()
-						.AddSingleton<ChampionsPage>();
-
-#if DEBUG
-		builder.Logging.AddDebug();
-#endif
-
-		return builder.Build();
-	}
-}
-```
-
-* As you can see, we are declaring a _dependecy injection_ for the IDataManager interface to use the `StubData` as its implementation: `builder.Services.AddSingleton<IDataManager, StubData>()`. The `AddSingleton` method is used to say that we will have a singleton instance of the `IDataManager` (which is ideal here).
-
-* As the project progressed and we wanted to use real data in our app, we simply had to update this line of code, replacing `StubData` with `EfData` (detailed [here](#efdata)), the new interface we've implemented that _directly consumes our [Entity Framework database](#database-with-entity-framework):_
-
-```
-builder.Services.AddSingleton<IDataManager, EfData>()
-```
-### Model's API Client and Web API
-Instead of directly consuming our database, using `EfData`, the client can also chose to query the data from [our API](#restful-api) (represented by the double-sided arrow in the diagram). To enable this, we will use yet another interface implmenting `IDataManager`, which is the red box you see attached to the model on the diagram, the `HttpManager` class.
-
-> HttpManager.cs
-```c# 
-public partial class HttpManager : IDataManager
-{
-   public HttpManager(HttpClient httpClient)
-   {
-      HttpClient = httpClient;
-      ChampionsMgr = new ChampionMgr(this);
-   }
-
-   public IChampionsManager ChampionsMgr { get; }
-
-   public ISkinsManager SkinsMgr { get; }
-
-   public IRunesManager RunesMgr { get; }
-
-   public IRunePagesManager RunePagesMgr { get; }
-
-   protected HttpClient HttpClient { get; set; }
-}
-```
-
-To better understand how this class is used for the model to communicate with the API, we can look at the two methods we use in the partial class `ChampionsMgr`:
-
-> HttpManager.Champion.cs
-```c#
-public partial class HttpManager
-{
-   public class ChampionMgr : IChampionsManager
-   {
-      private readonly HttpManager parent;
-      public ChampionMgr(HttpManager parent)
-            => this.parent = parent;
-
-      // GET
-      public async Task<IEnumerable<Champion?>> GetItems(int index, int count, string? orderingPropertyName = null, bool descending = false)
-      {
-         var response = await parent.HttpClient.GetAsync($"api/Champions?index={index}&count={count}");
-         if (!response.IsSuccessStatusCode)
-         {
-            throw new HttpRequestException($"Error while getting champions, status code: {response.StatusCode}");
-         }
-         var page = await response.Content.ReadFromJsonAsync<Page>();
-         return page.MyChampions.Select(c => c.ToModel());
-      }
-
-      // GET by NAME
-      public async Task<IEnumerable<Champion?>> GetItemsByName(string substring, int index, int count, string? orderingPropertyName = null, bool descending = false)
-      {
-         var response = await parent.HttpClient.GetAsync($"api/Champions/{substring}");
-         if (!response.IsSuccessStatusCode)
-         {
-            throw new HttpRequestException($"Error while getting champion {substring}, status code: {response.StatusCode}");
-         }
-         var champion = await response.Content.ReadFromJsonAsync<Champion>();
-         var champions = new List<Champion>
-         {
-            champion
-         };
-         return champions;
-      }
-
-      // Other methods ...
-   }
-}
-```
-In this particular case, the `HttpManager` class is used to manage champion data through the `ChampionMgr` class, which implements the `IChampionsManager` interface.
-
-Through the `ChampionMgr` the client will be able to perform CRUD operations on champions data. For example, the `GetItems` method sends an HTTP GET request to the API to retrieve a list of champions, while the `GetItemsByName` method sends an HTTP GET request a specific champion.
-
-The _parent parameter_ in each of these methods is an instance of the `HttpManager` class that is used to make the HTTP requests. The `HttpClient` attribute is used to create and send the requests.
-
-The goal of this API client is to allow us to abstract away the details of the database so that, we can retrieve or manipulate data from the API without needing to understand the underlying database or infrastructure.
-
-_You'll find more details about this API's structure [here](#restful-api)._
-
-### API and Database
-To clarify, the data that is requested through the API is __also__ retrieved from our Entity Framework (EF) database. This is why the diagram shows a connection between the __Web API__ and the __EF Database__.
-
-In our program, each controller in the API has an `IDataManager` attribute. This allows us to access a single instance of the `IDataManager` that we define in our __Program.cs__ file, similarly to what we did on the __MauiProgram.cs__. Here is an example with the `Get` method from the `ChampionsController` class:
-
-> ChampionsController.cs
-```c#
-[Route("api/[controller]")]
-[ApiController]
-public class ChampionsController : ControllerBase
-{
-   public IDataManager dataManager;
-
-   private readonly ILogger<ChampionsController> _logger;
-
-   public ChampionsController(IDataManager d, ILogger<ChampionsController> log)
-   {
-      dataManager = d;
-      _logger = log;
-   }
-
-   // GET: api/<Champion>
-   [HttpGet]
-   public async Task<IActionResult> Get([FromQuery]PageRequest pageRequest)
-   {
-      // Logger ...
-      
-      try
-      {
-         var champions = (await dataManager.ChampionsMgr.GetItems(pageRequest.Index,
-            pageRequest.Count)).Select(champion => champion?.ToDto());
-
-         var page = new Page()
-         {
-            MyChampions = champions,
-            Index = pageRequest.Index,
-            Count = pageRequest.Count,
-            TotalCount = await dataManager.ChampionsMgr.GetNbItems()
-         };
-         return Ok(page);
-      }
-      // catch ...
-   }
-   // Other methods ...
-}
-```
-
-Here you can see the `IDataManager` class beeing used to fetch the list of champions : 
-```
-var champions = (await dataManager.ChampionsMgr.GetItems(pageRequest.Index,
-            pageRequest.Count)).Select(champion => champion?.ToDto());
-```
-
-And just like with the __MauiProgram.cs__, we can modify the implementation type of `IDataManager` with _dependecy injection_ through the __Program.cs__ file:
-
-> Program.cs
-```c#
-var builder = WebApplication.CreateBuilder(args);
-
-// ...
-
-/* Dependecy injection */
-builder.Services.AddScoped<IDataManager, EfData>();
-
-// ...
-
-app.Run();
-```
-
-In the beginning of the project, when we still had no real data, we used the stub:
-
-```
-builder.Services.AddScoped<IDataManager, StubData>();
-```
 
 _[Table of contents](#table-of-contents-📃)_
 
-___
+---
 
-### Model
+## Database
+
+### Entity Framework: Why Use It
+Entity Framework (EF) is an Object-Relational Mapper (ORM) that simplifies data access as developers can work with relational data using domain-specific objects. With EF we didn't have to write any explicit SQL to build the database or the query it.
+
+### Mappers and Entities
+__Entities__ are classes with no logic that represent database tables. They consist of properties that define the columns of the table and relationships with other entities. In our code we have the following `ChampionEntity`, `SkinEntity`, `SkillEntity`, `RunePage` and `RuneEntity`.
+
+For each entity we also have __mappers__, classes that handle the conversion between domain models and entities. They offer a way to map the properties of a domain model to corresponding properties of an entity and vice versa, ensuring data consistency after it moves around from database to model etc.
+
+### How This Database Was Built
+ The `ChampDbContext` class, derived from DbContext, is the main connection point between EF and the database. It contains `DbSet` properties (Champions, Skins, Skills, Runes, and RunePages) that represent the different tables in the database.
+
+The `OnModelCreating` method in `ChampDbContext` sets up the relationships between the entities and configures the behavior of the database.
+
+### Different Relationships Implemented
+With this model, we had to implement two types of relationships in the database:
+
+__One-to-many__: One `ChampionEntity` is related to multiple SkinEntity objects. This relationship is configured using the `HasOne` and `WithMany` methods in `OnModelCreating`.
+
+__Many-to-many__: The `ChampionEntity` and `SkillEntity` classes have a many-to-many relationship, meaning each champion has multiple skills and each skill has multiple champions. A similar relationship exists between `RuneEntity` and `RunePageEntity`, as well as `ChampionEntity` and `RunePageEntity` (__many-to-many-to-many__). These relationships are configured using the `HasMany` and `WithMany` methods in `OnModelCreating`.
+
+### Why I used Fluent API Instead of Data Annotations or Naming Conventions
+Frst I tried using naming convention but finally fluent API seemed to be the most practical one, as well as my professor's recommendation.
+
+Using Fluent API keeps the configuration separate from the entity classes, which keeps the entity classes cleaner. Also the configuration is centralized on the OnModelCreating method which made it easier to manage and modify the database configuration.
+
+### Constantly Using Migrations and Recreating Them
+Throughout the development process, migrations were used to keep the database schema up to date with changes in the code. Whenever a new table was added or a significant change was made to the database, the previous migration was deleted and a new one was recreated to ensure that the database schema stayed in sync with the latest code changes.
+
+_[Table of contents](#table-of-contents-📃)_
+
+---
+
+## Restful API
+
+_[Table of contents](#table-of-contents-📃)_
+
+---
+
+## CI
+
+_[Table of contents](#table-of-contents-📃)_
+
+---
+
+## Possible improvements
+
+## Model
 In order to better understand the code and architecture of the application, we will now take a closer look at the structure of the model, including its classes and interfaces. __It is important to note that the model was developed by our professor, Mr. Chevaldonne__.
 
 #### Class Diagram
-## Diagramme de classes du modèle
 ```mermaid
 classDiagram
 class LargeImage{
@@ -391,24 +240,40 @@ ISkinsManager <-- IDataManager : SkinsMgr
 IRunesManager <-- IDataManager : RunesMgr
 IRunePagesManager <-- IDataManager : RunePagesMgr
 ```
+
+#### Simplified Stub Class Diagram
+Here the `ChampionsManager`, `RunesManager`, `RunePagesManager`, and `SkinsManager` classes implement their respective _manager interfaces_ and are responsible for calling the appropriate methods on the `StubData` object to manipulate the data.
+
+```mermaid
+classDiagram
+direction TB;
+
+IDataManager <|.. StubData
+
+ChampionsManager ..|> IChampionsManager
+StubData --> ChampionsManager
+
+RunesManager ..|> IRunesManager
+StubData --> RunesManager
+
+RunePagesManager ..|> IRunePagesManager
+StubData --> RunePagesManager
+
+SkinsManager ..|> ISkinsManager
+StubData --> SkinsManager
+
+StubData --> RunesManager
+StubData --> "*" Champion
+StubData --> "*" Rune
+StubData --> "*" RunePages
+StubData --> "*" Skins
+```
+_[Table of contents](#table-of-contents-📃)_
+
 ---
 
-### Database
+## Conslusion
 
----
-
-### Restful API
-
----
-
-### CI
-
----
-
-### Possible improvements
-
----
-
-### Conslusion
+_[Table of contents](#table-of-contents-📃)_
 
 ---
