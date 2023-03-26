@@ -12,7 +12,7 @@ namespace EntityFramework_UT.Theory
 {
     public class RunePageUT_theory
     {
-        public static IEnumerable<object[]> Data_AddRuneToPage()
+        public static IEnumerable<object[]> Data_RunePage()
         {
             yield return new object[]
             {
@@ -35,7 +35,7 @@ namespace EntityFramework_UT.Theory
         }
 
         [Theory]
-        [MemberData(nameof(Data_AddRuneToPage))]
+        [MemberData(nameof(Data_RunePage))]
         public void Add_RunePage_Test(string name, ICollection<RuneEntity> runes, ICollection<ChampionEntity> champions)
         {
             var connection = new SqliteConnection("DataSource=:memory:");
@@ -69,7 +69,7 @@ namespace EntityFramework_UT.Theory
         }
 
         [Theory]
-        [MemberData(nameof(Data_AddRuneToPage))]
+        [MemberData(nameof(Data_RunePage))]
         public void Modify_RunePage_Test(string name, ICollection<RuneEntity> runes, ICollection<ChampionEntity> champions)
         {
             var connection = new SqliteConnection("DataSource=:memory:");
@@ -110,7 +110,7 @@ namespace EntityFramework_UT.Theory
         }
 
         [Theory]
-        [MemberData(nameof(Data_AddRuneToPage))]
+        [MemberData(nameof(Data_RunePage))]
         public void Delete_RunePage_Test(string name, ICollection<RuneEntity> runes, ICollection<ChampionEntity> champions)
         {
             var connection = new SqliteConnection("DataSource=:memory:");
