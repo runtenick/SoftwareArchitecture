@@ -21,6 +21,34 @@ Table of contents :page_with_curl:
    * [Model, Business and Logic](#model-file_folder)
 
 
+List of doings / couldn't do
+=================
+
+- Api
+    - [x] ChampionsController
+    - [x] ChampionControllerTest
+    - [x] Use of Loggers
+    - [x] Pagination
+    - [x] GET api/\<Champion\>/Akali/skin
+    - [ ] Other controllers
+
+- EF
+    - [x] Entities
+    - [x] Mappers
+    - [x] One-to-Many
+    - [x] Many-to-Many (to-Many)
+    - [x] Fact tests
+    - [x] Theory + InlineData tests
+    - [x] Theory + DataMember tests
+    - [x] SqliteInMemory
+    - [ ] Dictionary
+
+- Other
+    - [x] CI with sonar
+    - [x] README
+    - [x] Documentation 
+    - [x] Detailed architecture diagram description
+    - [ ] MAUI link with EF or API
 
 
 
