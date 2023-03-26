@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFChampions.Migrations
 {
     [DbContext(typeof(ChampDbContext))]
-    [Migration("20230326043755_requiredName")]
+    [Migration("20230326045538_requiredName")]
     partial class requiredName
     {
         /// <inheritdoc />

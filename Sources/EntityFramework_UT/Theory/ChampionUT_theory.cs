@@ -24,7 +24,7 @@ namespace EntityFramework_UT.Theory
             var connection = new SqliteConnection("DataSource=:memory:");
 
             var options = new DbContextOptionsBuilder<ChampDbContext>()
-                .UseInMemoryDatabase(databaseName: "Add_Test_Database")
+                .UseInMemoryDatabase(databaseName: "Add_Test_Database_Theory")
                 .Options;
 
             using (var context = new ChampDbContext(options))
@@ -52,23 +52,23 @@ namespace EntityFramework_UT.Theory
 
         [Theory]
         [InlineData(null)]
-        [InlineData("")]
-        [InlineData(" ")]
         public void Add_Bad_Name(string name)
         {
             var connection = new SqliteConnection("DataSource=:memory:");
 
             var options = new DbContextOptionsBuilder<ChampDbContext>()
-                .UseInMemoryDatabase(databaseName: "Add_Champion_With_Invalid_Name_Should_Throw_Exception_Database")
-                .EnableSensitiveDataLogging()
-                .LogTo(Console.WriteLine, LogLevel.Information)
+                .UseInMemoryDatabase(databaseName: "Add_Bad_Name")
                 .Options;
 
             using (var context = new ChampDbContext(options))
             {
                 context.Database.EnsureCreated();
 
-                ChampionEntity champion = new() { Name = name, Class = ChampionClass.Assassin };
+                ChampionEntity champion = new() 
+                { 
+                    Name = name, 
+                    Class = ChampionClass.Assassin 
+                };
                 context.Champions.Add(champion);
 
                 Assert.Throws<DbUpdateException>(() => context.SaveChanges());

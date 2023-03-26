@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EntityFramework_UT.Theory
 {
-    internal class RuneUT_theory
+    public class RuneUT_theory
     {
     }
 }
