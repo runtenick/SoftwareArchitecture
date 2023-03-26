@@ -29,7 +29,7 @@ Table of contents :page_with_curl:
 ## Introduction
 Throughout this project, I worked independently to maximize my learning. By working alone, I was able to ensure that I thoroughly understood every aspect of the project, rather than skipping over certain parts. To keep the master branch clean, I created separate branches for each feature I worked on, and merged most of them through the command line. However, a couple of branches were explicitly merged using the merge request feature in Gitea, as it was part of the project's requirement. You can find a complete history of all the branches in the image below.
 
-![Branches](./Documentation/branches.png")
+![Branches](./Documentation/branches.png)
 
 To make it easy to understand the project's evolution, I made sure to write clear and explicit commit messages. This also helped me revisit specific points of the project when necessary.
 
