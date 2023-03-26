@@ -21,8 +21,7 @@ Table of contents :page_with_curl:
    * [Model, Business and Logic](#model-file_folder)
 
 
-List of doings / couldn't do
-=================
+### List of doings / couldn't do
 
 - Api
     - [x] ChampionsController
@@ -62,6 +61,48 @@ Throughout this project, I worked independently to maximize my learning. By work
 To make it easy to understand the project's evolution, I made sure to write clear and explicit commit messages. This also helped me revisit specific points of the project when necessary.
 
 While I haven't provided full documentation for every class in every file, I did leave several comments throughout the code to help clarify certain aspects and for personnal use (mostly to remeber things between classes). In this README, I have made a concerted effort to provide detailed documentation explaining how each part of the project was implemented and my choices.
+
+## Installation
+
+### Prerequisites
+Before installing the project, make sure you have the following installed:
+
+* .NET 6.0 SDK
+* Docker (for running the Web API on a separate container)
+
+### Installing 
+1. Cloning repository
+```
+git clone https://codefirst.iut.uca.fr/git/nicolas.franco/Projet_EntityFramework.git
+```
+
+2. Open the project solution file and restore the NuGet packages by running the following command:
+```
+dotnet restore
+```
+ 
+3. Build the solution by running the following command :
+```
+dotnet build
+```
+
+### Setup the web API
+
+4. You can setup the web api using __docker__, with the following:
+```
+docker pull codefirst.iut.uca.fr/nicolas.franco/projet_entityframework:latest
+docker run -d -p 8080:80 --name mywebapi_container codefirst.iut.uca.fr/nicolas.franco/projet_entityframework:latest
+```
+
+5. Run the project:
+```
+dotnet run --project LolApp
+```
+
+> :warning: **Current version of the master branch doesn't include the LolApp project since I couldn't make it work in time. You most likely won't be able to run the solution by following these steps :construction:**
+```
+dotnet run --project Api
+```
 
 ## Structure :building_construction:
  ![Project's architecture diagram](./Documentation/architecture.png "Project's architecture diagram")
