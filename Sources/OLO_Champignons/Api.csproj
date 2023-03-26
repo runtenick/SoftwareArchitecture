@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DTO\DTO.csproj" />
+    <ProjectReference Include="..\EfDataManager\EfDataManager.csproj" />
     <ProjectReference Include="..\StubLib\StubLib.csproj" />
   </ItemGroup>
 

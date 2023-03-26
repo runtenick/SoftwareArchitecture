@@ -14,5 +14,7 @@ namespace DTO
         public string? Bio { get; set; }
 
         public string? Image { get; set; }
+
+        IEnumerable<string> Skins { get; set; } = new List<string>();
     }
 }

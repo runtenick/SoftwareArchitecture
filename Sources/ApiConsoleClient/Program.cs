@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace ConsoleClient
 {
-    static class Porgram
+    static class Program
     {
         static async Task Main()
         {

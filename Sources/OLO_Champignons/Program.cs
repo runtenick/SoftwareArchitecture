@@ -1,3 +1,5 @@
+using EF_Champions;
+using EfDataManager;
 using Model;
 using StubLib;
 
@@ -11,9 +13,17 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 /* Injection de dépendance */
-builder.Services.AddScoped<IDataManager, StubData>();
+builder.Services.AddDbContext<ChampDbContext>();
+builder.Services.AddScoped<IDataManager, EfData>();
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetService<ChampDbContext>();
+    context.Database.EnsureCreated();
+    context.Seed();
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

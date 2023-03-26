@@ -61,7 +61,31 @@ namespace EF_Champions
             modelBuilder.Entity<ChampionEntity>()
                 .HasMany(c => c.PagesRune)
                 .WithMany(p => p.Champions);
-               
+        }
+
+        public void Seed()
+        {
+            var champions = new[]
+            {
+                new ChampionEntity() { Name = "Akali", Class = ChampionClass.Assassin },
+                new ChampionEntity() { Name = "Aatrox", Class = ChampionClass.Fighter },
+            };
+
+            var skins = new[]
+            {
+                new SkinEntity() { Champion = champions[0], Name = "Aiguillon", Price = 650.0f },
+                new SkinEntity() { Champion = champions[0], Name = "All-Star", Price = 1050.0f },
+                new SkinEntity() { Champion = champions[1], Name = "Justicer", Price = 975.0f },
+                new SkinEntity() { Champion = champions[1], Name = "Mecha Aatrox", Price = 1350.0f }
+            };
+
+            champions[0].Skins.Add(skins[0]);
+            champions[0].Skins.Add(skins[1]);
+            champions[1].Skins.Add(skins[2]);
+            champions[1].Skins.Add(skins[3]);
+
+            SaveChanges();
+
         }
     }
 }

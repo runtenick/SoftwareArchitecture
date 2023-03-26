@@ -1,5 +1,6 @@
 ﻿using EF_Champions.Entities;
 using EF_Champions.Mapper;
+using Microsoft.EntityFrameworkCore;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -50,7 +51,7 @@ namespace EfDataManager
                         throw new ArgumentNullException(nameof(item));
                     }
 
-                    ChampionEntity champ = await parent.ChampDbContext.Champions.FindAsync(item.ChampionToEntity());
+                    ChampionEntity champ = await parent.ChampDbContext.Champions.FirstOrDefaultAsync(champ => champ.Name == item.Name);
                     if(champ == null)
                     {
                         return false;
@@ -59,7 +60,7 @@ namespace EfDataManager
                     {
                         parent.ChampDbContext.Champions.Remove(champ);
                         parent.ChampDbContext.SaveChanges();
-                        return true;
+                        return true;    
                     }
                 }
                 catch (Exception ex)
@@ -68,10 +69,11 @@ namespace EfDataManager
                 }
             }
 
-            public Task<IEnumerable<Champion?>> GetItems(int index, int count, string? orderingPropertyName = null, bool descending = false)
-            {
-                throw new NotImplementedException();
-            }
+            public async Task<IEnumerable<Champion?>> GetItems(int index, int count, string? orderingPropertyName = null, bool descending = false)
+                => parent.ChampDbContext.Champions.GetItemsWithFilterAndOrdering(
+                        c => true,
+                        index, count,
+                        orderingPropertyName, descending).Select(c => c.EntityToModel());
 
             public Task<IEnumerable<Champion?>> GetItemsByCharacteristic(string charName, int index, int count, string? orderingPropertyName = null, bool descending = false)
             {
@@ -83,10 +85,12 @@ namespace EfDataManager
                 throw new NotImplementedException();
             }
 
-            public Task<IEnumerable<Champion?>> GetItemsByName(string substring, int index, int count, string? orderingPropertyName = null, bool descending = false)
-            {
-                throw new NotImplementedException();
-            }
+            private Func<Champion, string, bool> filterByName = (champ, substring) => champ.Name.Contains(substring, StringComparison.InvariantCultureIgnoreCase);
+
+            public async Task<IEnumerable<Champion?>> GetItemsByName(string substring, int index, int count, string? orderingPropertyName = null, bool descending = false)
+                => parent.ChampDbContext.Champions.GetItemsWithFilterAndOrdering(
+                    champ => filterByName(champ.EntityToModel(), substring), index, count, orderingPropertyName, descending).Select(champ => champ.EntityToModel());
+                
 
             public Task<IEnumerable<Champion?>> GetItemsByRunePage(RunePage? runePage, int index, int count, string? orderingPropertyName = null, bool descending = false)
             {
@@ -103,10 +107,8 @@ namespace EfDataManager
                 throw new NotImplementedException();
             }
 
-            public Task<int> GetNbItems()
-            {
-                throw new NotImplementedException();
-            }
+            public async Task<int> GetNbItems()
+                => await parent.ChampDbContext.Champions.CountAsync();
 
             public Task<int> GetNbItemsByCharacteristic(string charName)
             {
@@ -147,13 +149,20 @@ namespace EfDataManager
                         throw new ArgumentNullException("We need a valid old and new item to update");
                     }
 
-                    ChampionEntity champ = await parent.ChampDbContext.Champions.FindAsync(oldItem);
+                    // it would be better to do with Id, in order to assure uniqueness
+                    ChampionEntity champ = await parent.ChampDbContext.Champions.FirstOrDefaultAsync(champ => champ.Name == oldItem.Name);
                     if (champ == null)
                     {
                         return null;
                     }
-                    champ = newItem.ChampionToEntity();
-                    parent.ChampDbContext.SaveChanges();
+                    champ.Name = newItem.Name;
+                    champ.Class = newItem.Class;
+                    champ.Bio = newItem.Bio;
+                    champ.Image = newItem.Image.Base64;
+                    champ.Icon = newItem.Icon;
+                    
+                    
+                    await parent.ChampDbContext.SaveChangesAsync();
                 }
                 catch (Exception exception) 
                 {

@@ -131,7 +131,7 @@ namespace OLO_Champignons.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "error when trying to put champion");
-                return BadRequest(ex.Message);
+                return BadRequest(ex.Message);  
             }
             
         }
@@ -159,6 +159,41 @@ namespace OLO_Champignons.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "error when trying to delete champion");
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /*
+        * This route allows to get the skins of a champion
+        */
+        // GET api/<Champion>/Akali/skin
+        [HttpGet("{name}/skins")]
+        public async Task<IActionResult> GetChampionSkins(string name)
+        {
+            _logger.LogInformation($"Request to get champion skins where name is: {name}");
+
+            try
+            {
+                var champions = await dataManager.ChampionsMgr.GetItemsByName(name, 0, await dataManager.ChampionsMgr.GetNbItems());
+                if (!champions.Any())
+                {
+                    _logger.LogWarning($"The champion requested wasn't found, name: {name}");
+                    return NotFound();
+                }
+
+                var skins = await dataManager.SkinsMgr.GetItemsByChampion(champions.First(), 0, await dataManager.ChampionsMgr.GetNbItems());
+                var skinDtos = skins.Select(skin => skin?.ToDto());
+                if (!skinDtos.Any())
+                {
+                    _logger.LogWarning($"The champion has no skins, name: {name}");
+                    return Ok(new List<SkinDto>());
+                }
+
+                return Ok(skinDtos);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error when trying to get champion's skins");
                 return BadRequest(ex.Message);
             }
         }
