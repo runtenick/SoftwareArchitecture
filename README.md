@@ -25,7 +25,7 @@ Table of contents :page_with_curl:
 
 <!--te-->
 
-## Structure
+## Structure :building_construction:
  ![Project's architecture diagram](./Documentation/architecture.png "Project's architecture diagram")
 
 ### General Description
@@ -36,7 +36,7 @@ By using a central model and a Web API, we have designed a flexible architecture
 
 [1]  _To be more precise, the Web API is deployed on a Docker container, the purpose of this representation is simply to convey the idea that the API is hosted on a separate system._
 
-## Diagram Details
+## Diagram Details :mag:
 _[In this next section, I will try to detail the different connections you see in the diagram while giving some code snippets from the project's source to demonstrate how every bit was implemented.](./Documentation/architecture_global_description.md)_  
 
 
@@ -45,7 +45,7 @@ _[Table of contents](#table-of-contents-📃)_
 
 ---
 
-## Database
+## Database :minidisc:
 
 ### Entity Framework: Why Use It
 Entity Framework (EF) is an Object-Relational Mapper (ORM) that simplifies data access as developers can work with relational data using domain-specific objects. With EF we didn't have to write any explicit SQL to build the database or the query it.
@@ -79,7 +79,7 @@ _[Table of contents](#table-of-contents-📃)_
 
 ---
 
-## Restful API
+## Restful API :globe_with_meridians:
 
 ### RESTful API: Why use it?
 A RESTful API is used to manipulate data through well known __HTTP requests__ such as  GET, PUT, POST, and DELETE. It follows a set of constraints or principles that make it scalable, flexible, and easy to maintain. REST is an acronym for Representational State Transfer, which means that the data is transferred in a _stateless_ manner between the __client__ and the __server__.
@@ -94,25 +94,37 @@ For this project we would have idealy at least 5 controllers, for Champion, Skin
 
 This controller provides several routes that allow clients to interact with the champion data. _The routes are designed to follow RESTful principles._
 
-> GET: __api/<Champion>__
+```
+ GET __api/<Champion>__
+```
 * This route returns a list of champions. It accepts a `PageRequest` object as a query parameter, which allows clients to specify the page number and the number of champions to return per page. In the case of very large databases and high scale projects, this is almost essencial, here it was done as a learning process.
 
-> GET __api/<Champion>/Akali__  
+```
+GET __api/<Champion>/Akali__  
+```
 * This route returns a specific champion by name. It takes the name as parameter.
 
-> POST api/<Champion>
+```
+POST api/<Champion>
+```
 * This route adds a new champion to the database. It takes a ChampionDto object in the request body.
 
-> PUT api/<Champion>/Akali
+```
+PUT api/<Champion>/Akali
+```
 * This route updates an existing champion. It takes the champion's name as parameter and a ChampionDto object in the request body.
 
-> DELETE api/<Champion>/Akali
+```
+DELETE api/<Champion>/Akali
+```
 * This route deletes an existing champion. It accepts the champion's name as a URL parameter.
 
-> GET api/<Champion>/Akali/skins
+```
+GET api/<Champion>/Akali/skins
+```
 * This route returns the skins of a specific champion. It takes the champion's name as parameter.
 
-> __It is worth noticing that for the "uniqueness of the champion, it's name was used, which in many cases might not be ideal, as we can imagine two objects having the same name. However, in order to keep the model unchanged, I chose to use the name attribute as a way to identify a specif champion for this project."__
+> __It is worth noticing that for the "uniqueness" of the champion, it's name was used, which in many cases might not be ideal, as we can imagine two objects having the same name. However, in order to keep the model unchanged, I chose to use the name attribute as a way to identify a specif champion for this project."__
 
 ### Loggers and Pagination
 In the Champions Controller, I used loggers to keep track of requests and errors. I also used pagination as previously mentioned, to limit the number of champions returned per page which should improve the API's performance (in this example it might not make much difference). Here are some code snippets to illustrate how these features were implemented:
@@ -185,7 +197,7 @@ _[Table of contents](#table-of-contents-📃)_
 
 ---
 
-## Tests
+## Tests :test_tube:
 As I did this project by myself, in addition to time constraints, I wasn't able to achieve a perfect test coverage. However, I did my best to have the necessary tests for the implementation I did, as well as explore the different technologies we saw throughout the course.
 
 ### ApiController Unit Tests
@@ -214,7 +226,7 @@ _[Table of contents](#table-of-contents-📃)_
 
 ---
 
-## CI
+## CI :infinity:
 Continuous Integration (CI) is a development practice that allows each integration to be verified by an automated build and automated tests. CI aims to detect and fix integration issues as quickly as possible, improving software quality and reducing the time it takes to validate and release new updates.
 
 ### Drone and Sonar
@@ -236,18 +248,10 @@ _[Table of contents](#table-of-contents-📃)_
 
 ---
 
-## Possible improvements
-
-
-</br>
-
-_[Table of contents](#table-of-contents-📃)_
-
----
-## Model
+## Model :file_folder:
 In order to better understand the code and architecture of the application, we will now take a closer look at the structure of the model, including its classes and interfaces. __It is important to note that the model was developed by our professor, Mr. Chevaldonne__.
 
-#### Class Diagram
+### Class Diagram
 ```mermaid
 classDiagram
 class LargeImage{
@@ -332,7 +336,7 @@ RunePage --> "*" Rune : Dictionary~Category,Rune~
 
 Thid model provides a representation to different elements of the game [League of Legends](https://www.leagueoflegends.com/fr-fr/).
 
-#### Data Access Management Interfaces Diagram
+### Data Access Management Interfaces Diagram
 The `IGenericDataManager<T>` interface provides methods for _getting_, _updating_, _adding_, and _deleting_ items of type T. The `IChampionsManager`, `IRunesManager`, `IRunePagesManager`, and `ISkinsManager` interfaces add category-specific methods for filtering and sorting the data.
 
 ```mermaid
@@ -392,7 +396,7 @@ IRunesManager <-- IDataManager : RunesMgr
 IRunePagesManager <-- IDataManager : RunePagesMgr
 ```
 
-#### Simplified Stub Class Diagram
+### Simplified Stub Class Diagram
 Here the `ChampionsManager`, `RunesManager`, `RunePagesManager`, and `SkinsManager` classes implement their respective _manager interfaces_ and are responsible for calling the appropriate methods on the `StubData` object to manipulate the data.
 
 ```mermaid
