@@ -13,11 +13,11 @@ Table of contents :page_with_curl:
    * [Project Structure](#structure)
       * [General Description](#general-description)
    * [Model, Business and Logic](#model)
-   * [Database with Entity Framework](#database-with-entity-framework)
+   * [Database with Entity Framework](#database)
    * [Restful API](#restful-api)
-   * [CI](#continuous-integration)
+   * [Tests](#tests)
+   * [CI](#ci)
    * [Possible improvements](#possible-improvements)
-   * [Conclusion](#conclusion)
 
 
 
@@ -37,7 +37,7 @@ By using a central model and a Web API, we have designed a flexible architecture
 [1]  _To be more precise, the Web API is deployed on a Docker container, the purpose of this representation is simply to convey the idea that the API is hosted on a separate system._
 
 ## Diagram Details
-_[In this next section, I will try to detail the different connections you see in the diagram while giving some code snippets from the project's source to demonstrate how every bit was implemented.](#./Documentation/architecture_global_description.md)_  
+_[In this next section, I will try to detail the different connections you see in the diagram while giving some code snippets from the project's source to demonstrate how every bit was implemented.](./Documentation/architecture_global_description.md)_  
 
 
 
@@ -81,11 +81,156 @@ _[Table of contents](#table-of-contents-📃)_
 
 ## Restful API
 
+### RESTful API: Why use it?
+A RESTful API is used to manipulate data through well known __HTTP requests__ such as  GET, PUT, POST, and DELETE. It follows a set of constraints or principles that make it scalable, flexible, and easy to maintain. REST is an acronym for Representational State Transfer, which means that the data is transferred in a _stateless_ manner between the __client__ and the __server__.
+
+We used a RESTful API because they provided a standard way of accessing data and allow multiple clients (which is the case as we've seen here), to access the same data without having to know the underlying implementation details. 
+
+### Implementation of the API and why Swagger was used
+Our Web API was implemented using .NET 6.0 and the ASP.NET Core framework. We used Swagger to document the API because it provides a simple and easy-to-use interface.
+
+### Routes and RESTfulness in the Champions Controller
+For this project we would have idealy at least 5 controllers, for Champion, Skin, Rune, RunePage and Skill. However, due to time constraints and being solo, I've only implemented the Champion controller. I did my best to follow the RESTful principles, and we can imagine that the other controller would follow a very similar strucuture to what I did with the `ChampionsController` class. 
+
+This controller provides several routes that allow clients to interact with the champion data. _The routes are designed to follow RESTful principles._
+
+> GET: __api/<Champion>__
+* This route returns a list of champions. It accepts a `PageRequest` object as a query parameter, which allows clients to specify the page number and the number of champions to return per page. In the case of very large databases and high scale projects, this is almost essencial, here it was done as a learning process.
+
+> GET __api/<Champion>/Akali__  
+* This route returns a specific champion by name. It takes the name as parameter.
+
+> POST api/<Champion>
+* This route adds a new champion to the database. It takes a ChampionDto object in the request body.
+
+> PUT api/<Champion>/Akali
+* This route updates an existing champion. It takes the champion's name as parameter and a ChampionDto object in the request body.
+
+> DELETE api/<Champion>/Akali
+* This route deletes an existing champion. It accepts the champion's name as a URL parameter.
+
+> GET api/<Champion>/Akali/skins
+* This route returns the skins of a specific champion. It takes the champion's name as parameter.
+
+> __It is worth noticing that for the "uniqueness of the champion, it's name was used, which in many cases might not be ideal, as we can imagine two objects having the same name. However, in order to keep the model unchanged, I chose to use the name attribute as a way to identify a specif champion for this project."__
+
+### Loggers and Pagination
+In the Champions Controller, I used loggers to keep track of requests and errors. I also used pagination as previously mentioned, to limit the number of champions returned per page which should improve the API's performance (in this example it might not make much difference). Here are some code snippets to illustrate how these features were implemented:
+```c#
+// Loggers
+public ChampionsController(IDataManager d, ILogger<ChampionsController> log)
+{
+    dataManager = d;
+    _logger = log;
+}
+
+// ...
+_logger.LogInformation($"Request to get champions with index " +
+        $"{pageRequest.Index} and count {pageRequest.Count}");
+
+// ...
+_logger.LogWarning("too many champions requested");
+
+// ...
+_logger.LogError(ex, "error while trying to get champions");
+```
+* I used different levels of warnings for their respective purposes.
+
+```c#
+// Pagination
+public async Task<IActionResult> Get([FromQuery]PageRequest pageRequest)
+{
+    // ...
+    var champions = (await dataManager.ChampionsMgr.GetItems(pageRequest.Index,
+            pageRequest.Count)).Select(champion => champion?.ToDto());
+
+    var page = new Page()
+    {
+        MyChampions = champions,
+        Index = pageRequest.Index,
+        Count = pageRequest.Count,
+        TotalCount = await dataManager.ChampionsMgr.GetNbItems()
+    };
+    return Ok(page);
+    // ...
+}
+```
+
+### DTOs and why we used them
+DTOs, or Data Transfer Objects, are objects that represent data in a format that can be easily transferred between different systems or layers of an application. In this cased, we used DTOs to represent champion data in a format that can be easily serialized and deserialized.
+
+Here is an example of a ChampionDto class:
+```
+public class SkinDto
+{
+   public string? Name { get; set; }
+
+   public string? Image { get; set; }
+
+   public float? Price { get; set; }
+
+   public string? Description { get; set; }
+
+   public string? Icon { get; set; }
+
+   public string? Champion { get; set; }
+
+}
+```
+* As you can see the attributes are all strings, easy to serialize/deserialize
+
+</br>
+
+_[Table of contents](#table-of-contents-📃)_
+
+---
+
+## Tests
+As I did this project by myself, in addition to time constraints, I wasn't able to achieve a perfect test coverage. However, I did my best to have the necessary tests for the implementation I did, as well as explore the different technologies we saw throughout the course.
+
+### ApiController Unit Tests
+For the ApiController, a unit test class was created, which includes test methods for all the API operations (all routes that I implemented). `ChampionControllerTest` class tests the Get, Post, Put, Delete, GetByName, and GetSkins methods. While the tests cover the essential functionality, __there is room for improvement__ in terms of testing edge cases and error handling.
+
+### Database Tests
+For database tests, I used __in-memory SQLite database__. This approach had several benefits:
+* The tests run quickly, as there is no disk I/O.
+* The tests are isolated, as the in-memory database is on RAM memory and does not interfere with other tests or the production database.
+* It integrates well with Entity Framework, simplifying the setup and execution of tests.
+
+### xUnit Test Types
+As I mentioned previously, I tried different types of xUnit tests were employed  including:
+
+* __Fact tests:__ These tests check basic functionality and do not require any input parameters.
+* __Theory + InlineData:__ These tests allow parameterized testing, with input data provided directly within the test method.
+* __Theory + DataMember:__ These tests also use parameterized testing, but the input data is separated from the test method and stored in a separate data member.
+
+Each test type has its advantages and use cases. Fact tests are suitable for simple, straightforward tests. Theory tests with InlineData or DataMember are ideal for more complex tests that require various input parameters to validate different scenarios.
+
+Overall, tests are currently limited to CRUD operations, it could be expanded to include additional scenarios and edge cases.
+
+</br>
+
 _[Table of contents](#table-of-contents-📃)_
 
 ---
 
 ## CI
+Continuous Integration (CI) is a development practice that allows each integration to be verified by an automated build and automated tests. CI aims to detect and fix integration issues as quickly as possible, improving software quality and reducing the time it takes to validate and release new updates.
+
+### Drone and Sonar
+In this project, we used Drone, an open-source container-native Continuous Integration and Continuous Delivery (CI/CD) platform, to automate our build, test, and deployment processes. Drone works with a simple YAML configuration file (.drone.yml) that defines the pipeline steps, you can find the one used for this project [here](.drone.yml).
+
+Sonar is a code quality analysis tool that helps maintain code quality over time by providing insights into code issues like code smells. It can be integrated with the CI/CD pipeline.
+
+### Pipeline Steps Overview
+
+* Build: Restore, build, and publish the .NET project using the dotnet command.
+* Tests: Run the .NET tests with code coverage.
+* Code Analysis: Perform code analysis with SonarScanner, generate code coverage reports with ReportGenerator, and upload the results to SonarQube.
+* Docker Image Build and Store: Build a Docker image using the provided Dockerfile, then push it to the project's container registry.
+* Deploy Container: Deploy the Docker container to the production environment using the Codefirst Dockerproxy client.
+
+</br>
 
 _[Table of contents](#table-of-contents-📃)_
 
@@ -93,6 +238,12 @@ _[Table of contents](#table-of-contents-📃)_
 
 ## Possible improvements
 
+
+</br>
+
+_[Table of contents](#table-of-contents-📃)_
+
+---
 ## Model
 In order to better understand the code and architecture of the application, we will now take a closer look at the structure of the model, including its classes and interfaces. __It is important to note that the model was developed by our professor, Mr. Chevaldonne__.
 
@@ -268,11 +419,8 @@ StubData --> "*" Rune
 StubData --> "*" RunePages
 StubData --> "*" Skins
 ```
-_[Table of contents](#table-of-contents-📃)_
 
----
-
-## Conslusion
+</br>
 
 _[Table of contents](#table-of-contents-📃)_
 
