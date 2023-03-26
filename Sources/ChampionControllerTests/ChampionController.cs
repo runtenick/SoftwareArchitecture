@@ -151,5 +151,31 @@ namespace ApiControllers
             returnedChampion.Should().NotBeNull();
             returnedChampion.Should().BeEquivalentTo(expectedChampion);
         }
+
+        [TestMethod]
+        public async Task TestGetSkinsAsync()
+        {
+            // arrange
+            string championName = "Akali";
+            List<SkinDto> skinsExpected = new()
+            {
+                new SkinDto() {Name = "Stinger", Price = 0.0f, Champion = "Akali", Image = "", Icon = "", Description = "" },
+                new SkinDto() {Name = "Infernal", Price = 0.0f, Champion = "Akali", Image = "", Icon = "", Description = "" },
+                new SkinDto() {Name = "All-Star", Price = 0.0f, Champion = "Akali", Image = "", Icon = "", Description = "" },
+            };
+
+            // act
+            var skinsResult = await controller.GetChampionSkins(championName);
+
+            // assert
+            var objectResult = skinsResult as ObjectResult;
+            objectResult.Should().NotBeNull();
+            objectResult.StatusCode.Should().Be(StatusCodes.Status200OK);
+
+            var skins = objectResult.Value;
+            skins.Should().NotBeNull();
+            skins.Should().BeEquivalentTo(skinsExpected);
+        }
+
     }
 }

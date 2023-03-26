@@ -164,8 +164,8 @@ namespace OLO_Champignons.Controllers
         }
 
         /*
- * This route allows to get the skins of a champion
- */
+        * This route allows to get the skins of a champion
+        */
         // GET api/<Champion>/Akali/skin
         [HttpGet("{name}/skins")]
         public async Task<IActionResult> GetChampionSkins(string name)
