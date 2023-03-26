@@ -14,7 +14,6 @@ namespace EntityFramework_UT.Theory
 {
     public class ChampionUT_theory
     {
-        // CRUD TESTS
         [Theory]
         [InlineData("Akali", ChampionClass.Assassin)]
         [InlineData("Aatrox", ChampionClass.Fighter)]
