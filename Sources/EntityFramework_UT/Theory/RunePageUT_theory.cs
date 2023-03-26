@@ -36,7 +36,7 @@ namespace EntityFramework_UT.Theory
 
         [Theory]
         [MemberData(nameof(Data_AddRuneToPage))]
-        public void Add_RunePage(string name, ICollection<RuneEntity> runes, ICollection<ChampionEntity> champions)
+        public void Add_RunePage_Test(string name, ICollection<RuneEntity> runes, ICollection<ChampionEntity> champions)
         {
             var connection = new SqliteConnection("DataSource=:memory:");
 
@@ -64,6 +64,90 @@ namespace EntityFramework_UT.Theory
                 context.Database.EnsureCreated();
 
                 Assert.Single(context.RunePages.Where(runePage =>
+                    runePage.Name == name && runePage.Runes.Count == runes.Count && runePage.Champions.Count == champions.Count));
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(Data_AddRuneToPage))]
+        public void Modify_RunePage_Test(string name, ICollection<RuneEntity> runes, ICollection<ChampionEntity> champions)
+        {
+            var connection = new SqliteConnection("DataSource=:memory:");
+
+            var options = new DbContextOptionsBuilder<ChampDbContext>()
+                .UseInMemoryDatabase(databaseName: "Modify_RunePage_Test")
+                .Options;
+
+            using (var context = new ChampDbContext(options))
+            {
+                context.Database.EnsureCreated();
+
+                var runePage = new RunePageEntity
+                {
+                    Name = "Initial Page",
+                    Runes = new List<RuneEntity> { new RuneEntity { Name = "Rune 1" }, new RuneEntity { Name = "Rune 2" } },
+                    Champions = new List<ChampionEntity>()
+                };
+
+                context.RunePages.Add(runePage);
+                context.SaveChanges();
+
+                runePage.Name = name;
+                runePage.Runes = runes;
+                runePage.Champions = champions;
+                context.SaveChanges();
+            }
+
+            using (var context = new ChampDbContext(options))
+            {
+                context.Database.EnsureCreated();
+
+                var updatedRunePage = context.RunePages.First();
+
+                Assert.Single(context.RunePages.Where(runePage =>
+                   runePage.Name == name && runePage.Runes.Count == runes.Count && runePage.Champions.Count == champions.Count));
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(Data_AddRuneToPage))]
+        public void Delete_RunePage_Test(string name, ICollection<RuneEntity> runes, ICollection<ChampionEntity> champions)
+        {
+            var connection = new SqliteConnection("DataSource=:memory:");
+
+            var options = new DbContextOptionsBuilder<ChampDbContext>()
+                .UseInMemoryDatabase(databaseName: "Delete_RunePage_Test")
+                .Options;
+
+            using (var context = new ChampDbContext(options))
+            {
+                context.Database.EnsureCreated();
+
+                RunePageEntity runePage = new RunePageEntity()
+                {
+                    Name = name,
+                    Runes = runes,
+                    Champions = champions
+                };
+
+                context.RunePages.Add(runePage);
+                context.SaveChanges();
+            }
+
+            using (var context = new ChampDbContext(options))
+            {
+                context.Database.EnsureCreated();
+
+                var runePageToDelete = context.RunePages.FirstOrDefault(runePage =>
+                    runePage.Name == name && runePage.Runes.Count == runes.Count && runePage.Champions.Count == champions.Count);
+
+                if (runePageToDelete != null)
+                {
+                    context.RunePages.Remove(runePageToDelete);
+                    context.SaveChanges();
+                }
+
+                Assert.Null(context.RunePages.FirstOrDefault(runePage =>
                     runePage.Name == name && runePage.Runes.Count == runes.Count && runePage.Champions.Count == champions.Count));
             }
         }
