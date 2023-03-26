@@ -10,9 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace EntityFramework_UT
+namespace EntityFramework_UT.Fact
 {
-    public class Skin_UT
+    public class Skin_UT_fact
     {
         [Fact]
         public void Add_Test()
@@ -30,11 +30,11 @@ namespace EntityFramework_UT
                 SkinEntity stinger = new SkinEntity() { Name = "Stinger", Price = 5.0F };
                 SkinEntity infernal = new SkinEntity() { Name = "Infernal", Price = 100.0F };
                 SkinEntity allstar = new SkinEntity() { Name = "All-Star", Price = 25.55F };
-                
+
                 context.Skins.Add(stinger);
                 context.Skins.Add(infernal);
                 context.Skins.Add(allstar);
-                
+
                 context.SaveChanges();
             }
 
@@ -60,15 +60,15 @@ namespace EntityFramework_UT
             {
                 context.Database.EnsureCreated();
                 context.Skins.RemoveRange(context.Skins);
-                
+
                 SkinEntity stinger = new SkinEntity() { Name = "Stinger", Price = 5.0F };
                 SkinEntity infernal = new SkinEntity() { Name = "Infernal", Price = 100.0F };
                 SkinEntity allstar = new SkinEntity() { Name = "All-Star", Price = 25.55F };
-                
+
                 context.Skins.Add(stinger);
                 context.Skins.Add(infernal);
                 context.Skins.Add(allstar);
-                
+
                 context.SaveChanges();
             }
 
@@ -94,7 +94,7 @@ namespace EntityFramework_UT
 
             }
         }
-        
+
         [Fact]
         public void Remove_Test()
         {
@@ -112,11 +112,11 @@ namespace EntityFramework_UT
                 SkinEntity stinger = new SkinEntity() { Name = "Stinger", Price = 5.0F };
                 SkinEntity infernal = new SkinEntity() { Name = "Infernal", Price = 100.0F };
                 SkinEntity allstar = new SkinEntity() { Name = "All-Star", Price = 25.55F };
-                
+
                 context.Skins.Add(stinger);
                 context.Skins.Add(infernal);
                 context.Skins.Add(allstar);
-                
+
                 context.SaveChanges();
             }
 
@@ -128,7 +128,7 @@ namespace EntityFramework_UT
 
                 context.Skins.Remove(context.Skins.First());
                 context.SaveChanges();
-               
+
                 Assert.Equal(totalSkins - 1, context.Skins.Count());
                 Assert.DoesNotContain(first, context.Skins);
             }

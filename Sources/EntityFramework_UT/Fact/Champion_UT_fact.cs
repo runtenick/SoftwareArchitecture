@@ -6,9 +6,9 @@ using Xunit;
 using Microsoft.EntityFrameworkCore.Storage;
 using Model;
 
-namespace EntityFramework_UT
+namespace EntityFramework_UT.Fact
 {
-    public class ChampionDB_Tests
+    public class ChampionUT_fact
     {
         // CRUD TESTS
         [Fact]
@@ -43,8 +43,8 @@ namespace EntityFramework_UT
                 Assert.Equal("Akali", context.Champions.First().Name);
             }
         }
-        
-        
+
+
         [Fact]
         public void Modify_Test()
         {
@@ -67,7 +67,7 @@ namespace EntityFramework_UT
                 context.Champions.Add(aatrox);
                 context.Champions.Add(ahri);
                 context.SaveChanges();
-                
+
             }
 
             using (var context = new ChampDbContext(options))
@@ -75,7 +75,7 @@ namespace EntityFramework_UT
                 context.Database.EnsureCreated();
 
                 string nameTargeted = "ak";
-                Assert.Equal(1,context.Champions.Where(c => c.Name.ToLower().Contains(nameTargeted)).Count());
+                Assert.Equal(1, context.Champions.Where(c => c.Name.ToLower().Contains(nameTargeted)).Count());
 
                 nameTargeted = "i";
                 Assert.Equal(2, context.Champions.Where(c => c.Name.ToLower().Contains(nameTargeted)).Count());
@@ -84,7 +84,7 @@ namespace EntityFramework_UT
                 akali.Name = "Bard";
                 context.SaveChanges();
             }
-   
+
             using (var context = new ChampDbContext(options))
             {
                 context.Database.EnsureCreated();
@@ -114,7 +114,7 @@ namespace EntityFramework_UT
                 context.Champions.Add(aatrox);
                 context.Champions.Add(ahri);
                 context.SaveChanges();
-                
+
             }
 
             using (var context = new ChampDbContext(options))
@@ -125,7 +125,7 @@ namespace EntityFramework_UT
 
                 context.Champions.Remove(context.Champions.First());
                 context.SaveChanges();
-               
+
                 Assert.Equal(totalChamps - 1, context.Champions.Count());
                 Assert.DoesNotContain(first, context.Champions);
             }

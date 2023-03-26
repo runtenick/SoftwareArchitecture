@@ -5,7 +5,7 @@
 namespace EFChampions.Migrations
 {
     /// <inheritdoc />
-    public partial class fixedDataSeed : Migration
+    public partial class requiredName : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ namespace EFChampions.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
                     Class = table.Column<int>(type: "INTEGER", nullable: false),
                     Icon = table.Column<string>(type: "TEXT", nullable: true),
                     Bio = table.Column<string>(type: "TEXT", nullable: true),

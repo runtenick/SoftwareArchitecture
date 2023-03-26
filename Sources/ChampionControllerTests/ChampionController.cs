@@ -10,6 +10,10 @@ using OLO_Champignons.Controllers;
 using StubLib;
 using System.Net;
 
+/*
+ * Testing all ChampionController's methods using data from the stub.
+ */
+
 namespace ApiControllers
 {
     [TestClass]
