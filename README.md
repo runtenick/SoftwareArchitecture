@@ -9,6 +9,7 @@ Table of contents :page_with_curl:
 =================
 
 <!--ts-->
+   * [Introduction](#introduction)
    * [Installation and Running the solution](#installation)
    * [Project Structure](#structure)
       * [General Description](#general-description)
@@ -24,6 +25,15 @@ Table of contents :page_with_curl:
 
 
 <!--te-->
+
+## Introduction
+Throughout this project, I worked independently to maximize my learning. By working alone, I was able to ensure that I thoroughly understood every aspect of the project, rather than skipping over certain parts. To keep the master branch clean, I created separate branches for each feature I worked on, and merged most of them through the command line. However, a couple of branches were explicitly merged using the merge request feature in Gitea, as it was part of the project's requirement. You can find a complete history of all the branches in the image below.
+
+![Branches](./Documentation/branches.png")
+
+To make it easy to understand the project's evolution, I made sure to write clear and explicit commit messages. This also helped me revisit specific points of the project when necessary.
+
+While I haven't provided full documentation for every class in every file, I did leave several comments throughout the code to help clarify certain aspects and for personnal use (mostly to remeber things between classes). In this README, I have made a concerted effort to provide detailed documentation explaining how each part of the project was implemented and my choices.
 
 ## Structure :building_construction:
  ![Project's architecture diagram](./Documentation/architecture.png "Project's architecture diagram")
