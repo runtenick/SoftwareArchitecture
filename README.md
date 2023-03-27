@@ -3,7 +3,7 @@ __Author:__ Franco Nicolas
 __Group:__ PM2    
 __Year:__ 2A BUT      
 
-This project was developed as part of the "__R4.01 Software Architecture__" course  taught by Mr. Chevaldonne, Ms. Millet, and Mr. Raymmond. This README file contains some documentation referring to my understanding of the project and what was done.
+This project was developed as part of the "__R4.01 Software Architecture__" course taught by Mr. Chevaldonne, Ms. Millet, and Mr. Raymmond. This README file contains some documentation referring to my understanding of the project and what was done.
 
 Table of contents :page_with_curl:
 =================
@@ -11,14 +11,14 @@ Table of contents :page_with_curl:
 <!--ts-->
    * [Introduction](#introduction)
    * [Installation and Running the solution](#installation)
-   * [Project Structure](#structure-building_construction)
+   * [Project Structure](#building_construction-structure)
       * [General Description](#general-description)
-      * [Detailed Description](#diagram-details-mag)
-   * [Database with Entity Framework](#database-minidisc)
+      * [Detailed Description](#mag-diagram-details)
+   * [Database with Entity Framework](#minidis-cdatabase)
    * [Restful API](#restful-api-globe_with_meridians)
-   * [Tests](#tests-test_tube)
-   * [CI](#ci-infinity)
-   * [Model, Business and Logic](#model-file_folder)
+   * [Tests](#test_tube-tests)
+   * [CI](#infinity-ci)
+   * [Model, Business and Logic](#file_folder-model)
 
 
 ### List of doings / couldn't do
@@ -60,7 +60,7 @@ Throughout this project, I worked independently to maximize my learning. By work
 
 To make it easy to understand the project's evolution, I made sure to write clear and explicit commit messages. This also helped me revisit specific points of the project when necessary.
 
-While I haven't provided full documentation for every class in every file, I did leave several comments throughout the code to help clarify certain aspects and for personnal use (mostly to remeber things between classes). In this README, I have made a concerted effort to provide detailed documentation explaining how each part of the project was implemented and my choices.
+While I haven't provided full documentation for every class in every file, I did leave several comments throughout the code to help clarify certain aspects and for personal use (mostly to remember things between classes). In this README, I have made a concerted effort to provide detailed documentation explaining how each part of the project was implemented and my choices.
 
 ## Installation
 
@@ -104,10 +104,12 @@ dotnet run --project LolApp
 dotnet run --project Api
 ```
 
-## Structure :building_construction:
+---
+
+# :building_construction: Structure 
  ![Project's architecture diagram](./Documentation/architecture.png "Project's architecture diagram")
 
-### General Description
+## General Description
 This project supports three different types of __clients__: <u>mobile</u>, <u>web</u>, and <u>desktop</u>. All of these clients communicate with a centralized __model__, which is responsible for handling <u>data</u> and <u>business</u> logic. 
 Initially, the model uses fake data, as indicated by the green __Stub__ area. However, as the project progressed, the model was updated to use data from an API client. 
 This client connects to a __Web API__, which serves as a bridge between the model and the data storage layer. The Web API interacts with an Entity Framework __(EF) database__, which is responsible for storing and managing data. In its early development, the API would also use fake data, hence the connection with the Stub. Both the model and the API interact with this database to retrieve and store data as needed. Additionally, the Web API is hosted on a __server__ [1], which allows clients to easily access it and interact with the model and data.
@@ -115,15 +117,13 @@ By using a central model and a Web API, we have designed a flexible architecture
 
 [1]  _To be more precise, the Web API is deployed on a Docker container, the purpose of this representation is simply to convey the idea that the API is hosted on a separate system._
 
-## Diagram Details :mag:
+
+# :mag: Description of the software's global architecture
 _In this next section, I will try to detail the different connections you see in the diagram while giving some code snippets from the project's source to demonstrate how every bit was implemented.)_
 
+## Client-Model Communication 
 
-# Description of the software's global architecture
-
-### Client-Model Communication 
-
-Let's take a more technical look at how the client and the model communicate. I invite you to first read about the [model](#model) and how it is structured to better understand this part.  
+Let's take a more technical look at how the client and the model communicate. I invite you to first read about the [model](#file_folder-model) and how it is structured to better understand this part.  
 The client communicates with the model through an instance of the `IDataManager` class. Thanks to our abstraction layer with the `IDataManager`, everything is easily accessible and all layers are _interchangeable_. 
 
 
@@ -162,13 +162,16 @@ public static class MauiProgram
 
 * As you can see, we are declaring a _dependecy injection_ for the IDataManager interface to use the `StubData` as its implementation: `builder.Services.AddSingleton<IDataManager, StubData>()`. The `AddSingleton` method is used to say that we will have a singleton instance of the `IDataManager` (which is ideal here).
 
-* As the project progressed and we wanted to use real data in our app, we simply had to update this line of code, replacing `StubData` with `EfData` (detailed [here](#efdata)), the new interface we've implemented that _directly consumes our [Entity Framework database](#database-with-entity-framework):_
+* As the project progressed and we wanted to use real data in our app, we simply had to update this line of code, replacing `StubData` with `EfData` (detailed [here](#efdata)), the new interface we've implemented that _directly consumes our [Entity Framework database](#minidisc-database):_
 
 ```
 builder.Services.AddSingleton<IDataManager, EfData>()
 ```
-### Model's API Client and Web API
-Instead of directly consuming our database, using `EfData`, the client can also chose to query the data from [our API](#restful-api) (represented by the double-sided arrow in the diagram). To enable this, we will use yet another interface implmenting `IDataManager`, which is the red box you see attached to the model on the diagram, the `HttpManager` class.
+
+</br>
+
+## Model's API Client and Web API
+Instead of directly consuming our database, using `EfData`, the client can also chose to query the data from [our API](#globe_with_meridians-restful-api) (represented by the double-sided arrow in the diagram). To enable this, we will use yet another interface implmenting `IDataManager`, which is the red box you see attached to the model on the diagram, the `HttpManager` class.
 
 > HttpManager.cs
 ```c# 
@@ -244,9 +247,11 @@ The _parent parameter_ in each of these methods is an instance of the `HttpManag
 
 The goal of this API client is to allow us to abstract away the details of the database so that, we can retrieve or manipulate data from the API without needing to understand the underlying database or infrastructure.
 
-_You'll find more details about this API's structure [here](#restful-api)._
+_You'll find more details about this API's structure [here](#globe_with_meridians-restful-api)._
 
-### API and Database
+</br>
+
+## API and Database
 To clarify, the data that is requested through the API is __also__ retrieved from our Entity Framework (EF) database. This is why the diagram shows a connection between the __Web API__ and the __EF Database__.
 
 In our program, each controller in the API has an `IDataManager` attribute. This allows us to access a single instance of the `IDataManager` that we define in our __Program.cs__ file, similarly to what we did on the __MauiProgram.cs__. Here is an example with the `Get` method from the `ChampionsController` class:
@@ -293,13 +298,13 @@ public class ChampionsController : ControllerBase
 }
 ```
 
-Here you can see the `IDataManager` class beeing used to fetch the list of champions : 
+Here you can see the `IDataManager` class being used to fetch the list of champions : 
 ```
 var champions = (await dataManager.ChampionsMgr.GetItems(pageRequest.Index,
             pageRequest.Count)).Select(champion => champion?.ToDto());
 ```
 
-And just like with the __MauiProgram.cs__, we can modify the implementation type of `IDataManager` with _dependecy injection_ through the __Program.cs__ file:
+And just like with the __MauiProgram.cs__, we can modify the implementation type of `IDataManager` with _dependency injection_ through the __Program.cs__ file:
 
 > Program.cs
 ```c#
@@ -329,88 +334,182 @@ _[Table of contents](#table-of-contents-page_with_curl)_
 
 ---
 
-## Database :minidisc:
+</br>
 
-### Entity Framework: Why Use It
-Entity Framework (EF) is an Object-Relational Mapper (ORM) that simplifies data access as developers can work with relational data using domain-specific objects. With EF we didn't have to write any explicit SQL to build the database or the query it.
+# :minidisc: Database 
+
+## Entity Framework: Why Use It
+Entity Framework (EF) is an Object-Relational Mapper (ORM) that simplifies data access as developers can work with relational data using domain-specific objects. With EF we didn't have to write any explicit SQL to build the database or query it.
+
 
 ### Mappers and Entities
-__Entities__ are classes with no logic that represent database tables. They consist of properties that define the columns of the table and relationships with other entities. In our code we have the following `ChampionEntity`, `SkinEntity`, `SkillEntity`, `RunePage` and `RuneEntity`.
+__Entities__ are classes with no logic that represent database tables. They consist of properties that define the columns of the table and relationships with other entities. In our code, we have the following `ChampionEntity`, `SkinEntity`, `SkillEntity`, `RunePage` and `RuneEntity`. Here is an example of entity class:
+
+```
+public class ChampionEntity
+{
+    public int Id { get; set; }
+
+    [Required]
+    public string Name { get; set; }
+
+    public ChampionClass Class { get; set; }
+
+    public string? Icon { get; set; }
+
+    public string? Bio { get; set; }
+
+    public string? Image { get; set; }
+
+    public ICollection<SkinEntity>? Skins { get; set; } = new List<SkinEntity>();
+
+    public ICollection<SkillEntity>? Skills { get; set; } = new List<SkillEntity>();
+
+    public ICollection<RunePageEntity>? PagesRune { get; set; } = new List<RunePageEntity>();
+}
+```
+
+> :memo: __Note:__ the only time I used _data annotations_ was here, in the Name property. This was only done at the end, in order ro write tests that covered the case of a champion with no name beeing added to the database. Idealy, since the name property was used as the "unique" value in the api, this would have been implemented in other entity classes.
 
 For each entity we also have __mappers__, classes that handle the conversion between domain models and entities. They offer a way to map the properties of a domain model to corresponding properties of an entity and vice versa, ensuring data consistency after it moves around from database to model etc.
 
-### How This Database Was Built
- The `ChampDbContext` class, derived from DbContext, is the main connection point between EF and the database. It contains `DbSet` properties (Champions, Skins, Skills, Runes, and RunePages) that represent the different tables in the database.
+</br>
+
+## How This Database Was Built
+ The `ChampDbContext` class, derived from DbContext, is the main connection point between EF and the database. It contains `DbSet` properties (Champions, Skins, Skills, Runes, and RunePages) that represent the different tables in the database. It is also where we define a provider, in this case SQLite.
 
 The `OnModelCreating` method in `ChampDbContext` sets up the relationships between the entities and configures the behavior of the database.
 
-### Different Relationships Implemented
+</br>
+
+## Different Relationships Implemented
 With this model, we had to implement two types of relationships in the database:
 
-__One-to-many__: One `ChampionEntity` is related to multiple SkinEntity objects. This relationship is configured using the `HasOne` and `WithMany` methods in `OnModelCreating`.
+__One-to-many__: One `ChampionEntity` is related to multiple SkinEntity objects. This relationship is configured using the `HasOne` and `WithMany` methods in `OnModelCreating`. Here is what it looks like in the __ChampDbContext.cs__ file:
+```
+// one-to-many
+modelBuilder.Entity<SkinEntity>().Property<int>("ChampionForeignKey");
 
-__Many-to-many__: The `ChampionEntity` and `SkillEntity` classes have a many-to-many relationship, meaning each champion has multiple skills and each skill has multiple champions. A similar relationship exists between `RuneEntity` and `RunePageEntity`, as well as `ChampionEntity` and `RunePageEntity` (__many-to-many-to-many__). These relationships are configured using the `HasMany` and `WithMany` methods in `OnModelCreating`.
+modelBuilder.Entity<SkinEntity>()
+    .HasOne(s => s.Champion)// a skin has a champion
+    .WithMany(e => e.Skins) // a champion has multiple skins
+    .HasForeignKey("ChampionForeignKey"); // through the foreign key 
+```
 
-### Why I used Fluent API Instead of Data Annotations or Naming Conventions
-Frst I tried using naming convention but finally fluent API seemed to be the most practical one, as well as my professor's recommendation.
+</br>
 
-Using Fluent API keeps the configuration separate from the entity classes, which keeps the entity classes cleaner. Also the configuration is centralized on the OnModelCreating method which made it easier to manage and modify the database configuration.
+__Many-to-many__: The `ChampionEntity` and `SkillEntity` classes have a many-to-many relationship, meaning each champion has multiple skills and each skill has multiple champions. A similar relationship exists between `RuneEntity` and `RunePageEntity`, as well as `ChampionEntity` and `RunePageEntity` (__many-to-many-to-many__). These relationships are configured using the `HasMany` and `WithMany` methods in `OnModelCreating`:
+```
+modelBuilder.Entity<SkillEntity>()
+    .HasMany(s => s.Champions) // a skill has many champions
+    .WithMany(c => c.Skills);  // each champion has many skills
+```
 
-### Constantly Using Migrations and Recreating Them
+</br>
+
+## Why I used Fluent API Instead of Data Annotations or Naming Conventions
+First I tried using _naming convention_ but finally, _fluent API_ seemed to be the most practical one, as well as my professor's recommendation.
+
+Using Fluent API keeps the configuration separate from the entity classes, which keeps the entity classes cleaner. Also, the configuration is centralized on the OnModelCreating method which made it easier to manage and modify the database configuration.
+
+## Constantly Using Migrations and Recreating Them
 Throughout the development process, migrations were used to keep the database schema up to date with changes in the code. Whenever a new table was added or a significant change was made to the database, the previous migration was deleted and a new one was recreated to ensure that the database schema stayed in sync with the latest code changes.
+
+## EfData
+To make our database easily consumable, we implemented another class in the astraction layer of `IDataManager`, the `EfData`. This class is what allowed us to switch from _stubbed data_ to _data from the database_, but redefining all methods such as `GetItems`, `AddItems`, `UpdateItems`...
+
+It's implementation is quite similar to the [`Stub`](#simplified-stub-class-diagram), however it has an instance of `ChampDbContext`, so it's able to access our different `DbSet`, fetching, updatating and deleting data directly fom the database.
+
+```
+public partial class EfData : IDataManager
+{
+    public EfData(ChampDbContext champDbContext) 
+    {
+        ChampDbContext = champDbContext;
+        ChampionsMgr = new EfChampionsManager(this);
+        SkinsMgr = new EfSkinsManager(this);
+        RunesMgr = new EfRunesManager(this);
+        RunePagesMgr = new EfRunePagesManager(this);
+    }
+
+    public IChampionsManager ChampionsMgr { get; }
+
+    public ISkinsManager SkinsMgr { get; }
+
+    public IRunesManager RunesMgr { get; }
+
+    public IRunePagesManager RunePagesMgr { get; }
+
+    protected ChampDbContext ChampDbContext { get; set; }
+}
+```
 
 _[Table of contents](#table-of-contents-page_with_curl)_
 
 ---
 
-## Restful API :globe_with_meridians:
+</br>
 
-### RESTful API: Why use it?
-A RESTful API is used to manipulate data through well known __HTTP requests__ such as  GET, PUT, POST, and DELETE. It follows a set of constraints or principles that make it scalable, flexible, and easy to maintain. REST is an acronym for Representational State Transfer, which means that the data is transferred in a _stateless_ manner between the __client__ and the __server__.
+# :globe_with_meridians: Restful API 
 
-We used a RESTful API because they provided a standard way of accessing data and allow multiple clients (which is the case as we've seen here), to access the same data without having to know the underlying implementation details. 
+## RESTful API: Why use it?
+A RESTful API is used to manipulate data through well known __HTTP requests__ such as  GET, PUT, POST, and DELETE. It follows a set of constraints or principles that make it scalable, flexible, and easy to maintain. REST is an acronym for Representational State Transfer, which means that the data is transferred in a _stateless_ manner between the __client__ and the __server__.  
+We used a RESTful API because it provided a standard way of accessing data and allow multiple clients (which is the case as we've seen here), to access the same data without having to know the underlying implementation details.   
 
-### Implementation of the API and why Swagger was used
+  
+## Implementation of the API and why Swagger was used
 Our Web API was implemented using .NET 6.0 and the ASP.NET Core framework. We used Swagger to document the API because it provides a simple and easy-to-use interface.
 
-### Routes and RESTfulness in the Champions Controller
-For this project we would have idealy at least 5 controllers, for Champion, Skin, Rune, RunePage and Skill. However, due to time constraints and being solo, I've only implemented the Champion controller. I did my best to follow the RESTful principles, and we can imagine that the other controller would follow a very similar strucuture to what I did with the `ChampionsController` class. 
+## Routes and RESTfulness in the Champions Controller
+For this project, we would have ideally at least 5 controllers, for Champion, Skin, Rune, RunePage and Skill. However, due to time constraints and being solo, I've only implemented the Champion controller. I did my best to follow the RESTful principles, and we can imagine that the other controller would follow a very similar structure to what I did with the `ChampionsController` class. 
 
 This controller provides several routes that allow clients to interact with the champion data. _The routes are designed to follow RESTful principles._
 
 ```
  GET __api/<Champion>__
 ```
-* This route returns a list of champions. It accepts a `PageRequest` object as a query parameter, which allows clients to specify the page number and the number of champions to return per page. In the case of very large databases and high scale projects, this is almost essencial, here it was done as a learning process.
+* This route returns a list of champions. It accepts a `PageRequest` object as a query parameter, which allows clients to specify the page number and the number of champions to return per page. In the case of very large databases and high scale projects, this is almost essential, here it was done as a learning process.
+
+</br>
 
 ```
 GET __api/<Champion>/Akali__  
 ```
 * This route returns a specific champion by name. It takes the name as parameter.
 
+</br>
+
 ```
 POST api/<Champion>
 ```
 * This route adds a new champion to the database. It takes a ChampionDto object in the request body.
+
+</br>
 
 ```
 PUT api/<Champion>/Akali
 ```
 * This route updates an existing champion. It takes the champion's name as parameter and a ChampionDto object in the request body.
 
+</br>
+
 ```
 DELETE api/<Champion>/Akali
 ```
 * This route deletes an existing champion. It accepts the champion's name as a URL parameter.
+
+</br>
 
 ```
 GET api/<Champion>/Akali/skins
 ```
 * This route returns the skins of a specific champion. It takes the champion's name as parameter.
 
-> __It is worth noticing that for the "uniqueness" of the champion, it's name was used, which in many cases might not be ideal, as we can imagine two objects having the same name. However, in order to keep the model unchanged, I chose to use the name attribute as a way to identify a specif champion for this project."__
+> :memo: __It is worth noticing that for the "uniqueness" of the champion, it's name was used, which in many cases might not be ideal, as we can imagine two objects having the same name. However, in order to keep the model unchanged, I chose to use the name attribute as a way to identify a specif champion for this project."__
 
-### Loggers and Pagination
+</br>
+
+## Loggers and Pagination
 In the Champions Controller, I used loggers to keep track of requests and errors. I also used pagination as previously mentioned, to limit the number of champions returned per page which should improve the API's performance (in this example it might not make much difference). Here are some code snippets to illustrate how these features were implemented:
 ```c#
 // Loggers
@@ -452,7 +551,9 @@ public async Task<IActionResult> Get([FromQuery]PageRequest pageRequest)
 }
 ```
 
-### DTOs and why we used them
+</br>
+
+## DTOs and why we used them
 DTOs, or Data Transfer Objects, are objects that represent data in a format that can be easily transferred between different systems or layers of an application. In this cased, we used DTOs to represent champion data in a format that can be easily serialized and deserialized.
 
 Here is an example of a ChampionDto class:
@@ -481,26 +582,28 @@ _[Table of contents](#table-of-contents-page_with_curl)_
 
 ---
 
-## Tests :test_tube:
+</br>
+
+# :test_tube: Tests 
 As I did this project by myself, in addition to time constraints, I wasn't able to achieve a perfect test coverage. However, I did my best to have the necessary tests for the implementation I did, as well as explore the different technologies we saw throughout the course.
 
-### ApiController Unit Tests
+## ApiController Unit Tests
 For the ApiController, a unit test class was created, which includes test methods for all the API operations (all routes that I implemented). `ChampionControllerTest` class tests the Get, Post, Put, Delete, GetByName, and GetSkins methods. While the tests cover the essential functionality, __there is room for improvement__ in terms of testing edge cases and error handling.
 
-### Database Tests
+## Database Tests
 For database tests, I used __in-memory SQLite database__. This approach had several benefits:
 * The tests run quickly, as there is no disk I/O.
 * The tests are isolated, as the in-memory database is on RAM memory and does not interfere with other tests or the production database.
 * It integrates well with Entity Framework, simplifying the setup and execution of tests.
 
-### xUnit Test Types
+## xUnit Test Types
 As I mentioned previously, I tried different types of xUnit tests were employed  including:
 
 * __Fact tests:__ These tests check basic functionality and do not require any input parameters.
 * __Theory + InlineData:__ These tests allow parameterized testing, with input data provided directly within the test method.
 * __Theory + DataMember:__ These tests also use parameterized testing, but the input data is separated from the test method and stored in a separate data member.
 
-Each test type has its advantages and use cases. Fact tests are suitable for simple, straightforward tests. Theory tests with InlineData or DataMember are ideal for more complex tests that require various input parameters to validate different scenarios.
+Each test type has its advantages and uses cases. Fact tests are suitable for simple, straightforward tests. Theory tests with InlineData or DataMember are ideal for more complex tests that require various input parameters to validate different scenarios.
 
 Overall, tests are currently limited to CRUD operations, it could be expanded to include additional scenarios and edge cases.
 
@@ -510,15 +613,17 @@ _[Table of contents](#table-of-contents-page_with_curl)_
 
 ---
 
-## CI :infinity:
+</br>
+
+# :infinity: CI 
 Continuous Integration (CI) is a development practice that allows each integration to be verified by an automated build and automated tests. CI aims to detect and fix integration issues as quickly as possible, improving software quality and reducing the time it takes to validate and release new updates.
 
-### Drone and Sonar
+## Drone and Sonar
 In this project, we used Drone, an open-source container-native Continuous Integration and Continuous Delivery (CI/CD) platform, to automate our build, test, and deployment processes. Drone works with a simple YAML configuration file (.drone.yml) that defines the pipeline steps, you can find the one used for this project [here](.drone.yml).
 
 Sonar is a code quality analysis tool that helps maintain code quality over time by providing insights into code issues like code smells. It can be integrated with the CI/CD pipeline.
 
-### Pipeline Steps Overview
+## Pipeline Steps Overview
 
 * Build: Restore, build, and publish the .NET project using the dotnet command.
 * Tests: Run the .NET tests with code coverage.
@@ -532,10 +637,12 @@ _[Table of contents](#table-of-contents-page_with_curl)_
 
 ---
 
-## Model :file_folder:
+</br>
+
+# :file_folder: Model 
 In order to better understand the code and architecture of the application, we will now take a closer look at the structure of the model, including its classes and interfaces. __It is important to note that the model was developed by our professor, Mr. Chevaldonne__.
 
-### Class Diagram
+## Class Diagram
 ```mermaid
 classDiagram
 class LargeImage{
@@ -620,7 +727,9 @@ RunePage --> "*" Rune : Dictionary~Category,Rune~
 
 Thid model provides a representation to different elements of the game [League of Legends](https://www.leagueoflegends.com/fr-fr/).
 
-### Data Access Management Interfaces Diagram
+</br>
+
+## Data Access Management Interfaces Diagram
 The `IGenericDataManager<T>` interface provides methods for _getting_, _updating_, _adding_, and _deleting_ items of type T. The `IChampionsManager`, `IRunesManager`, `IRunePagesManager`, and `ISkinsManager` interfaces add category-specific methods for filtering and sorting the data.
 
 ```mermaid
@@ -680,7 +789,9 @@ IRunesManager <-- IDataManager : RunesMgr
 IRunePagesManager <-- IDataManager : RunePagesMgr
 ```
 
-### Simplified Stub Class Diagram
+</br>
+
+## Simplified Stub Class Diagram
 Here the `ChampionsManager`, `RunesManager`, `RunePagesManager`, and `SkinsManager` classes implement their respective _manager interfaces_ and are responsible for calling the appropriate methods on the `StubData` object to manipulate the data.
 
 ```mermaid
