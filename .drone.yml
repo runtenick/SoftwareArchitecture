@@ -57,7 +57,7 @@ steps:
             from_secret: SECRET_REGISTRY_USERNAME
         password:
             from_secret: SECRET_REGISTRY_PASSWORD
-    depends_on: [code-analysis]
+    depends_on: [tests]
 
 
   - name: deploy-container
